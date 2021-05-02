@@ -1,6 +1,6 @@
 ﻿namespace Core.Domain
 {
-    public class Skill
+    public class SkillModel
     {
     }
 }
