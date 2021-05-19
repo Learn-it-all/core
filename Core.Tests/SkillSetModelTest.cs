@@ -33,31 +33,7 @@ namespace Core.Tests
         }
 
 
-        [Fact]
-        public void HasAtLeastOneSkill()
-        {
-            var expectedSkills = new List<SkillModel>();
-
-            Assert.Throws<ArgumentException>("skills",() => _fixture.Get((List<SkillModel> _,SkillSetModelName name) => new SkillSetModel(expectedSkills,name)));
-
-        }
-
-        [Fact]
-        public void CanHaveMoreThanOneSkill()
-        {
-            var expectedSkills = _fixture.CreateMany<SkillModel>();
-            var sut = _fixture.Get((List<SkillModel> l,SkillSetModelName name) => new SkillSetModel(expectedSkills,name));
-
-            Assert.Equal(expectedSkills, sut.Skills);
-        }
-
-        [Fact]
-        public void DoesNotAcceptNullListOfSkills()
-        {
-            Assert.Throws<ArgumentNullException>(() => new SkillSetModel((List<SkillModel>)null,null));
-        }
-
-      
+        
 
         [Fact]
         public void HasUniqueId()
@@ -73,12 +49,31 @@ namespace Core.Tests
         public void HasName()
         {
             var expected = _fixture.Create<SkillSetModelName>();
-            var sut = _fixture.Get((List<SkillModel> models,SkillSetModelName _) => new SkillSetModel(models,expected));
+            var sut = _fixture.Get((SkillSetModelName _) => new SkillSetModel(expected));
 
             string actual = sut.Name;
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void CanAddSkill()
+        {
+            var sut = _fixture.Create<SkillSetModel>();
+            var dummySkill = _fixture.Create<SkillModel>();
+
+            sut.Add(model: dummySkill);
+
+            Assert.Contains(dummySkill, sut.Skills);
+        }
+
+        [Fact]
+        public void DoesNotAcceptNullSkill()
+        {
+            var sut = _fixture.Create<SkillSetModel>();
+
+            Assert.Throws<ArgumentNullException>(()=> sut.Add(model: null));
+
+        }
 
     }
 }

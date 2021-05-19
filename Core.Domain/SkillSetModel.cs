@@ -1,4 +1,5 @@
-﻿using Core.Resources;
+﻿using Ardalis.GuardClauses;
+using Core.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ namespace Core.Domain
 {
     public class SkillSetModel
     {
-        public IReadOnlyList<SkillModel> Skills => skills.AsReadOnly();
-        private readonly List<SkillModel> skills = new();
-        public readonly string Name = string.Empty;
+        public IReadOnlyList<SkillModel> Skills => _skills.AsReadOnly();
+        private readonly List<SkillModel> _skills = new();
+        public string Name { get; } = string.Empty;
 
         public Guid Id { get; private set; } = Guid.NewGuid();
 
@@ -18,13 +19,12 @@ namespace Core.Domain
 
         }
 
-        public SkillSetModel(IEnumerable<SkillModel> skills, SkillSetModelName name)
-        {
-            if (!skills.Any())
-                throw new ArgumentException(Messages.SkillSetModel_AtLeastOneSkillModelRequired,nameof(skills));
+        public SkillSetModel(SkillSetModelName name) => Name = name;
 
-            this.skills = skills.ToList();
-            Name = name;
+        public void Add(SkillModel model)
+        {
+            Guard.Against.Null(model,nameof(model));
+            _skills.Add(model);
         }
     }
 }
