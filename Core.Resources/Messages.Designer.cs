@@ -61,20 +61,29 @@ namespace Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name cannot exceed {0} chars.
+        /// </summary>
+        public static string ModelName_CannotExceedMaximunLenght {
+            get {
+                return ResourceManager.GetString("ModelName_CannotExceedMaximunLenght", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Skill Model named {0} already exists in the Skill Model Set {1}.
+        /// </summary>
+        public static string SkillModel_ASkillWithSameNameAlreadyExistis {
+            get {
+                return ResourceManager.GetString("SkillModel_ASkillWithSameNameAlreadyExistis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to At least one Skill Model is required.
         /// </summary>
         public static string SkillSetModel_AtLeastOneSkillModelRequired {
             get {
                 return ResourceManager.GetString("SkillSetModel_AtLeastOneSkillModelRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name cannot exceed {0} chars.
-        /// </summary>
-        public static string SkillSetModelName_CannotExceedMaximunLenght {
-            get {
-                return ResourceManager.GetString("SkillSetModelName_CannotExceedMaximunLenght", resourceCulture);
             }
         }
     }

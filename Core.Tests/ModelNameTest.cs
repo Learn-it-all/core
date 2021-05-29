@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
 using Core.Domain;
+using Core.Resources;
 using Xunit;
 
 namespace Core.Tests
 {
-    public class SkillSetModelNameTest
+    public class ModelNameTest
 
     {
         private Fixture _fixture => new Fixture();
 
-        public SkillSetModelNameTest()
+        public ModelNameTest()
         {
 
         }
@@ -20,18 +21,20 @@ namespace Core.Tests
         [Fact]
         public void Exists()
         {
-            _ = _fixture.Create<SkillSetModelName>();
+            _ = _fixture.Create<ModelName>();
 
         }
 
         [Fact]
-        public void NameHasNoMoreThan50Chars()
+        public void Ctor_NameHasNoMoreThan50Chars()
         {
             string outOfRangeName = new(Enumerable.Repeat('a', 51).ToArray());
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new SkillSetModelName(outOfRangeName));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ModelName(outOfRangeName));
 
         }
+
+      
 
     }
 }

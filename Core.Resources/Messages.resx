@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SkillSetModelName_CannotExceedMaximunLenght" xml:space="preserve">
+  <data name="ModelName_CannotExceedMaximunLenght" xml:space="preserve">
     <value>Name cannot exceed {0} chars</value>
+  </data>
+  <data name="SkillModel_ASkillWithSameNameAlreadyExistis" xml:space="preserve">
+    <value>A Skill Model named {0} already exists in the Skill Model Set {1}</value>
   </data>
   <data name="SkillSetModel_AtLeastOneSkillModelRequired" xml:space="preserve">
     <value>At least one Skill Model is required</value>

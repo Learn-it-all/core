@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoFixture;
 using Core.Domain;
+using Core.Resources;
+using System;
 using Xunit;
 
 namespace Core.Tests
@@ -48,8 +47,8 @@ namespace Core.Tests
         [Fact]
         public void HasName()
         {
-            var expected = _fixture.Create<SkillSetModelName>();
-            var sut = _fixture.Get((SkillSetModelName _) => new SkillSetModel(expected));
+            var expected = _fixture.Create<ModelName>();
+            var sut = _fixture.Get((ModelName _) => new SkillSetModel(expected));
 
             string actual = sut.Name;
             Assert.Equal(expected, actual);
@@ -58,12 +57,35 @@ namespace Core.Tests
         [Fact]
         public void CanAddSkill()
         {
-            var sut = _fixture.Create<SkillSetModel>();
             var dummySkill = _fixture.Create<SkillModel>();
+            var sut = _fixture.Create<SkillSetModel>();
 
-            sut.Add(model: dummySkill);
+            sut.AddNew(skill: dummySkill);
 
+            Assert.True(sut.Skills.Count == 1);
             Assert.Contains(dummySkill, sut.Skills);
+        }
+
+        [Fact]
+        public void AddNewSkill_WhenSkillNameAlreadyExists_Throws()
+        {
+            var dummySkill = _fixture.Create<SkillModel>();
+            var sut = _fixture.Create<SkillSetModel>();
+            sut.AddNew(skill: dummySkill);
+            var expectedExceptionMessage = string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, dummySkill.Name, sut.Name);
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                try
+                {
+                    sut.AddNew(dummySkill);
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    Assert.Equal(expectedExceptionMessage, ioe.Message);
+                    throw;
+                }
+            });
         }
 
         [Fact]
