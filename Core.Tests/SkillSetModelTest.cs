@@ -3,6 +3,8 @@ using Core.Domain;
 using Core.Resources;
 using System;
 using Xunit;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Core.Tests
 {
@@ -32,7 +34,7 @@ namespace Core.Tests
         }
 
 
-        
+
 
         [Fact]
         public void HasUniqueId()
@@ -67,7 +69,7 @@ namespace Core.Tests
         }
 
         [Fact]
-        public void AddNewSkill_WhenSkillNameAlreadyExists_Throws()
+        public void AddNewSkill_WhenSkillAlreadyIncluded_Throws()
         {
             var dummySkill = _fixture.Create<SkillModel>();
             var sut = _fixture.Create<SkillSetModel>();
@@ -89,11 +91,29 @@ namespace Core.Tests
         }
 
         [Fact]
-        public void DoesNotAcceptNullSkill()
+        public void CannotHaveMoreThan50DirectChildSkillModels()
         {
+            List<SkillModel> dummySkillModels = new(_fixture.CreateMany<SkillModel>(51));
             var sut = _fixture.Create<SkillSetModel>();
 
-            Assert.Throws<ArgumentNullException>(()=> sut.Add(model: null));
+            var expectedExceptionMessage = string.Format(Messages.SkillModelSet_MaximumDirectSkillModelChildExceeded, sut.MaximumDirectSkillModelChild);
+
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+
+                try
+                {
+                    dummySkillModels.ForEach(x => sut.AddNew(x));
+
+                }
+                catch (InvalidOperationException ioe)
+                {
+                    Assert.Equal(expectedExceptionMessage, ioe.Message);
+                    throw;
+                }
+            });
+
 
         }
 

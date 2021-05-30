@@ -10,6 +10,8 @@ namespace Core.Domain
     {
         public IReadOnlyList<SkillModel> Skills => _skills.AsReadOnly();
         private readonly List<SkillModel> _skills = new ();
+        public  readonly int MaximumDirectSkillModelChild = 50;
+
         public string Name { get; } = string.Empty;
 
         public Guid Id { get; private set; } = Guid.NewGuid();
@@ -21,21 +23,39 @@ namespace Core.Domain
 
         public SkillSetModel(ModelName name) => Name = name;
 
-        public void Add(SkillModel model)
+        public void AddNew(SkillModel skill)
         {
-            Guard.Against.Null(model,nameof(model));
-            _skills.Add(model);
+            MakeSureSkillModelIsNotAlreadyInUse(skill);
+            MakeSureMaximumNumberOfDirectSkillModelChildrenIsNotExceeded();
+            _skills.Add(skill);
         }
 
-        public void AddNew(SkillModel skill)
+        private void MakeSureMaximumNumberOfDirectSkillModelChildrenIsNotExceeded()
+        {
+            if (_skills.Count == MaximumDirectSkillModelChild)
+            {
+                string message = BuildErrorMessageForMaximumNumberOfSkillModels();
+                throw new InvalidOperationException(message);
+            }
+        }
+
+        private void MakeSureSkillModelIsNotAlreadyInUse(SkillModel skill)
         {
             if (_skills.Contains(skill))
             {
-                string message = string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, skill.Name, Name);
+                string message = BuildErrorMessageForExistingSkillModel(skill);
                 throw new InvalidOperationException(message);
             }
+        }
 
-            _skills.Add(skill);
+        private string BuildErrorMessageForMaximumNumberOfSkillModels()
+        {
+            return string.Format(Messages.SkillModelSet_MaximumDirectSkillModelChildExceeded, MaximumDirectSkillModelChild);
+        }
+
+        private string BuildErrorMessageForExistingSkillModel(SkillModel skill)
+        {
+            return string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, skill.Name, Name);
         }
     }
 }

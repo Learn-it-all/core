@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core.Resources\Core.Resources.csproj" />
+    <ProjectReference Include="..\SharedKernel\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
   </ItemGroup>
   
 </Project>

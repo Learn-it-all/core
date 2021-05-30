@@ -79,6 +79,15 @@ namespace Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A Skill Model Set cannot have more than {0} direct Skill Model children..
+        /// </summary>
+        public static string SkillModelSet_MaximumDirectSkillModelChildExceeded {
+            get {
+                return ResourceManager.GetString("SkillModelSet_MaximumDirectSkillModelChildExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to At least one Skill Model is required.
         /// </summary>
         public static string SkillSetModel_AtLeastOneSkillModelRequired {

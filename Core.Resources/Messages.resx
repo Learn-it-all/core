@@ -120,6 +120,9 @@
   <data name="ModelName_CannotExceedMaximunLenght" xml:space="preserve">
     <value>Name cannot exceed {0} chars</value>
   </data>
+  <data name="SkillModelSet_MaximumDirectSkillModelChildExceeded" xml:space="preserve">
+    <value>A Skill Model Set cannot have more than {0} direct Skill Model children.</value>
+  </data>
   <data name="SkillModel_ASkillWithSameNameAlreadyExistis" xml:space="preserve">
     <value>A Skill Model named {0} already exists in the Skill Model Set {1}</value>
   </data>
