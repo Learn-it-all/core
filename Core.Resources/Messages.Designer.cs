@@ -79,6 +79,15 @@ namespace Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name &apos;{0}&apos; is already in use by a sibling skill under {1}.
+        /// </summary>
+        public static string SkillModel_CannotAddDuplicateNameForChildOnSameLevel {
+            get {
+                return ResourceManager.GetString("SkillModel_CannotAddDuplicateNameForChildOnSameLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A Skill Model Set cannot have more than {0} direct Skill Model children..
         /// </summary>
         public static string SkillModelSet_MaximumDirectSkillModelChildExceeded {

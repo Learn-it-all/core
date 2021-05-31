@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 
 namespace Mtx.Common.Domain
@@ -7,6 +8,8 @@ namespace Mtx.Common.Domain
     public abstract class Entity
     {
         private List<INotification> _domainEvents = new();
+
+        public Guid Id { get; private set; } = Guid.NewGuid();
 
         public List<INotification> DomainEvents => _domainEvents;
 
@@ -22,7 +25,7 @@ namespace Mtx.Common.Domain
 
         {
 
-            if (_domainEvents is null) return;
+            if (!_domainEvents.Any()) return;
 
             _domainEvents.Remove(eventItem);
 

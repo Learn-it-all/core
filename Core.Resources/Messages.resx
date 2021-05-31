@@ -126,6 +126,9 @@
   <data name="SkillModel_ASkillWithSameNameAlreadyExistis" xml:space="preserve">
     <value>A Skill Model named {0} already exists in the Skill Model Set {1}</value>
   </data>
+  <data name="SkillModel_CannotAddDuplicateNameForChildOnSameLevel" xml:space="preserve">
+    <value>The name '{0}' is already in use by a sibling skill under {1}</value>
+  </data>
   <data name="SkillSetModel_AtLeastOneSkillModelRequired" xml:space="preserve">
     <value>At least one Skill Model is required</value>
   </data>
