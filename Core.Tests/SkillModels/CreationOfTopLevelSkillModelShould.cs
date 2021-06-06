@@ -4,7 +4,7 @@ using Mtx.Common.Domain;
 using System;
 using Xunit;
 
-namespace Core.Tests
+namespace Core.Tests.SkillModels
 {
 
     public class CreationOfTopLevelSkillModelShould : Test

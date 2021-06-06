@@ -6,7 +6,7 @@ using Xunit;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Core.Tests
+namespace Core.Tests.SkillSetModels
 {
     public class SkillSetModelTest
 
