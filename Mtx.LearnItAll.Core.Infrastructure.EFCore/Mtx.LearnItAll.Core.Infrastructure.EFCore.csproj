@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="nc50povx.na3~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="5.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
+    <ProjectReference Include="..\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
+    <ProjectReference Include="..\Services\Mtx.EFCoreServices\Mtx.EFCoreServices.csproj" />
   </ItemGroup>
 
 </Project>
