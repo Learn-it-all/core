@@ -8,10 +8,11 @@ namespace Mtx.LearnItAll.Core
     /// <summary>
     /// Represents a Skill and all the elements (other <see cref="SkillModel"/>s) that might be necessary to completely describe it.
     /// </summary>
-    public class SkillModel : Entity
+    public class SkillModel
     {
         private readonly List<SkillModel> _skills = new();
 
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public LifecycleState LifecycleState { get; private set; } = LifecycleState.Current;
@@ -21,6 +22,13 @@ namespace Mtx.LearnItAll.Core
         {
             Name = name;
         }
+
+        /// <summary>
+        /// For EF Core
+        /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        private SkillModel() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         /// <summary>
         /// Add a <see cref="SkillModel"/> as a direct child.

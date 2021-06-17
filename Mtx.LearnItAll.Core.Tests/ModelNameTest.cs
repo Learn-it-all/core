@@ -1,5 +1,6 @@
 using AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -30,8 +31,5 @@ namespace Mtx.LearnItAll.Core.Tests
             Assert.Throws<ArgumentOutOfRangeException>(() => new ModelName(outOfRangeName));
 
         }
-
-      
-
     }
 }

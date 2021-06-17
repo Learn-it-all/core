@@ -1,10 +1,9 @@
 ﻿using AutoFixture;
-using Mtx.LearnItAll.Core;
 using Mtx.Common.Domain;
 using System;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.SkillModels
+namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
 {
 
     public class CreationOfTopLevelSkillModelShould : Test
@@ -34,7 +33,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         {
             var sut = _fixture.Create<TopLevelSkill>();
 
-            DateTime actual = sut.Created;
+            DateTime actual = sut.CreatedDate;
 
             Assert.Equal(DateTime.Today, actual.Date);
         }
@@ -56,9 +55,6 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
 
             string actual = sut.Name;
             Assert.Equal(dummyName, actual);
-
-
-
         }
 
     }

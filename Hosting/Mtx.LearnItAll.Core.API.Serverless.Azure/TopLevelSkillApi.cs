@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
+using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data;
 using Mtx.LearnItAll.Core.Infrastructure.EFCore;
 using System;
 using System.Diagnostics.Contracts;
@@ -14,9 +15,9 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
     public class TopLevelSkillApi
     {
         readonly CosmosConfig _cosmosConfig;
-        readonly CoreDbContext context;
+        readonly CosmosDbContext context;
 
-        public TopLevelSkillApi(IOptions<CosmosConfig> options, CoreDbContext context)
+        public TopLevelSkillApi(IOptions<CosmosConfig> options, CosmosDbContext context)
         {
             _cosmosConfig = options?.Value ?? throw new ArgumentException("param required", nameof(options));
             this.context = context ?? throw new ArgumentNullException(nameof(context));
@@ -29,14 +30,22 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             var logger = executionContext.GetLogger("Function1");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            context.Add(new TopLevelSkill(new ModelName("C#")));
+            TopLevelSkill entity = new (new ModelName("C#"));
+            entity.Add(new SkillModel(new ModelName("delegates")));
+#if DEBUG
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+# endif
+            context.Add(entity);
             var items = context.SaveChanges();
+            var ent = context.Set<TopLevelSkill>().Find(entity.Id);
+            entity.Add(new SkillModel(new ModelName("Collections")));
+            context.SaveChanges();
+            ent = context.Set<TopLevelSkill>().Find(entity.Id);
 
-            logger.LogError("items added: ", items);
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            response.WriteString("Welcome to Azure Functions!");
+            response.WriteAsJsonAsync(ent);
 
             return response;
         }
