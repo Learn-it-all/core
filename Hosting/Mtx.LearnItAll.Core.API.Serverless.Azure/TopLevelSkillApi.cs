@@ -24,18 +24,45 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
         }
 
         [Function("TopLevelSkillS")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "toplevelskills/{name}")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Function1");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
             TopLevelSkill entity = new (new ModelName("C#"));
-            entity.Add(new SkillModel(new ModelName("delegates")));
 #if DEBUG
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
+            entity.Add(new SkillModel(new ModelName("delegates")));
+            context.Add(entity);
+            var items = context.SaveChanges();
+            var ent = context.Set<TopLevelSkill>().Find(entity.Id);
+            entity.Add(new SkillModel(new ModelName("Collections")));
+            context.SaveChanges();
+            ent = context.Set<TopLevelSkill>().Find(entity.Id);
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+
+            response.WriteAsJsonAsync(ent);
+
+            return response;
+        }
+
+        [Function("TopLevelSkillS_post")]
+        public HttpResponseData RunPost([HttpTrigger(AuthorizationLevel.Function, "post",Route ="toplevelskills")] HttpRequestData req,
+           FunctionContext executionContext)
+        {
+            var logger = executionContext.GetLogger("Function1");
+            logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            TopLevelSkill entity = new(new ModelName("C#"));
+#if DEBUG
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+# endif
+            entity.Add(new SkillModel(new ModelName("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
             var ent = context.Set<TopLevelSkill>().Find(entity.Id);

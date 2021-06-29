@@ -26,7 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.Infrast
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosting", "Hosting", "{19C8F1A5-BD3D-4A0F-983C-B14FEA3ADD63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.LearnItAll.Core.API.Serverless.Azure", "Hosting\Mtx.LearnItAll.Core.API.Serverless.Azure\Mtx.LearnItAll.Core.API.Serverless.Azure.csproj", "{436905F6-5CE6-4AA8-A3CE-5E7D38E83A33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.API.Serverless.Azure", "Hosting\Mtx.LearnItAll.Core.API.Serverless.Azure\Mtx.LearnItAll.Core.API.Serverless.Azure.csproj", "{436905F6-5CE6-4AA8-A3CE-5E7D38E83A33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D771A703-8FC6-4403-904F-ABDA6578B02A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{568A3F6A-156D-4137-B765-A871206FC5FA} = {D771A703-8FC6-4403-904F-ABDA6578B02A}
 		{0221F318-4116-4ED0-AD5E-38486A8E3D87} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 		{436905F6-5CE6-4AA8-A3CE-5E7D38E83A33} = {19C8F1A5-BD3D-4A0F-983C-B14FEA3ADD63}
 	EndGlobalSection

@@ -17,6 +17,7 @@ namespace Mtx.LearnItAll.Core
         public TopLevelSkill(ModelName name)
         {
             _root = new SkillModel(name);
+            CreatedDate = DateTime.Now;
         }
 
 

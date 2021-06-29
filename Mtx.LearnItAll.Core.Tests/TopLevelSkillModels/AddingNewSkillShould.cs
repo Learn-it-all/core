@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Mtx.LearnItAll.Core.Tests.TopLevelSkillModels
@@ -19,6 +18,12 @@ namespace Mtx.LearnItAll.Core.Tests.TopLevelSkillModels
             var dummy = _fixture.Create<SkillModel>();
             sut.Add(dummy);
             Assert.Contains(dummy, sut.Skills);
+        }
+
+        [Fact(Skip = "to be implemented")]
+        public void AllowNoMoreThan2000SInnerkillModels()
+        {
+
         }
     }
 }
