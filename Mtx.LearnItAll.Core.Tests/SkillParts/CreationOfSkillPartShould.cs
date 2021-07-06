@@ -1,14 +1,15 @@
 ﻿using AutoFixture;
 using Mtx.Common.Domain;
+using Mtx.LearnItAll.Core.Blueprints;
 using System;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.SkillModels
+namespace Mtx.LearnItAll.Core.Tests.SkillParts
 {
-    public class CreationOfSkillModelShould : Test
+    public class CreationOfSkillPartShould : Test
     {
 
-        public CreationOfSkillModelShould()
+        public CreationOfSkillPartShould()
         {
 
         }
@@ -16,14 +17,14 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void Exist()
         {
-            _ = _fixture.Create<SkillPart>();
+            _ = _fixture.Create<Part>();
         }
 
         [Fact]
         public void HaveUniqueId()
         {
-            var sut = _fixture.Create<SkillPart>();
-            var dummy = _fixture.Create<SkillPart>();
+            var sut = _fixture.Create<Part>();
+            var dummy = _fixture.Create<Part>();
 
             Assert.NotEqual(dummy.Id, sut.Id);
 
@@ -33,7 +34,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void SetCreationDateToNow()
         {
-            var sut = _fixture.Create<SkillPart>();
+            var sut = _fixture.Create<Part>();
 
             DateTime actual = sut.Created;
 
@@ -43,7 +44,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void StartWithCurrentLifecycleState()
         {
-            var sut = _fixture.Create<SkillPart>();
+            var sut = _fixture.Create<Part>();
 
             LifecycleState actual = sut.LifecycleState;
 

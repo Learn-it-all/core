@@ -1,12 +1,13 @@
 ﻿using AutoFixture;
+using Mtx.LearnItAll.Core.Blueprints;
 using Xunit;
 
 namespace Mtx.LearnItAll.Core.Tests.TopLevelSkillModels
 {
-    public class AddingNewSkillShould : Test
+    public class AddingNewSkillBlueprintShould : Test
     {
 
-        public AddingNewSkillShould()
+        public AddingNewSkillBlueprintShould()
         {
 
         }
@@ -14,8 +15,8 @@ namespace Mtx.LearnItAll.Core.Tests.TopLevelSkillModels
         [Fact]
         public void AddAsChildOfRootSkillGivenThereIsNoNamingConflict()
         {
-            var sut = _fixture.Create<Skill>();
-            var dummy = _fixture.Create<SkillPart>();
+            var sut = _fixture.Create<SkillBlueprint>();
+            var dummy = _fixture.Create<Part>();
             sut.Add(dummy);
             Assert.Contains(dummy, sut.Skills);
         }

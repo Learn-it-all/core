@@ -1,15 +1,14 @@
-﻿using Ardalis.GuardClauses;
+﻿using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Mtx.LearnItAll.Core
 {
     public class SkillSetModel
     {
-        public IReadOnlyList<SkillPart> Skills => _skills.AsReadOnly();
-        private readonly List<SkillPart> _skills = new ();
+        public IReadOnlyList<Part> Skills => _skills.AsReadOnly();
+        private readonly List<Part> _skills = new ();
         public  readonly int MaximumDirectSkillModelChild = 50;
 
         public string Name { get; } = string.Empty;
@@ -21,9 +20,9 @@ namespace Mtx.LearnItAll.Core
 
         }
 
-        public SkillSetModel(ModelName name) => Name = name;
+        public SkillSetModel(Name name) => Name = name;
 
-        public void AddNew(SkillPart skill)
+        public void AddNew(Part skill)
         {
             MakeSureSkillModelIsNotAlreadyInUse(skill);
             MakeSureMaximumNumberOfDirectSkillModelChildrenIsNotExceeded();
@@ -39,7 +38,7 @@ namespace Mtx.LearnItAll.Core
             }
         }
 
-        private void MakeSureSkillModelIsNotAlreadyInUse(SkillPart skill)
+        private void MakeSureSkillModelIsNotAlreadyInUse(Part skill)
         {
             if (_skills.Contains(skill))
             {
@@ -53,7 +52,7 @@ namespace Mtx.LearnItAll.Core
             return string.Format(Messages.SkillModelSet_MaximumDirectSkillModelChildExceeded, MaximumDirectSkillModelChild);
         }
 
-        private string BuildErrorMessageForExistingSkillModel(SkillPart skill)
+        private string BuildErrorMessageForExistingSkillModel(Part skill)
         {
             return string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, skill.Name, Name);
         }

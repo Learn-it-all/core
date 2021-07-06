@@ -1,4 +1,4 @@
-﻿namespace Mtx.LearnItAll.Core
+﻿namespace Mtx.LearnItAll.Core.Blueprints
 {
     public enum LifecycleState
     {

@@ -1,4 +1,5 @@
 using AutoFixture;
+using Mtx.LearnItAll.Core.Blueprints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Mtx.LearnItAll.Core.Tests
         [Fact]
         public void Exists()
         {
-            _ = _fixture.Create<ModelName>();
+            _ = _fixture.Create<Name>();
 
         }
 
@@ -28,7 +29,7 @@ namespace Mtx.LearnItAll.Core.Tests
         {
             string outOfRangeName = new(Enumerable.Repeat('a', 51).ToArray());
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ModelName(outOfRangeName));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Name(outOfRangeName));
 
         }
     }

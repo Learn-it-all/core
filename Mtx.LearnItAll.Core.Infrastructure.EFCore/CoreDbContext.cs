@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mtx.Common.Domain;
+using Mtx.LearnItAll.Core.Blueprints;
 using System;
 using System.Linq;
 
@@ -23,16 +24,16 @@ namespace Mtx.LearnItAll.Core.Infrastructure.EFCore
 
         }
 
-        public DbSet<Skill> TopLevelSkills { get; set; }
+        public DbSet<SkillBlueprint> TopLevelSkills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Skill>()
-                .OwnsOne<SkillPart>("_root")
-                .OwnsMany<SkillPart>("_skills");
+            modelBuilder.Entity<SkillBlueprint>()
+                .OwnsOne<Part>("_root")
+                .OwnsMany<Part>("_skills");
 
-            modelBuilder.Entity<Skill>()
+            modelBuilder.Entity<SkillBlueprint>()
                .Ignore(x => x.Skills)
                .Ignore(x => x.DomainEvents);
         }

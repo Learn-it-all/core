@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data;
+using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Infrastructure.EFCore;
 using System;
 using System.Diagnostics.Contracts;
@@ -12,36 +13,36 @@ using System.Net;
 
 namespace Mtx.LearnItAll.Core.API.Serverless.Azure
 {
-    public class TopLevelSkillApi
+    public class SkillBlueprintApi
     {
         readonly CosmosConfig _cosmosConfig;
         readonly CosmosDbContext context;
 
-        public TopLevelSkillApi(IOptions<CosmosConfig> options, CosmosDbContext context)
+        public SkillBlueprintApi(IOptions<CosmosConfig> options, CosmosDbContext context)
         {
             _cosmosConfig = options?.Value ?? throw new ArgumentException("param required", nameof(options));
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        [Function("TopLevelSkillS")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "toplevelskills/{name}")] HttpRequestData req,
+        [Function("SkillBlueprintApi")]
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "skillblueprints/{name}")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Function1");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            Skill entity = new (new ModelName("C#"));
+            SkillBlueprint entity = new (new Name("C#"));
 #if DEBUG
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
-            entity.Add(new SkillPart(new ModelName("delegates")));
+            entity.Add(new Part(new Name("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
-            var ent = context.Set<Skill>().Find(entity.Id);
-            entity.Add(new SkillPart(new ModelName("Collections")));
+            var ent = context.Set<SkillBlueprint>().Find(entity.Id);
+            entity.Add(new Part(new Name("Collections")));
             context.SaveChanges();
-            ent = context.Set<Skill>().Find(entity.Id);
+            ent = context.Set<SkillBlueprint>().Find(entity.Id);
 
             var response = req.CreateResponse(HttpStatusCode.OK);
 
@@ -50,25 +51,25 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             return response;
         }
 
-        [Function("TopLevelSkillS_post")]
-        public HttpResponseData RunPost([HttpTrigger(AuthorizationLevel.Function, "post",Route ="toplevelskills")] HttpRequestData req,
+        [Function("SkillBlueprintApi_post")]
+        public HttpResponseData RunPost([HttpTrigger(AuthorizationLevel.Function, "post",Route = "skillblueprints")] HttpRequestData req,
            FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Function1");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            Skill entity = new(new ModelName("C#"));
+            SkillBlueprint entity = new(new Name("C#"));
 #if DEBUG
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
-            entity.Add(new SkillPart(new ModelName("delegates")));
+            entity.Add(new Part(new Name("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
-            var ent = context.Set<Skill>().Find(entity.Id);
-            entity.Add(new SkillPart(new ModelName("Collections")));
+            var ent = context.Set<SkillBlueprint>().Find(entity.Id);
+            entity.Add(new Part(new Name("Collections")));
             context.SaveChanges();
-            ent = context.Set<Skill>().Find(entity.Id);
+            ent = context.Set<SkillBlueprint>().Find(entity.Id);
 
             var response = req.CreateResponse(HttpStatusCode.OK);
 

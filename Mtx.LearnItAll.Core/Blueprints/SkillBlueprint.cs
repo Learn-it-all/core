@@ -2,21 +2,21 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mtx.LearnItAll.Core
+namespace Mtx.LearnItAll.Core.Blueprints
 {
-    public class Skill : Entity
+    public class SkillBlueprint : Entity
     {
-        SkillPart _root;
+        Part _root;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        private Skill()
+        private SkillBlueprint()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
         }
 
-        public Skill(ModelName name)
+        public SkillBlueprint(Name name)
         {
-            _root = new SkillPart(name);
+            _root = new Part(name);
             CreatedDate = DateTime.Now;
         }
 
@@ -25,9 +25,9 @@ namespace Mtx.LearnItAll.Core
 
         public string Name => _root.Name;
 
-        public IReadOnlyCollection<SkillPart> Skills => _root.Skills;
+        public IReadOnlyCollection<Part> Skills => _root.Skills;
 
-        public void Add(SkillPart skill)
+        public void Add(Part skill)
         {
             _root.Add(skill);
         }

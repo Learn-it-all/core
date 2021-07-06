@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void AddAsChildGivenNameIsNotInUseByOtherChild()
         {
-            var dummySkill = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var dummySkill = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
 
             sut.Add(skill: dummySkill);
 
@@ -27,8 +28,8 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void ThrowInvalidOperationExceptionGivenNameIsInUseByDirectChildren()
         {
-            var dummySkill = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var dummySkill = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
             var expectedErrorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, dummySkill.Name, sut.Name);
 
             sut.Add(skill: dummySkill);
@@ -50,8 +51,8 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void ThrowInvalidOperationExceptionGivenNameIsInUseByDirectChildWhenTryingToAdd()
         {
-            var dummySkill = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var dummySkill = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
             var expectedErrorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, dummySkill.Name, sut.Name);
 
             sut.Add(skill: dummySkill);
@@ -72,11 +73,11 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void AddSkillAsLeafGivenParentIdIsChild()
         {
-            var children = _fixture.CreateMany<SkillPart>(3);
+            var children = _fixture.CreateMany<Part>(3);
             var expectedParent = children.ElementAt(1);
 
-            var grandChild = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var grandChild = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
             foreach (var skill in children)
             {
                 sut.Add(skill);
@@ -92,14 +93,14 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void AddSkillAsLeafGivenParentIdIsGrandGrandGrandChild()
         {
-            var expectedParent = _fixture.Create<SkillPart>();
-            var sutGrandChild = _fixture.Create<SkillPart>();
+            var expectedParent = _fixture.Create<Part>();
+            var sutGrandChild = _fixture.Create<Part>();
             sutGrandChild.Add(expectedParent);
-            var sutChild = _fixture.Create<SkillPart>();
+            var sutChild = _fixture.Create<Part>();
             sutChild.Add(sutGrandChild);
       
-            var dummyModel = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var dummyModel = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
             sut.Add(sutChild);
         
             var actual = sut.TryAdd(expectedParent.Id,dummyModel);
@@ -112,8 +113,8 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void AddSkillAsSUTsChildGivenParentIdIsTheSUTItself()
         {
-            var child = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var child = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
 
             var actual = sut.TryAdd(sut.Id, child);
 
@@ -124,8 +125,8 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void AddSkillAsSUTsChildGivenNoParentIdIsProvided()
         {
-            var child = _fixture.Create<SkillPart>();
-            var sut = _fixture.Create<SkillPart>();
+            var child = _fixture.Create<Part>();
+            var sut = _fixture.Create<Part>();
 
             sut.Add(child);
 
@@ -135,9 +136,9 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void ReturnFalseGivenThereIsNoMatchingSkillAsDirectChild()
         {
-            var dummy = _fixture.Create<SkillPart>();
+            var dummy = _fixture.Create<Part>();
             var dummyId = _fixture.Create<Guid>();
-            var sut = _fixture.Create<SkillPart>();
+            var sut = _fixture.Create<Part>();
 
             var actual = sut.TryAdd(dummyId, dummy);
 

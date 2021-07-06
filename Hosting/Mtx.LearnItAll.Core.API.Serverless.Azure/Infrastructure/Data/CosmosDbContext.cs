@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
+using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Infrastructure.EFCore;
 using System;
 
@@ -37,7 +38,7 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultContainer("Core");
 
-            modelBuilder.Entity<Skill>()
+            modelBuilder.Entity<SkillBlueprint>()
                 .ToContainer("TopLevelSkills")
                 //.HasPartitionKey(e => e.Id)
                 .HasNoDiscriminator();//used when no other type is ever to be stored in the same container

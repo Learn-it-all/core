@@ -1,4 +1,5 @@
 using AutoFixture;
+using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,8 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void HasName()
         {
-            var expected = _fixture.Create<ModelName>();
-            var sut = _fixture.Get((ModelName _) => new SkillSetModel(expected));
+            var expected = _fixture.Create<Name>();
+            var sut = _fixture.Get((Name _) => new SkillSetModel(expected));
 
             string actual = sut.Name;
             Assert.Equal(expected, actual);
@@ -57,7 +58,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void CanAddSkill()
         {
-            var dummySkill = _fixture.Create<SkillPart>();
+            var dummySkill = _fixture.Create<Part>();
             var sut = _fixture.Create<SkillSetModel>();
 
             sut.AddNew(skill: dummySkill);
@@ -69,7 +70,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void AddNewSkill_WhenSkillAlreadyIncluded_Throws()
         {
-            var dummySkill = _fixture.Create<SkillPart>();
+            var dummySkill = _fixture.Create<Part>();
             var sut = _fixture.Create<SkillSetModel>();
             sut.AddNew(skill: dummySkill);
             var expectedExceptionMessage = string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, dummySkill.Name, sut.Name);
@@ -91,7 +92,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void CannotHaveMoreThan50DirectChildSkillModels()
         {
-            List<SkillPart> dummySkillModels = new(_fixture.CreateMany<SkillPart>(51));
+            List<Part> dummySkillModels = new(_fixture.CreateMany<Part>(51));
             var sut = _fixture.Create<SkillSetModel>();
 
             var expectedExceptionMessage = string.Format(Messages.SkillModelSet_MaximumDirectSkillModelChildExceeded, sut.MaximumDirectSkillModelChild);
