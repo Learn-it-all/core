@@ -37,7 +37,7 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultContainer("Core");
 
-            modelBuilder.Entity<TopLevelSkill>()
+            modelBuilder.Entity<Skill>()
                 .ToContainer("TopLevelSkills")
                 //.HasPartitionKey(e => e.Id)
                 .HasNoDiscriminator();//used when no other type is ever to be stored in the same container

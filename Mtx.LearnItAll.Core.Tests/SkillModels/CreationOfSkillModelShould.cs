@@ -16,31 +16,24 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void Exist()
         {
-            _ = _fixture.Create<SkillModel>();
+            _ = _fixture.Create<SkillPart>();
         }
 
         [Fact]
         public void HaveUniqueId()
         {
-            var sut = _fixture.Create<SkillModel>();
-            var dummy = _fixture.Create<SkillModel>();
+            var sut = _fixture.Create<SkillPart>();
+            var dummy = _fixture.Create<SkillPart>();
 
             Assert.NotEqual(dummy.Id, sut.Id);
 
         }
 
-        [Fact]
-        public void BeAnEntity()
-        {
-            var sut = _fixture.Create<SkillModel>();
-
-            Assert.IsAssignableFrom<Entity>(sut);
-        }
 
         [Fact]
         public void SetCreationDateToNow()
         {
-            var sut = _fixture.Create<SkillModel>();
+            var sut = _fixture.Create<SkillPart>();
 
             DateTime actual = sut.Created;
 
@@ -50,7 +43,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         [Fact]
         public void StartWithCurrentLifecycleState()
         {
-            var sut = _fixture.Create<SkillModel>();
+            var sut = _fixture.Create<SkillPart>();
 
             LifecycleState actual = sut.LifecycleState;
 

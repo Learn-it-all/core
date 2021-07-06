@@ -14,8 +14,8 @@ namespace Mtx.LearnItAll.Core.Tests.TopLevelSkillModels
         [Fact]
         public void AddAsChildOfRootSkillGivenThereIsNoNamingConflict()
         {
-            var sut = _fixture.Create<TopLevelSkill>();
-            var dummy = _fixture.Create<SkillModel>();
+            var sut = _fixture.Create<Skill>();
+            var dummy = _fixture.Create<SkillPart>();
             sut.Add(dummy);
             Assert.Contains(dummy, sut.Skills);
         }

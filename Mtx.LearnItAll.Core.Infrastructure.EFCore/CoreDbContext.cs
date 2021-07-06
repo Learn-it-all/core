@@ -23,16 +23,16 @@ namespace Mtx.LearnItAll.Core.Infrastructure.EFCore
 
         }
 
-        public DbSet<TopLevelSkill> TopLevelSkills { get; set; }
+        public DbSet<Skill> TopLevelSkills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<TopLevelSkill>()
-                .OwnsOne<SkillModel>("_root")
-                .OwnsMany<SkillModel>("_skills");
+            modelBuilder.Entity<Skill>()
+                .OwnsOne<SkillPart>("_root")
+                .OwnsMany<SkillPart>("_skills");
 
-            modelBuilder.Entity<TopLevelSkill>()
+            modelBuilder.Entity<Skill>()
                .Ignore(x => x.Skills)
                .Ignore(x => x.DomainEvents);
         }

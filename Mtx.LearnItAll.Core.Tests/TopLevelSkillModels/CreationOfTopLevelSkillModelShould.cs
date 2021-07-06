@@ -17,13 +17,13 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void Exist()
         {
-            _ = _fixture.Create<TopLevelSkill>();
+            _ = _fixture.Create<Skill>();
         }
 
         [Fact]
         public void BeAnEntity()
         {
-            var sut = _fixture.Create<TopLevelSkill>();
+            var sut = _fixture.Create<Skill>();
 
             Assert.IsAssignableFrom<Entity>(sut);
         }
@@ -31,7 +31,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void SetupCreationData()
         {
-            var sut = _fixture.Create<TopLevelSkill>();
+            var sut = _fixture.Build<Skill>().OmitAutoProperties().Create();
 
             DateTime actual = sut.CreatedDate;
 
@@ -41,9 +41,10 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void StartWithCurrentLifecycleState()
         {
-            var sut = _fixture.Create<TopLevelSkill>();
+            var sut = _fixture.Build<Skill>().OmitAutoProperties().Create();
 
             LifecycleState actual = sut.LifecycleState;
+            
             Assert.Equal(LifecycleState.Current, actual);
         }
 
@@ -51,7 +52,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         public void SetName()
         {
             var dummyName = _fixture.Create<ModelName>();
-            var sut = _fixture.Get<ModelName,TopLevelSkill>((_)=> new(dummyName));
+            var sut = _fixture.Get<ModelName,Skill>((_)=> new(dummyName));
 
             string actual = sut.Name;
             Assert.Equal(dummyName, actual);

@@ -30,18 +30,18 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             var logger = executionContext.GetLogger("Function1");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            TopLevelSkill entity = new (new ModelName("C#"));
+            Skill entity = new (new ModelName("C#"));
 #if DEBUG
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
-            entity.Add(new SkillModel(new ModelName("delegates")));
+            entity.Add(new SkillPart(new ModelName("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
-            var ent = context.Set<TopLevelSkill>().Find(entity.Id);
-            entity.Add(new SkillModel(new ModelName("Collections")));
+            var ent = context.Set<Skill>().Find(entity.Id);
+            entity.Add(new SkillPart(new ModelName("Collections")));
             context.SaveChanges();
-            ent = context.Set<TopLevelSkill>().Find(entity.Id);
+            ent = context.Set<Skill>().Find(entity.Id);
 
             var response = req.CreateResponse(HttpStatusCode.OK);
 
@@ -57,18 +57,18 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             var logger = executionContext.GetLogger("Function1");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            TopLevelSkill entity = new(new ModelName("C#"));
+            Skill entity = new(new ModelName("C#"));
 #if DEBUG
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
-            entity.Add(new SkillModel(new ModelName("delegates")));
+            entity.Add(new SkillPart(new ModelName("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
-            var ent = context.Set<TopLevelSkill>().Find(entity.Id);
-            entity.Add(new SkillModel(new ModelName("Collections")));
+            var ent = context.Set<Skill>().Find(entity.Id);
+            entity.Add(new SkillPart(new ModelName("Collections")));
             context.SaveChanges();
-            ent = context.Set<TopLevelSkill>().Find(entity.Id);
+            ent = context.Set<Skill>().Find(entity.Id);
 
             var response = req.CreateResponse(HttpStatusCode.OK);
 

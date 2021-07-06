@@ -57,7 +57,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void CanAddSkill()
         {
-            var dummySkill = _fixture.Create<SkillModel>();
+            var dummySkill = _fixture.Create<SkillPart>();
             var sut = _fixture.Create<SkillSetModel>();
 
             sut.AddNew(skill: dummySkill);
@@ -69,7 +69,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void AddNewSkill_WhenSkillAlreadyIncluded_Throws()
         {
-            var dummySkill = _fixture.Create<SkillModel>();
+            var dummySkill = _fixture.Create<SkillPart>();
             var sut = _fixture.Create<SkillSetModel>();
             sut.AddNew(skill: dummySkill);
             var expectedExceptionMessage = string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, dummySkill.Name, sut.Name);
@@ -91,7 +91,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
         [Fact]
         public void CannotHaveMoreThan50DirectChildSkillModels()
         {
-            List<SkillModel> dummySkillModels = new(_fixture.CreateMany<SkillModel>(51));
+            List<SkillPart> dummySkillModels = new(_fixture.CreateMany<SkillPart>(51));
             var sut = _fixture.Create<SkillSetModel>();
 
             var expectedExceptionMessage = string.Format(Messages.SkillModelSet_MaximumDirectSkillModelChildExceeded, sut.MaximumDirectSkillModelChild);
