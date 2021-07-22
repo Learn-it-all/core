@@ -12,16 +12,24 @@ namespace Mtx.LearnItAll.Core.Blueprints
     public class PartNode
     {
         private readonly List<PartNode> _nodes = new();
+        private readonly List<Part> _parts = new();
 
         public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid ParentId { get; private set; }
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public LifecycleState LifecycleState { get; private set; } = LifecycleState.Current;
         public IReadOnlyCollection<PartNode> Nodes { get => _nodes; }
+        public IReadOnlyCollection<Part> Parts { get => _parts; }
 
         public PartNode(Name name)
         {
             Name = name;
+        }
+        public PartNode(Name name, Guid parentId)
+        {
+            Name = name;
+            ParentId = parentId;
         }
 
         /// <summary>
