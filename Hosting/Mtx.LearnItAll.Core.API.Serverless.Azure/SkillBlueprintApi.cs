@@ -36,11 +36,11 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
-            entity.Add(new Part(new Name("delegates")));
+            entity.Add(new PartNode(new Name("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
             var ent = context.Set<SkillBlueprint>().Find(entity.Id);
-            entity.Add(new Part(new Name("Collections")));
+            entity.Add(new PartNode(new Name("Collections")));
             context.SaveChanges();
             ent = context.Set<SkillBlueprint>().Find(entity.Id);
 
@@ -63,11 +63,11 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 # endif
-            entity.Add(new Part(new Name("delegates")));
+            entity.Add(new PartNode(new Name("delegates")));
             context.Add(entity);
             var items = context.SaveChanges();
             var ent = context.Set<SkillBlueprint>().Find(entity.Id);
-            entity.Add(new Part(new Name("Collections")));
+            entity.Add(new PartNode(new Name("Collections")));
             context.SaveChanges();
             ent = context.Set<SkillBlueprint>().Find(entity.Id);
 

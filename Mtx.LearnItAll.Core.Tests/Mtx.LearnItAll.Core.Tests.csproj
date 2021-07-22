@@ -39,8 +39,4 @@
     <None Remove="D:\alexa\src\repos\Learn-it-all\core\.editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>

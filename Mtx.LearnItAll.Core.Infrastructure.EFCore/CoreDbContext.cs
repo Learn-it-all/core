@@ -30,8 +30,8 @@ namespace Mtx.LearnItAll.Core.Infrastructure.EFCore
         {
 
             modelBuilder.Entity<SkillBlueprint>()
-                .OwnsOne<Part>("_root")
-                .OwnsMany<Part>("_skills");
+                .OwnsOne<PartNode>("_root")
+                .OwnsMany<PartNode>("_skills");
 
             modelBuilder.Entity<SkillBlueprint>()
                .Ignore(x => x.Skills)

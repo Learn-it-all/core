@@ -7,8 +7,8 @@ namespace Mtx.LearnItAll.Core
 {
     public class SkillSetModel
     {
-        public IReadOnlyList<Part> Skills => _skills.AsReadOnly();
-        private readonly List<Part> _skills = new ();
+        public IReadOnlyList<PartNode> Skills => _skills.AsReadOnly();
+        private readonly List<PartNode> _skills = new ();
         public  readonly int MaximumDirectSkillModelChild = 50;
 
         public string Name { get; } = string.Empty;
@@ -22,7 +22,7 @@ namespace Mtx.LearnItAll.Core
 
         public SkillSetModel(Name name) => Name = name;
 
-        public void AddNew(Part skill)
+        public void AddNew(PartNode skill)
         {
             MakeSureSkillModelIsNotAlreadyInUse(skill);
             MakeSureMaximumNumberOfDirectSkillModelChildrenIsNotExceeded();
@@ -38,7 +38,7 @@ namespace Mtx.LearnItAll.Core
             }
         }
 
-        private void MakeSureSkillModelIsNotAlreadyInUse(Part skill)
+        private void MakeSureSkillModelIsNotAlreadyInUse(PartNode skill)
         {
             if (_skills.Contains(skill))
             {
@@ -52,7 +52,7 @@ namespace Mtx.LearnItAll.Core
             return string.Format(Messages.SkillModelSet_MaximumDirectSkillModelChildExceeded, MaximumDirectSkillModelChild);
         }
 
-        private string BuildErrorMessageForExistingSkillModel(Part skill)
+        private string BuildErrorMessageForExistingSkillModel(PartNode skill)
         {
             return string.Format(Messages.SkillModel_ASkillWithSameNameAlreadyExistis, skill.Name, Name);
         }

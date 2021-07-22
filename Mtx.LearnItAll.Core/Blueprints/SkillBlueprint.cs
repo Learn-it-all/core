@@ -6,7 +6,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
 {
     public class SkillBlueprint : Entity
     {
-        Part _root;
+        PartNode _root;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         private SkillBlueprint()
@@ -16,7 +16,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         public SkillBlueprint(Name name)
         {
-            _root = new Part(name);
+            _root = new PartNode(name);
             CreatedDate = DateTime.Now;
         }
 
@@ -25,9 +25,9 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         public string Name => _root.Name;
 
-        public IReadOnlyCollection<Part> Skills => _root.Skills;
+        public IReadOnlyCollection<PartNode> Skills => _root.Nodes;
 
-        public void Add(Part skill)
+        public void Add(PartNode skill)
         {
             _root.Add(skill);
         }

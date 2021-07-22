@@ -17,14 +17,14 @@ namespace Mtx.LearnItAll.Core.Tests.SkillParts
         [Fact]
         public void Exist()
         {
-            _ = _fixture.Create<Part>();
+            _ = _fixture.Create<PartNode>();
         }
 
         [Fact]
         public void HaveUniqueId()
         {
-            var sut = _fixture.Create<Part>();
-            var dummy = _fixture.Create<Part>();
+            var sut = _fixture.Create<PartNode>();
+            var dummy = _fixture.Create<PartNode>();
 
             Assert.NotEqual(dummy.Id, sut.Id);
 
@@ -34,7 +34,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillParts
         [Fact]
         public void SetCreationDateToNow()
         {
-            var sut = _fixture.Create<Part>();
+            var sut = _fixture.Create<PartNode>();
 
             DateTime actual = sut.Created;
 
@@ -44,7 +44,7 @@ namespace Mtx.LearnItAll.Core.Tests.SkillParts
         [Fact]
         public void StartWithCurrentLifecycleState()
         {
-            var sut = _fixture.Create<Part>();
+            var sut = _fixture.Create<PartNode>();
 
             LifecycleState actual = sut.LifecycleState;
 
