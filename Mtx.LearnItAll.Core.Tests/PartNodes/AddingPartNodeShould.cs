@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.SkillModels
+namespace Mtx.LearnItAll.Core.Tests.PartNodes
 {
     public class AddingPartNodeShould : Test
     {
@@ -49,26 +49,15 @@ namespace Mtx.LearnItAll.Core.Tests.SkillModels
         }
 
         [Fact]
-        public void ThrowInvalidOperationExceptionGivenNameIsInUseByDirectChildWhenTryingToAdd()
+        public void NeverThrowGivenPartNodeNameIsInUseByDirectChildWhenTryingToAdd()
         {
             var dummySkill = _fixture.Create<PartNode>();
             var sut = _fixture.Create<PartNode>();
-            var expectedErrorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, dummySkill.Name, sut.Name);
-
             sut.Add(skill: dummySkill);
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                try
-                {
-                    sut.TryAdd(sut.Id,dummySkill);
 
-                }
-                catch (InvalidOperationException ioe)
-                {
-                    Assert.Equal(expectedErrorMessage, ioe.Message);
-                    throw;
-                }
-            });
+           var actual = sut.TryAdd(sut.Id,dummySkill);
+
+            Assert.False(actual);
         }
         [Fact]
         public void AddSkillAsLeafGivenParentIdIsChild()

@@ -1,4 +1,5 @@
 ﻿using Mtx.LearnItAll.Core.Blueprints;
+using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Collections.Generic;

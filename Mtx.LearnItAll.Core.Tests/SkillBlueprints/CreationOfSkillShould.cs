@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using Mtx.Common.Domain;
 using Mtx.LearnItAll.Core.Blueprints;
+using Mtx.LearnItAll.Core.Common;
 using System;
 using Xunit;
 

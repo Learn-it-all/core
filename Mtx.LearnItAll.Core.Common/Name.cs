@@ -1,7 +1,7 @@
 ﻿using Mtx.LearnItAll.Core.Resources;
 using System;
 
-namespace Mtx.LearnItAll.Core.Blueprints
+namespace Mtx.LearnItAll.Core.Common
 {
     public record Name
     {

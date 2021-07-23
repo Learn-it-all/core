@@ -1,4 +1,6 @@
-﻿using Mtx.LearnItAll.Core.Resources;
+﻿using Mtx.LearnItAll.Core.Common;
+using Mtx.LearnItAll.Core.Common.Parts;
+using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Collections.Generic;
 
@@ -15,12 +17,33 @@ namespace Mtx.LearnItAll.Core.Blueprints
         private readonly List<Part> _parts = new();
 
         public Guid Id { get; private set; } = Guid.NewGuid();
+
+        public void Add(AddPartCmd cmd)
+        {
+            if (cmd.ParentId == Id)
+            {
+                var newPart = new Part(cmd.Name, cmd.ParentId);
+                _parts.Add(newPart);
+                Summary.AddOneTo(newPart.Level);
+                return;
+            }
+            var part = _parts.Find(x => x.Id == cmd.ParentId);
+            if (part != null)
+            {
+                PartNode newNode = part;
+                _nodes.Add(newNode);
+                _parts.Remove(part);
+
+            }
+        }
+
         public Guid ParentId { get; private set; }
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public LifecycleState LifecycleState { get; private set; } = LifecycleState.Current;
         public IReadOnlyCollection<PartNode> Nodes { get => _nodes; }
         public IReadOnlyCollection<Part> Parts { get => _parts; }
+        public Summary Summary { get; private set; } = new Summary();
 
         public PartNode(Name name)
         {
@@ -65,18 +88,25 @@ namespace Mtx.LearnItAll.Core.Blueprints
         /// <param name="parentId">The parent under which the <paramref name="skill"/> will be added to</param>
         /// <param name="skill">The <see cref="Part"/> to be added</param>
         /// <returns>true when the <paramref name="parentId"/> was found and the <paramref name="skill"/> added as its child. False when no parent with <paramref name="parentId"/> was found.</returns>
-        /// <exception cref="InvalidOperationException">When the name of the <paramref name="skill"/>already exists as a direct child of <paramref name="parentId"/></exception>
         public bool TryAdd(Guid parentId, PartNode skill)
         {
-            if (Id == parentId)
+            try
             {
-                Add(skill);
-                return true;
-            }
-            foreach (var child in _nodes)
-                if (child.TryAdd(parentId, skill))
+                if (Id == parentId)
+                {
+                    Add(skill);
                     return true;
-            return false;
+                }
+                foreach (var child in _nodes)
+                    if (child.TryAdd(parentId, skill))
+                        return true;
+                return false;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
     }
 }
