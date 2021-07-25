@@ -1,4 +1,7 @@
-﻿namespace Mtx.LearnItAll.Core
+﻿using System;
+using System.Reflection.Emit;
+
+namespace Mtx.LearnItAll.Core
 {
     public record Summary
     {
@@ -21,6 +24,20 @@
                 case 4: Proficient = ++Proficient; break;
                 case 5: Expert = ++Expert; break;
                 default: ++Unknown; break;
+            };
+        }
+
+        internal void SubtractOneFrom(int level)
+        {
+            switch (level)
+            {
+                case 0: Unfamiliar = --Unfamiliar; break;
+                case 1: Novice = --Novice; break;
+                case 2: AdvancedBeginner = --AdvancedBeginner; break;
+                case 3: Competent = --Competent; break;
+                case 4: Proficient = --Proficient; break;
+                case 5: Expert = --Expert; break;
+                default: --Unknown; break;
             };
         }
     }

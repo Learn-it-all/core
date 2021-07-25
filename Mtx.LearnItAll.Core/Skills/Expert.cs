@@ -2,6 +2,6 @@
 {
     public record Expert : SkillLevel
     {
-        public override int Number => 4;
+        public override int Number => 5;
     }
 }

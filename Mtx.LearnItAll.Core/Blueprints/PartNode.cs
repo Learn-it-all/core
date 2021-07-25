@@ -37,6 +37,22 @@ namespace Mtx.LearnItAll.Core.Blueprints
             }
         }
 
+        public void ChangeLevel(string partName, Guid parentId, int newLevel)
+        {
+            if (parentId != Id)
+            {
+                _nodes.ForEach(x => x.ChangeLevel(partName,parentId, newLevel));
+            }
+            var part = _parts.Find(x => x.Name.Equals(partName,StringComparison.OrdinalIgnoreCase));
+            if (part != null)
+            {
+                var currentLevel = part.Level;
+                part.ChangeLevel(newLevel);
+                Summary.AddOneTo(newLevel);
+                Summary.SubtractOneFrom(currentLevel);
+            }
+        }
+
         public Guid ParentId { get; private set; }
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
