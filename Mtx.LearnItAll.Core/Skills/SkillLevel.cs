@@ -2,8 +2,8 @@
 {
     public abstract record SkillLevel
     {
-        public abstract int Number { get; }
-        public string Description => (Number) switch
+        public abstract int Id { get; }
+        public string Description => (Id) switch
         {
             0 => Resources.Text.SkillLevel_Unfamiliar,
             1 => Resources.Text.SkillLevel_Novice,
@@ -15,7 +15,7 @@
 
         };
         public static SkillLevel Convert(int level) => (SkillLevel)level;
-        public static implicit operator int(SkillLevel level) => level.Number;
+        public static implicit operator int(SkillLevel level) => level.Id;
         public static implicit operator SkillLevel(int level) => (level) switch
         {
             0 => Unfamiliar,

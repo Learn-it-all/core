@@ -121,13 +121,13 @@
     <value>Name cannot exceed {0} chars</value>
   </data>
   <data name="SkillModelSet_MaximumDirectSkillModelChildExceeded" xml:space="preserve">
-    <value>A Skill Model Set cannot have more than {0} direct Skill Model children.</value>
+    <value>A Skill or any of its parts cannot have more than {0} direct children.</value>
   </data>
   <data name="SkillModel_ASkillWithSameNameAlreadyExistis" xml:space="preserve">
     <value>A Skill Model named {0} already exists in the Skill Model Set {1}</value>
   </data>
   <data name="SkillModel_CannotAddDuplicateNameForChildOnSameLevel" xml:space="preserve">
-    <value>The name '{0}' is already in use by a sibling skill under {1}</value>
+    <value>The name '{0}' is already in use by a sibling part under {1}</value>
   </data>
   <data name="SkillSetModel_AtLeastOneSkillModelRequired" xml:space="preserve">
     <value>At least one Skill Model is required</value>

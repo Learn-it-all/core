@@ -2,6 +2,6 @@
 {
     public record Proficient : SkillLevel
     {
-        public override int Number => 4;
+        public override int Id => 4;
     }
 }

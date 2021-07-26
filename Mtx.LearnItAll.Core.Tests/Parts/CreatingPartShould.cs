@@ -46,7 +46,7 @@ namespace Mtx.LearnItAll.Core.Tests.Parts
             var sut = _fixture.Create<Part>();
             int actual = sut.Level;
             SkillLevel actualDescriptive = sut.DescriptiveLevel;
-            Assert.Equal(SkillLevel.Unknown.Number, actual);
+            Assert.Equal(SkillLevel.Unknown.Id, actual);
             Assert.Equal(SkillLevel.Unknown, actualDescriptive);
 
         }

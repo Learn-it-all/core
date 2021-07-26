@@ -20,11 +20,35 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
         public void AddPartAsChildGivenParentIdMatchesWithSUTs()
         {
             var sut = _fixture.Create<PartNode>();
-
             var cmd = new AddPartCmd(new Name("name"), sut.Id);
+
             sut.Add(cmd);
 
             Assert.Contains(sut.Parts, x => x.Name.Equals(cmd.Name));
+        }
+
+        [Fact]
+        public void FailToAddPartAsChildGivenNameIsAlreadyTaken()
+        {
+            var sut = _fixture.Create<PartNode>();
+            var cmd = new AddPartCmd(new Name("name"), sut.Id);
+            sut.Add(cmd);
+
+            Assert.Throws<InvalidOperationException>(()=> sut.Add(cmd));
+
+        }
+
+        [Fact]
+        public void DelegateNewPartToChildPartNodeGivenPartsParentIdDoesNotMatchWithSUTs()
+        {
+            var sut = _fixture.Create<PartNode>();
+            var childPartNode = _fixture.Create<PartNode>();
+            sut.Add(childPartNode);
+            var cmd = new AddPartCmd(new Name("name"), childPartNode.Id);
+
+            sut.Add(cmd);
+
+            Assert.Contains(sut.Nodes.First().Parts, x => x.Name.Equals(cmd.Name));
         }
 
         [Fact]
@@ -43,6 +67,19 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
 
         }
 
+
+        [Fact]
+        public void NotifySummaryStateChangeGivenPartIsAdded()
+        {
+            var sut = _fixture.Create<PartNode>();
+            var cmd = new AddPartCmd(new Name("name"), sut.Id);
+
+
+            sut.Add(cmd);
+
+
+        }
+
         [Fact]
         public void TurnExistigPartIntoPartNodeGivenParentIsAPart()
         {
@@ -53,7 +90,6 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var partToBeTurnedIntoNode = sut.Parts.First();
             cmd = new AddPartCmd(_fixture.Create<Name>(), partToBeTurnedIntoNode.Id);
 
-            //act
             sut.Add(cmd);
 
             Assert.Collection(sut.Nodes, x => x.Name.Equals(partToBeTurnedIntoNode.Name));
