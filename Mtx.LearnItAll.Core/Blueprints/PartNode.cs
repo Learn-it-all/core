@@ -1,4 +1,5 @@
-﻿using Mtx.LearnItAll.Core.Common;
+﻿using Mtx.LearnItAll.Core.Calculations;
+using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
 using System;

@@ -8,10 +8,11 @@ using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Common;
 using Xunit;
+using Mtx.LearnItAll.Core.Calculations;
 
 namespace Mtx.LearnItAll.Core.Tests.PartNodes
 {
-   public class ChangingPartLevelOnPartNodeShould : Test
+    public class ChangingPartLevelOnPartNodeShould : Test
     {
         public ChangingPartLevelOnPartNodeShould()
         {

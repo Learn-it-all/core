@@ -2,6 +2,7 @@
 using AutoFixture;
 using Mtx.Common.Domain;
 using Mtx.LearnItAll.Core.Blueprints;
+using Mtx.LearnItAll.Core.Calculations;
 
 namespace Mtx.LearnItAll.Core.Tests.Skills
 {
