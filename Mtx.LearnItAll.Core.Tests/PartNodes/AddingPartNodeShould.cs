@@ -1,5 +1,7 @@
 ﻿using AutoFixture;
 using Mtx.LearnItAll.Core.Blueprints;
+using Mtx.LearnItAll.Core.Common;
+using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var dummySkill = _fixture.Create<PartNode>();
             var sut = _fixture.Create<PartNode>();
 
-            sut.Add(skill: dummySkill);
+            sut.Add(newNode: dummySkill);
 
             Assert.Contains(dummySkill, sut.Nodes);
         }
@@ -32,12 +34,12 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var sut = _fixture.Create<PartNode>();
             var expectedErrorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, dummySkill.Name, sut.Name);
 
-            sut.Add(skill: dummySkill);
+            sut.Add(newNode: dummySkill);
             Assert.Throws<InvalidOperationException>(() =>
             {
                 try
                 {
-                    sut.Add(skill: dummySkill);
+                    sut.Add(newNode: dummySkill);
 
                 }
                 catch (InvalidOperationException ioe)
@@ -53,7 +55,7 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
         {
             var dummySkill = _fixture.Create<PartNode>();
             var sut = _fixture.Create<PartNode>();
-            sut.Add(skill: dummySkill);
+            sut.Add(newNode: dummySkill);
 
            var actual = sut.TryAdd(sut.Id,dummySkill);
 
@@ -74,7 +76,7 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
 
             var actual = sut.TryAdd(parentId: expectedParent.Id, grandChild);
 
-            Assert.True(actual, "Should have added skill");
+            Assert.True(actual, "Should have added newNode");
             Assert.Contains(grandChild, expectedParent.Nodes);
 
         }
@@ -132,6 +134,30 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var actual = sut.TryAdd(dummyId, dummy);
 
             Assert.False(actual, "Should not add a SkillModel to a non existing parent");
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void RegisterSummaryToReceiveUpdatesFromChildNodeGivenNodeIsAdded(int expectedLevel)
+        {
+            var sut = _fixture.Create<PartNode>();
+            var dummy = _fixture.Create<PartNode>();
+            Name name = _fixture.Create<Name>();
+            var cmd = new AddPartCmd(name, dummy.Id);
+            dummy.Add(cmd);
+
+            _ = sut.TryAdd(sut.Id, dummy);
+
+            sut.ChangeLevel(name, dummy.Id, expectedLevel);
+
+            Assert.Equal(1, sut.Summary.CounterFor(expectedLevel));
+
+
         }
     }
 }

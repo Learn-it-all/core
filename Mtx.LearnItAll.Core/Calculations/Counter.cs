@@ -29,7 +29,7 @@ namespace Mtx.LearnItAll.Core.Calculations
 
             }
         }
-        public SkillLevel Level { get; }
+        public int Level { get; }
 
         public void AddOne()
         {

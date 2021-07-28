@@ -4,7 +4,6 @@ using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Mtx.LearnItAll.Core.Blueprints
 {
@@ -27,6 +26,24 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public Summary Summary { get; private set; } = new Summary();
         public Guid Id { get; private set; } = Guid.NewGuid();
 
+        public PartNode(Name name)
+        {
+            Name = name;
+        }
+        public PartNode(Name name, Guid parentId)
+        {
+            Name = name;
+            ParentId = parentId;
+        }
+
+        /// <summary>
+        /// For EF Core
+        /// </summary>
+#pragma warning disable CS8618 
+        private PartNode() { }
+#pragma warning restore CS8618 
+
+
         public void Add(AddPartCmd cmd)
         {
             if (cmd.ParentId == Id)
@@ -40,8 +57,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
             var part = _parts.Find(x => x.Id == cmd.ParentId);
             if (part != null)
             {
-                PartNode newNode = part;
-                _nodes.Add(newNode);
+                Add(part);
                 _parts.Remove(part);
             }
             _nodes.ForEach(x => x.Add(cmd));
@@ -65,58 +81,14 @@ namespace Mtx.LearnItAll.Core.Blueprints
         }
 
 
-        public PartNode(Name name)
+       
+        public void Add(PartNode newNode)
         {
-            Name = name;
-        }
-        public PartNode(Name name, Guid parentId)
-        {
-            Name = name;
-            ParentId = parentId;
+            MakeSureNameIsNotInUseInPartNodes(newNode.Name);
+            //newNode.Summary.RaiseChangeEvent += Summary.RecalculateOnChange;
+            _nodes.Add(newNode);
         }
 
-        /// <summary>
-        /// For EF Core
-        /// </summary>
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        private PartNode() { }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-        /// <summary>
-        /// Add a <see cref="PartNode"/> as a direct child.
-        /// </summary>
-        /// <param name="skill">the Skill to be added a direct child</param>
-        /// <exception cref="InvalidOperationException">When the name of the <paramref name="skill"/> already exists as a direct child of current object.</exception>
-        public void Add(PartNode skill)
-        {
-            MakeSureNameIsNotInUseInPartNodes(skill.Name);
-            _nodes.Add(skill);
-        }
-
-        private void MakeSureNameIsNotInUseInPartNodes(string name)
-        {
-            if (_nodes.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                ThrowErrorForDuplicateName(name);
-        }
-
-        private void MakeSureNameIsNotInUseInParts(string name)
-        {
-            if (_parts.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                ThrowErrorForDuplicateName(name);
-        }
-
-        private void ThrowErrorForDuplicateName(string name)
-        {
-            var errorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, name, Name);
-            throw new InvalidOperationException(errorMessage);
-        }
-
-        /// <summary>
-        /// Adds the <paramref name="skill"/> to any node in the graph that matches the <paramref name="parentId"/>
-        /// </summary>
-        /// <param name="parentId">The parent under which the <paramref name="skill"/> will be added to</param>
-        /// <param name="skill">The <see cref="Part"/> to be added</param>
-        /// <returns>true when the <paramref name="parentId"/> was found and the <paramref name="skill"/> added as its child. False when no parent with <paramref name="parentId"/> was found.</returns>
         public bool TryAdd(Guid parentId, PartNode partNode)
         {
             try
@@ -137,5 +109,25 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 return false;
             }
         }
+
+        private void MakeSureNameIsNotInUseInPartNodes(string name)
+        {
+            if (_nodes.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                ThrowErrorForDuplicateName(name);
+        }
+
+        private void MakeSureNameIsNotInUseInParts(string name)
+        {
+            if (_parts.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                ThrowErrorForDuplicateName(name);
+        }
+
+        private void ThrowErrorForDuplicateName(string name)
+        {
+            var errorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, name, Name);
+            throw new InvalidOperationException(errorMessage);
+        }
+
+       
     }
 }

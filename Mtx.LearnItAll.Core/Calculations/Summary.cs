@@ -11,6 +11,13 @@ namespace Mtx.LearnItAll.Core.Calculations
         public virtual Counter Novice { get; private set; } = new NoviceCounter();
         public virtual Counter AdvancedBeginner { get; private set; } = new AdvancedBeginnerCounter();
         public virtual Counter Competent { get; private set; } = new CompetentCounter();
+
+        public void RecalculateOnChange(object? sender, SummaryChangedEventArgs e)
+        {
+           var counter = CounterFor(e.Level);
+            counter.Current += e.Difference;
+        }
+
         public virtual Counter Proficient { get; private set; } = new ProficientCounter();
         public virtual Counter Expert { get; private set; } = new ExpertCounter();
 
@@ -31,33 +38,22 @@ namespace Mtx.LearnItAll.Core.Calculations
 
         }
 
-        public virtual void AddOneTo(SkillLevel level)
+        public virtual int ValueOf(SkillLevel level) => CounterFor(level).Current;
+        
+        public virtual Counter CounterFor(int level) => (level) switch
         {
-            switch (level)
-            {
-                case 0: Unfamiliar.AddOne(); break;
-                case 1: Novice.AddOne(); break;
-                case 2: AdvancedBeginner.AddOne(); break;
-                case 3: Competent.AddOne(); break;
-                case 4: Proficient.AddOne(); break;
-                case 5: Expert.AddOne(); break;
-                default: Unknown.AddOne(); break;
-            };
-        }
+                0 => Unfamiliar,
+                1 => Novice,
+                2 => AdvancedBeginner,
+                3 => Competent,
+                4 => Proficient,
+                5 => Expert,
+                _ => Unknown,
+        };
 
-        public void SubtractOneFrom(SkillLevel level)
-        {
-            switch (level)
-            {
-                case 0: Unfamiliar.SubtractOne(); break;
-                case 1: Novice.SubtractOne(); break;
-                case 2: AdvancedBeginner.SubtractOne(); break;
-                case 3: Competent.SubtractOne(); break;
-                case 4: Proficient.SubtractOne(); break;
-                case 5: Expert.SubtractOne(); break;
-                default: Unknown.SubtractOne(); break;
-            };
-        }
+        public virtual void AddOneTo(SkillLevel level) => CounterFor(level).AddOne();
+
+        public void SubtractOneFrom(SkillLevel level) => CounterFor(level).SubtractOne();
 
     }
 }

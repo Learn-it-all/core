@@ -7,6 +7,7 @@ using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Linq;
 using Xunit;
+using SemanticComparison.Fluent;
 
 namespace Mtx.LearnItAll.Core.Tests.PartNodes
 {
@@ -59,11 +60,11 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var cmd = new AddPartCmd(new Name("name"), sut.Id);
             var expectedSummary = new Summary();
             expectedSummary.AddOneTo(SkillLevel.Unknown);
-
-
+            var summaryComparer = expectedSummary.AsSource().OfLikeness<Summary>();
             sut.Add(cmd);
 
             Summary actualSummary = sut.Summary;
+            //summaryComparer.ShouldEqual(actualSummary);
             Assert.Equal(expectedSummary, actualSummary);
 
         }

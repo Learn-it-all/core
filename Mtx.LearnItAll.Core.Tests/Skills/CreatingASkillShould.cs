@@ -35,7 +35,7 @@ namespace Mtx.LearnItAll.Core.Tests.Skills
             var expected = _fixture.Create<Summary>();
             var sut = _fixture.Create<Skill>();
 
-            Assert.Equal(expected, (Summary)sut.Summary);
+            Assert.Equal(expected, sut.Summary);
 
         }
 
