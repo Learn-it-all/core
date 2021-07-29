@@ -18,6 +18,11 @@ namespace Mtx.LearnItAll.Core.Blueprints
             Name = name;
             ParentId = parent;
         }
+
+#pragma warning disable CS8618 
+        private Part() { }
+#pragma warning restore CS8618 
+
         public void ChangeLevel(int newLevel) => Level = SkillLevel.Convert(newLevel);
         
         public static implicit operator PartNode(Part part) => new PartNode(new Name(part.Name),part.ParentId);

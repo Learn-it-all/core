@@ -150,13 +150,13 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var expectedCounter = Counter.Create(expectedLevel);
             expectedCounter.AddOne();
 
-            var dummy = _fixture.Create<PartNode>();
+            var childNode = _fixture.Create<PartNode>();
             Name name = _fixture.Create<Name>();
-            var cmd = new AddPartCmd(name, dummy.Id);
-            dummy.Add(cmd);
-            _ = sut.TryAdd(sut.Id, dummy);
+            var cmd = new AddPartCmd(name, childNode.Id);
+            childNode.Add(cmd);
+            _ = sut.TryAdd(sut.Id, childNode);
 
-            sut.ChangeLevel(name, dummy.Id, expectedLevel);
+            sut.ChangeLevel(name, childNode.Id, expectedLevel);
 
             var actualCounter = sut.Summary.CounterFor(expectedLevel);
             Assert.Equal(expectedCounter, actualCounter);

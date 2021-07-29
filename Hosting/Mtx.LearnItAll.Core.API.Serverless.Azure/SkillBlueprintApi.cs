@@ -7,6 +7,7 @@ using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common;
+using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Infrastructure.EFCore;
 using System;
 using System.Diagnostics.Contracts;
@@ -36,14 +37,19 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
 #if DEBUG
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-# endif
-            entity.Add(new PartNode(new Name("delegates")));
+#endif
+
+            PartNode keywordsNode = new PartNode(new Name("keywords"));
+            keywordsNode.Add(new AddPartCmd(new Name("abstract"), keywordsNode.Id));
+            entity.Add(keywordsNode);
             context.Add(entity);
             var items = context.SaveChanges();
             var ent = context.Set<SkillBlueprint>().Find(entity.Id);
             entity.Add(new PartNode(new Name("Collections")));
             context.SaveChanges();
             ent = context.Set<SkillBlueprint>().Find(entity.Id);
+            ent.Add(new AddPartCmd(new Name("event"), keywordsNode.Id));
+            context.SaveChanges();
 
             var response = req.CreateResponse(HttpStatusCode.OK);
 

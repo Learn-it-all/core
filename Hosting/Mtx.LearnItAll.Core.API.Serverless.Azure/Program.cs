@@ -1,11 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data;
-using Mtx.LearnItAll.Core.Infrastructure.EFCore;
 using System.Diagnostics;
 using System.Threading.Tasks;
 

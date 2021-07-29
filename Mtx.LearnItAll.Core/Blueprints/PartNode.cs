@@ -16,7 +16,6 @@ namespace Mtx.LearnItAll.Core.Blueprints
     {
         private readonly List<PartNode> _nodes = new();
         private readonly List<Part> _parts = new();
-
         public Guid ParentId { get; private set; }
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;

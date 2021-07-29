@@ -1,5 +1,6 @@
 ﻿using Mtx.Common.Domain;
 using Mtx.LearnItAll.Core.Common;
+using Mtx.LearnItAll.Core.Common.Parts;
 using System;
 using System.Collections.Generic;
 
@@ -26,11 +27,16 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         public string Name => _root.Name;
 
-        public IReadOnlyCollection<PartNode> Skills => _root.Nodes;
+        public IReadOnlyCollection<PartNode> Nodes => _root.Nodes;
+        public IReadOnlyCollection<Part> Parts => _root.Parts;
 
         public void Add(PartNode skill)
         {
             _root.Add(skill);
+        }
+        public void Add(AddPartCmd cmd)
+        {
+            _root.Add(cmd);
         }
     }
 }

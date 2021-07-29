@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mtx.Common.Domain;
 using Mtx.LearnItAll.Core.Blueprints;
+using Mtx.LearnItAll.Core.Calculations;
 using System;
 using System.Linq;
 
@@ -30,11 +31,16 @@ namespace Mtx.LearnItAll.Core.Infrastructure.EFCore
         {
 
             modelBuilder.Entity<SkillBlueprint>()
-                .OwnsOne<PartNode>("_root")
-                .OwnsMany<PartNode>("_skills");
-
+                .HasOne<PartNode>("_root");
+            modelBuilder.Entity<PartNode>(x =>
+            {
+                x.Property(e=>e.Summary);
+                x.HasMany<Part>("_parts").WithOne();
+                x.HasMany<PartNode>("_nodes").WithOne();
+            });
             modelBuilder.Entity<SkillBlueprint>()
-               .Ignore(x => x.Skills)
+               .Ignore(x => x.Nodes)
+               .Ignore(x => x.Parts)
                .Ignore(x => x.DomainEvents);
         }
 
