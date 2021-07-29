@@ -17,6 +17,9 @@ namespace Mtx.LearnItAll.Core.Calculations
         {
             _current = value;
         }
+
+        private Counter() { }
+
         public int Current
         {
             get => _current;
