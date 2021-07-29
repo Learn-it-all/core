@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Mtx.LearnItAll.Core.Calculations
 {
-    public record Counter
+    public class Counter
     {
 
         private int _current = 0;
@@ -46,6 +47,31 @@ namespace Mtx.LearnItAll.Core.Calculations
             RaiseChangeEvent?.Invoke(this, new(level, difference));
         }
 
+        public static Counter Create(SkillLevel skillLevel) => Create(skillLevel);
+        
+        public static Counter Create(int skillLevel) => (skillLevel) switch
+        {
+            0 => new UnfamiliarCounter(),
+            1 => new NoviceCounter(),
+            2 => new AdvancedBeginnerCounter(),
+            3 => new CompetentCounter(),
+            4 => new ProficientCounter(),
+            5 => new ExpertCounter(),
+            _ => new UnknownCounter(),
+        };
+        public override bool Equals(object? obj)
+        {
+            return obj is Counter counter &&
+                   _current == counter._current &&
+                   Current == counter.Current &&
+                   Level == counter.Level;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_current, Current, Level);
+        }
+
         public static Counter operator +(Counter right, int left)
         {
             right.Current += left;
@@ -70,6 +96,14 @@ namespace Mtx.LearnItAll.Core.Calculations
 
         public static implicit operator int(Counter counter) => counter.Current;
 
+        public static bool operator ==(Counter? left, Counter? right)
+        {
+            return EqualityComparer<Counter>.Default.Equals(left, right);
+        }
 
+        public static bool operator !=(Counter? left, Counter? right)
+        {
+            return !(left == right);
+        }
     }
 }

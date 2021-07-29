@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Mtx.LearnItAll.Core.Blueprints;
+using Mtx.LearnItAll.Core.Calculations;
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
@@ -146,16 +147,19 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
         public void RegisterSummaryToReceiveUpdatesFromChildNodeGivenNodeIsAdded(int expectedLevel)
         {
             var sut = _fixture.Create<PartNode>();
+            var expectedCounter = Counter.Create(expectedLevel);
+            expectedCounter.AddOne();
+
             var dummy = _fixture.Create<PartNode>();
             Name name = _fixture.Create<Name>();
             var cmd = new AddPartCmd(name, dummy.Id);
             dummy.Add(cmd);
-
             _ = sut.TryAdd(sut.Id, dummy);
 
             sut.ChangeLevel(name, dummy.Id, expectedLevel);
 
-            Assert.Equal(1, sut.Summary.CounterFor(expectedLevel));
+            var actualCounter = sut.Summary.CounterFor(expectedLevel);
+            Assert.Equal(expectedCounter, actualCounter);
 
 
         }

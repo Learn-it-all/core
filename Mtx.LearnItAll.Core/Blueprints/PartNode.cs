@@ -85,7 +85,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public void Add(PartNode newNode)
         {
             MakeSureNameIsNotInUseInPartNodes(newNode.Name);
-            //newNode.Summary.RaiseChangeEvent += Summary.RecalculateOnChange;
+            newNode.Summary.RaiseChangeEvent += Summary.RecalculateOnChange;
             _nodes.Add(newNode);
         }
 

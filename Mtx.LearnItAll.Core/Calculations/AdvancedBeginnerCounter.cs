@@ -1,6 +1,6 @@
 ﻿namespace Mtx.LearnItAll.Core.Calculations
 {
-    public record AdvancedBeginnerCounter : Counter
+    public class AdvancedBeginnerCounter : Counter
     {
         public AdvancedBeginnerCounter() : base(SkillLevel.AdvancedBeginner)
         {

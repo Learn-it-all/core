@@ -1,6 +1,6 @@
 ﻿namespace Mtx.LearnItAll.Core.Calculations
 {
-    public record UnfamiliarCounter : Counter
+    public class UnfamiliarCounter : Counter
     {
         public UnfamiliarCounter() : base(SkillLevel.Unfamiliar)
         {

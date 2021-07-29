@@ -22,30 +22,5 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
 
             Assert.Equal(new Summary(), actual);
         }
-
-        [Fact]
-        public void Issue()
-        {
-            var a = new SummaryA();
-            var b = new SummaryA();
-            Assert.Equal(a,b);
-        }
-
-
-    }
-
-    public record SummaryA
-    {
-        public event EventHandler<SummaryChangedEventArgs> RaiseChangeEvent;
-        public virtual Counter Unknown { get; private set; } = new UnknownCounter();
-        public SummaryA()
-        {
-            //Unknown.RaiseChangeEvent += Unknown_RaiseChangeEvent;
-        }
-
-        private void Unknown_RaiseChangeEvent(object sender, SummaryChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

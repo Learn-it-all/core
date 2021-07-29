@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Mtx.LearnItAll.Core.Calculations
 {
-    public record Summary
+    public class Summary
     {
         public event EventHandler<SummaryChangedEventArgs>? RaiseChangeEvent;
 
@@ -55,5 +56,31 @@ namespace Mtx.LearnItAll.Core.Calculations
 
         public void SubtractOneFrom(SkillLevel level) => CounterFor(level).SubtractOne();
 
+        public override bool Equals(object? obj)
+        {
+            return obj is Summary summary &&
+                   EqualityComparer<Counter>.Default.Equals(Unknown, summary.Unknown) &&
+                   EqualityComparer<Counter>.Default.Equals(Unfamiliar, summary.Unfamiliar) &&
+                   EqualityComparer<Counter>.Default.Equals(Novice, summary.Novice) &&
+                   EqualityComparer<Counter>.Default.Equals(AdvancedBeginner, summary.AdvancedBeginner) &&
+                   EqualityComparer<Counter>.Default.Equals(Competent, summary.Competent) &&
+                   EqualityComparer<Counter>.Default.Equals(Proficient, summary.Proficient) &&
+                   EqualityComparer<Counter>.Default.Equals(Expert, summary.Expert);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Unknown, Unfamiliar, Novice, AdvancedBeginner, Competent, Proficient, Expert);
+        }
+
+        public static bool operator ==(Summary? left, Summary? right)
+        {
+            return EqualityComparer<Summary>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Summary? left, Summary? right)
+        {
+            return !(left == right);
+        }
     }
 }
