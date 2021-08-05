@@ -18,9 +18,7 @@ namespace Mtx.LearnItAll.Core.Tests.Parts
 
             sut.ChangeLevel(expected);
             int actual = sut.Level;
-            SkillLevel actualDescriptive = sut.DescriptiveLevel;
             Assert.Equal(expected, actual);
-            Assert.Equal<SkillLevel>(expected, actualDescriptive);
 
         }
 
@@ -38,9 +36,7 @@ namespace Mtx.LearnItAll.Core.Tests.Parts
 
             sut.ChangeLevel(outOfRange);
             int actual = sut.Level;
-            SkillLevel actualDescriptive = sut.DescriptiveLevel;
             Assert.Equal<int>(expected, actual);
-            Assert.Equal<SkillLevel>(expected, actualDescriptive);
 
         }
     }

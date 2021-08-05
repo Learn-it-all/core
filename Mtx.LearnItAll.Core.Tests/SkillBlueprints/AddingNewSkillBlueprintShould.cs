@@ -4,13 +4,9 @@ using Xunit;
 
 namespace Mtx.LearnItAll.Core.Tests.TopLevelSkillModels
 {
+
     public class AddingNewSkillBlueprintShould : Test
     {
-
-        public AddingNewSkillBlueprintShould()
-        {
-
-        }
 
         [Fact]
         public void AddAsChildOfRootSkillGivenThereIsNoNamingConflict()

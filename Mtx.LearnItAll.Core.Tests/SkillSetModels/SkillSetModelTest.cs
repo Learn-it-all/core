@@ -8,15 +8,9 @@ using Xunit;
 
 namespace Mtx.LearnItAll.Core.Tests.SkillSetModels
 {
-    public class SkillSetModelTest
+    public class SkillSetModelTest : Test
 
     {
-        private Fixture _fixture => new Fixture();
-
-        public SkillSetModelTest()
-        {
-
-        }
 
         [Fact]
         public void Exists()

@@ -5,13 +5,12 @@ namespace Mtx.LearnItAll.Core.Blueprints
 {
     public record Part
     {
-        public int Level { get; private set; }
+        public int Level { get;  set; }
          = new Unknown();
-        public SkillLevel DescriptiveLevel => Level;
-        public Guid Id { get; private set; } = Guid.NewGuid();
-        public Guid ParentId { get; private set; }
-        public string Name { get; private set; }
-        public DateTime Created { get; private set; } = DateTime.Now;
+        public Guid Id { get;  set; } = Guid.NewGuid();
+        public Guid ParentId { get;  set; }
+        public string Name { get;  set; }
+        public DateTime Created { get; set; } = DateTime.Now;
 
         public Part(Name name, Guid parent)
         {
@@ -20,7 +19,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         }
 
 #pragma warning disable CS8618 
-        private Part() { }
+        public Part() { }
 #pragma warning restore CS8618 
 
         public void ChangeLevel(int newLevel) => Level = SkillLevel.Convert(newLevel);

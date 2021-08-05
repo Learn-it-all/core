@@ -7,11 +7,25 @@ namespace Mtx.LearnItAll.Core.Calculations
     {
         public event EventHandler<SummaryChangedEventArgs>? RaiseChangeEvent;
 
-        public virtual Counter Unknown { get; private set; } = new UnknownCounter();
-        public virtual Counter Unfamiliar { get; private set; } = new UnfamiliarCounter();
-        public virtual Counter Novice { get; private set; } = new NoviceCounter();
-        public virtual Counter AdvancedBeginner { get; private set; } = new AdvancedBeginnerCounter();
-        public virtual Counter Competent { get; private set; } = new CompetentCounter();
+        public virtual Counter Unknown { get; set; } = new UnknownCounter();
+        public virtual Counter Unfamiliar { get; set; } = new UnfamiliarCounter();
+        public virtual Counter Novice { get; set; } = new NoviceCounter();
+        public virtual Counter AdvancedBeginner { get; set; } = new AdvancedBeginnerCounter();
+        public virtual Counter Competent { get; set; } = new CompetentCounter();
+        public virtual Counter Proficient { get; set; } = new ProficientCounter();
+        public virtual Counter Expert { get; set; } = new ExpertCounter();
+
+        public void Add(Summary another)
+        {
+            Unknown += another.Unknown;
+            Unfamiliar += another.Unfamiliar;
+            Novice += another.Novice;
+            AdvancedBeginner += another.AdvancedBeginner;
+            Competent += another.Competent;
+            Proficient += another.Proficient;
+            Expert += another.Expert;
+        }
+
 
         public void RecalculateOnChange(object? sender, SummaryChangedEventArgs e)
         {
@@ -19,8 +33,6 @@ namespace Mtx.LearnItAll.Core.Calculations
             counter.Current += e.Difference;
         }
 
-        public virtual Counter Proficient { get; private set; } = new ProficientCounter();
-        public virtual Counter Expert { get; private set; } = new ExpertCounter();
 
         public Summary()
         {

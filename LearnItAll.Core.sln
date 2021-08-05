@@ -30,7 +30,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.API.Ser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D771A703-8FC6-4403-904F-ABDA6578B02A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.LearnItAll.Core.Common", "Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj", "{6BDEFE54-9846-4333-8B4C-B38812BACA09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.Common", "Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj", "{6BDEFE54-9846-4333-8B4C-B38812BACA09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.CosmosDbServices", "Services\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj", "{EEF0C51C-09F8-42F1-AA85-FFC08F02C210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,10 @@ Global
 		{6BDEFE54-9846-4333-8B4C-B38812BACA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BDEFE54-9846-4333-8B4C-B38812BACA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BDEFE54-9846-4333-8B4C-B38812BACA09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF0C51C-09F8-42F1-AA85-FFC08F02C210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF0C51C-09F8-42F1-AA85-FFC08F02C210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF0C51C-09F8-42F1-AA85-FFC08F02C210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF0C51C-09F8-42F1-AA85-FFC08F02C210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{568A3F6A-156D-4137-B765-A871206FC5FA} = {D771A703-8FC6-4403-904F-ABDA6578B02A}
 		{0221F318-4116-4ED0-AD5E-38486A8E3D87} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 		{436905F6-5CE6-4AA8-A3CE-5E7D38E83A33} = {19C8F1A5-BD3D-4A0F-983C-B14FEA3ADD63}
+		{EEF0C51C-09F8-42F1-AA85-FFC08F02C210} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6952993D-A228-4D09-9E35-503A5D3DC6A5}

@@ -2,6 +2,7 @@
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -14,16 +15,16 @@ namespace Mtx.LearnItAll.Core.Blueprints
     /// </summary>
     public class PartNode
     {
-        private readonly List<PartNode> _nodes = new();
-        private readonly List<Part> _parts = new();
-        public Guid ParentId { get; private set; }
-        public string Name { get; private set; }
-        public DateTime Created { get; private set; } = DateTime.Now;
-        public LifecycleState LifecycleState { get; private set; } = LifecycleState.Current;
-        public IReadOnlyCollection<PartNode> Nodes { get => _nodes; }
-        public IReadOnlyCollection<Part> Parts { get => _parts; }
-        public Summary Summary { get; private set; } = new Summary();
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid ParentId { get; set; }
+        public string Name { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
+        public LifecycleState LifecycleState { get; set; } = LifecycleState.Current;
+
+        public List<PartNode> Nodes { get; set; } = new();
+
+        public List<Part> Parts { get; set; } = new();
+        public Summary Summary { get; set; } = new Summary();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public PartNode(Name name)
         {
@@ -39,7 +40,12 @@ namespace Mtx.LearnItAll.Core.Blueprints
         /// For EF Core
         /// </summary>
 #pragma warning disable CS8618 
-        private PartNode() { }
+        public PartNode() 
+        { 
+        
+        
+        
+        }
 #pragma warning restore CS8618 
 
 
@@ -49,17 +55,17 @@ namespace Mtx.LearnItAll.Core.Blueprints
             {
                 MakeSureNameIsNotInUseInParts(cmd.Name);
                 var newPart = new Part(cmd.Name, cmd.ParentId);
-                _parts.Add(newPart);
+                Parts.Add(newPart);
                 Summary.AddOneTo(newPart.Level);
                 return;
             }
-            var part = _parts.Find(x => x.Id == cmd.ParentId);
+            var part = Parts.Find(x => x.Id == cmd.ParentId);
             if (part != null)
             {
                 Add(part);
-                _parts.Remove(part);
+                Parts.Remove(part);
             }
-            _nodes.ForEach(x => x.Add(cmd));
+            Nodes.ForEach(x => x.Add(cmd));
 
         }
 
@@ -67,9 +73,9 @@ namespace Mtx.LearnItAll.Core.Blueprints
         {
             if (parentId != Id)
             {
-                _nodes.ForEach(x => x.ChangeLevel(partName, parentId, newLevel));
+                Nodes.ForEach(x => x.ChangeLevel(partName, parentId, newLevel));
             }
-            var part = _parts.Find(x => x.Name.Equals(partName, StringComparison.OrdinalIgnoreCase));
+            var part = Parts.Find(x => x.Name.Equals(partName, StringComparison.OrdinalIgnoreCase));
             if (part != null)
             {
                 var currentLevel = part.Level;
@@ -83,9 +89,11 @@ namespace Mtx.LearnItAll.Core.Blueprints
        
         public void Add(PartNode newNode)
         {
+            newNode.ParentId = Id;
             MakeSureNameIsNotInUseInPartNodes(newNode.Name);
             newNode.Summary.RaiseChangeEvent += Summary.RecalculateOnChange;
-            _nodes.Add(newNode);
+            Summary.Add(newNode.Summary);
+            Nodes.Add(newNode);
         }
 
         public bool TryAdd(Guid parentId, PartNode partNode)
@@ -94,10 +102,11 @@ namespace Mtx.LearnItAll.Core.Blueprints
             {
                 if (Id == parentId)
                 {
+                    partNode.ParentId = Id;
                     Add(partNode);
                     return true;
                 }
-                foreach (var child in _nodes)
+                foreach (var child in Nodes)
                     if (child.TryAdd(parentId, partNode))
                         return true;
                 return false;
@@ -111,13 +120,13 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         private void MakeSureNameIsNotInUseInPartNodes(string name)
         {
-            if (_nodes.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            if (Nodes.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                 ThrowErrorForDuplicateName(name);
         }
 
         private void MakeSureNameIsNotInUseInParts(string name)
         {
-            if (_parts.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            if (Parts.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                 ThrowErrorForDuplicateName(name);
         }
 

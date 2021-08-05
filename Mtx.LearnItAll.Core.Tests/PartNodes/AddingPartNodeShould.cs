@@ -163,5 +163,35 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
 
 
         }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void UpdateSummaryGivenNodeIsAdded(int expectedLevel)
+        {
+            var sut = _fixture.Create<PartNode>();
+            var expectedCounter = Counter.Create(expectedLevel);
+            expectedCounter.AddOne();
+
+            var childNode = _fixture.Create<PartNode>();
+            Name name = _fixture.Create<Name>();
+            var cmd = new AddPartCmd(name, childNode.Id);
+            childNode.Add(cmd);
+            childNode.ChangeLevel(name, childNode.Id, expectedLevel);
+
+            _ = sut.TryAdd(sut.Id, childNode);
+
+
+            var actualCounter = sut.Summary.CounterFor(expectedLevel);
+            Assert.Equal(expectedCounter, actualCounter);
+
+
+        }
+
+
     }
 }

@@ -33,7 +33,7 @@ namespace Mtx.LearnItAll.Core.Tests.Skills
         [Fact]
         public void SetupCreationData()
         {
-            var sut = _fixture.Build<SkillBlueprint>().OmitAutoProperties().Create();
+            var sut = _fixture.Create<SkillBlueprint>();
 
             DateTime actual = sut.CreatedDate;
 
@@ -43,7 +43,7 @@ namespace Mtx.LearnItAll.Core.Tests.Skills
         [Fact]
         public void StartWithCurrentLifecycleState()
         {
-            var sut = _fixture.Build<SkillBlueprint>().OmitAutoProperties().Create();
+            var sut = _fixture.Create<SkillBlueprint>();
 
             LifecycleState actual = sut.LifecycleState;
 

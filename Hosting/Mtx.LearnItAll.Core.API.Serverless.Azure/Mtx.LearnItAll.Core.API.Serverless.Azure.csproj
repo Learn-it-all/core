@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Mtx.LearnItAll.Core.Infrastructure.EFCore\Mtx.LearnItAll.Core.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\..\Services\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

@@ -5,6 +5,7 @@ using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Mtx.CosmosDbServices;
 
 namespace Mtx.LearnItAll.Core.API.Serverless.Azure
 {
@@ -24,11 +25,14 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
                          builder.AddUserSecrets<Program>();
                      }
                  })
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureServices(async (hostContext, services) =>
                 {
                     services.AddOptions();
                     services.Configure<CosmosConfig>(hostContext.Configuration.GetSection("CosmosConfig"));
                     services.AddDbContext<CosmosDbContext>();
+                    services.InitializeCosmosClientInstance(hostContext.Configuration);
+
+
                 })
                 .Build();
 

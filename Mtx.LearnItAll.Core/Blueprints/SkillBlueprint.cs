@@ -1,6 +1,7 @@
 ﻿using Mtx.Common.Domain;
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -8,35 +9,39 @@ namespace Mtx.LearnItAll.Core.Blueprints
 {
     public class SkillBlueprint : Entity
     {
-        PartNode _root;
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        private SkillBlueprint()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning disable CS8618
+        public SkillBlueprint()
+#pragma warning restore CS8618 
         {
         }
 
         public SkillBlueprint(Name name)
         {
-            _root = new PartNode(name);
+            Root = new PartNode(name,Id);
             CreatedDate = DateTime.Now;
         }
 
+        [JsonIgnore]
+        public LifecycleState LifecycleState => Root.LifecycleState;
+        
+        public string Name => Root.Name;
 
-        public LifecycleState LifecycleState => _root.LifecycleState;
+        [JsonIgnore]
+        public IReadOnlyCollection<PartNode> Nodes => Root.Nodes;
 
-        public string Name => _root.Name;
+        [JsonIgnore]
+        public IReadOnlyCollection<Part> Parts => Root.Parts;
 
-        public IReadOnlyCollection<PartNode> Nodes => _root.Nodes;
-        public IReadOnlyCollection<Part> Parts => _root.Parts;
+        public PartNode Root { get ; set ; }
 
         public void Add(PartNode skill)
         {
-            _root.Add(skill);
+            Root.Add(skill);
         }
         public void Add(AddPartCmd cmd)
         {
-            _root.Add(cmd);
+            Root.Add(cmd);
         }
     }
 }
