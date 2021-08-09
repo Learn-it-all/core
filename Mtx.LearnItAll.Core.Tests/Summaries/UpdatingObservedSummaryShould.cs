@@ -13,24 +13,20 @@ namespace Mtx.LearnItAll.Core.Tests.Summaries
         }
 
         [Theory]
-        [InlineData(0,1)]
-        [InlineData(1,1)]
-        [InlineData(2,1)]
-        [InlineData(3,1)]
-        [InlineData(4,1)]
-        [InlineData(5,1)]
-        [InlineData(0,-1)]
-        [InlineData(1,-1)]
-        [InlineData(2,-1)]
-        [InlineData(3,-1)]
-        [InlineData(4,-1)]
-        [InlineData(5,-1)]
-        public void RecalculateLevelsGivenAnObservedSummaryIsUpdated(int expectedLevel,int expectedValue)
+        [InlineData(-1, 1)]
+        [InlineData(0, 1)]
+        [InlineData(1, 1)]
+        [InlineData(2, 1)]
+        [InlineData(3, 1)]
+        [InlineData(4, 1)]
+        [InlineData(5, 1)]
+        public void RecalculateLevelsGivenAnObservedSummaryIsUpdated(int expectedLevel, int expectedValue)
         {
             var sut = _fixture.Create<Summary>();
-            var dummyArgs = new SummaryChangedEventArgs(expectedLevel, expectedValue);
 
-            sut.RecalculateOnChange(null,dummyArgs);
+            var dummyArgs = new SummaryChangedEventArgs(expectedLevel, 1);
+
+            sut.RecalculateOnChange(null, dummyArgs);
 
             Assert.Equal(expectedValue, sut.ValueOf(expectedLevel));
         }

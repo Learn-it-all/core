@@ -34,15 +34,8 @@ namespace Mtx.CosmosDbServices
 
         public async Task<SkillBlueprint> GetSkillBlueprintAsync(string id)
         {
-            //try
-            //{
             ItemResponse<SkillBlueprint> response = await this._container.ReadItemAsync<SkillBlueprint>(id, new PartitionKey(id));
             return response.Resource;
-            //}
-            //catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-            //{
-            //    return null;
-            //}
 
         }
 

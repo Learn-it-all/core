@@ -38,10 +38,11 @@ namespace Mtx.LearnItAll.Core.Tests.Summaries
         public void RecalculateLevelGivenOneIsSubtracted(int expectedLevel)
         {
             var sut = _fixture.Create<Summary>();
+            sut.AddOneTo(expectedLevel);
 
             sut.SubtractOneFrom(expectedLevel);
 
-            Assert.Equal(-1, sut.ValueOf(expectedLevel));
+            Assert.Equal(0, sut.ValueOf(expectedLevel));
         }
 
     }

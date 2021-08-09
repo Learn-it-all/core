@@ -1,12 +1,8 @@
-﻿using Microsoft.Azure.Cosmos.Fluent;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Mtx.CosmosDbServices
 {
@@ -27,41 +23,19 @@ namespace Mtx.CosmosDbServices
             {
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
             };
-            //var clientOptions = new CosmosClientOptions 
-            //{ 
-            //    //SerializerOptions = options,
-            //    Serializer = new CosmosSystemTextJsonSerializer(new JsonSerializerOptions
-            //    {
-            //        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            //        Converters =
-            //            {
-            //                new JsonStringEnumConverter()
-            //            },
-            //        IgnoreNullValues = true,
-            //        IgnoreReadOnlyFields = false, 
-            //        IncludeFields = true, 
-            //        PropertyNameCaseInsensitive= true
-            //    })
-
-            //};
 
             var clientOptions = new CosmosClientOptions
             {
-                SerializerOptions = options,
-                //Serializer = new CosmosJsonDotNetSerializer(new JsonSerializerSettings
-                //{
+                //SerializerOptions = options,
+                Serializer = new CosmosJsonDotNetSerializer(new JsonSerializerSettings
+                {
 
-                //    ContractResolver = new JsonDotNetPrivateResolver(),
-                //    TypeNameHandling = TypeNameHandling.None,
-                //    ReferenceLoopHandling = ReferenceLoopHandling.Error,
-                //    PreserveReferencesHandling = PreserveReferencesHandling.None,
-                //    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                //        Converters = new Newtonsoft.Json.JsonConverter[]
-                //        {
-                //            new StringEnumConverter()
-
-                //        }
-                //})
+                    ContractResolver = new JsonDotNetPrivateResolver(),
+                    TypeNameHandling = TypeNameHandling.None,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Error,
+                    PreserveReferencesHandling = PreserveReferencesHandling.None,
+                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                })
 
             };
 

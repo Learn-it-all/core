@@ -29,7 +29,13 @@ namespace Mtx.LearnItAll.Core.Calculations
 
                 var previous = _current;
                 _current = value;
-                OnLevelChanged(Level, previous + _current);
+                int difference = _current - previous;
+                if (previous > value)
+                    difference = (previous - value) * -1;
+
+                if (_current < 0) _current = 0;
+
+                OnLevelChanged(Level, difference);
 
             }
         }

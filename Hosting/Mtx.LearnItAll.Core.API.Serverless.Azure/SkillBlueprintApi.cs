@@ -50,6 +50,8 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
             SkillBlueprint enti = await _cosmos.GetSkillBlueprintAsync(entity.Id.ToString());
             if (enti != null)
             {
+                enti.Add(new AddPartCmd(new Name("override"), keywordsNode.Id));
+
 
                 PartNode node = new PartNode(new Name("Collections"));
                 node.Add(new AddPartCmd(new Name("List<T>"), node.Id));
@@ -62,10 +64,10 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
                 await _cosmos.UpdateAsync(entity.Id.ToString(), enti);
             }
 
-            enti = await _cosmos.GetSkillBlueprintAsync("Select c where c.name='C#'");
+            enti = await _cosmos.GetSkillBlueprintAsync(enti?.Id.ToString() ?? "");
 
             var response = req.CreateResponse(HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(entity);
+            await response.WriteAsJsonAsync(enti);
             return await Task.FromResult(response);
 
         }

@@ -5,6 +5,8 @@ using Mtx.LearnItAll.Core.Resources;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Mtx.LearnItAll.Core.Blueprints
 {
@@ -15,38 +17,48 @@ namespace Mtx.LearnItAll.Core.Blueprints
     /// </summary>
     public class PartNode
     {
-        public Guid ParentId { get; set; }
-        public string Name { get; set; }
-        public DateTime Created { get; set; } = DateTime.Now;
-        public LifecycleState LifecycleState { get; set; } = LifecycleState.Current;
+        private ObservableCollection<PartNode> _partNodes = new();
 
-        public List<PartNode> Nodes { get; set; } = new();
+        public Guid ParentId { get; private set; }
+        public string Name { get; private set; }
+        public DateTime Created { get; private set; } = DateTime.Now;
+        public LifecycleState LifecycleState { get; private set; } = LifecycleState.Current;
 
-        public List<Part> Parts { get; set; } = new();
-        public Summary Summary { get; set; } = new Summary();
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public IReadOnlyCollection<PartNode> Nodes => _partNodes;
 
-        public PartNode(Name name)
+        public List<Part> Parts { get; private set; } = new();
+        public Summary Summary { get; private set; } = new Summary();
+        public Guid Id { get; private set; } = Guid.NewGuid();
+
+        public PartNode(Name name) : this()
         {
             Name = name;
         }
-        public PartNode(Name name, Guid parentId)
+        public PartNode(Name name, Guid parentId) : this()
         {
             Name = name;
             ParentId = parentId;
         }
 
         /// <summary>
-        /// For EF Core
+        /// For deserialization
         /// </summary>
-#pragma warning disable CS8618 
-        public PartNode() 
-        { 
-        
-        
-        
+#pragma warning disable CS8618
+        private PartNode()
+        {
+            _partNodes.CollectionChanged += PartNodesChanged;
+
         }
-#pragma warning restore CS8618 
+#pragma warning restore CS8618
+
+        private void PartNodesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            var itens = e.NewItems ?? new List<PartNode>();
+            foreach (PartNode partNode in itens)
+            {
+                partNode.Summary.RaiseChangeEvent += Summary.RecalculateOnChange;
+            }
+        }
 
 
         public void Add(AddPartCmd cmd)
@@ -59,13 +71,18 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 Summary.AddOneTo(newPart.Level);
                 return;
             }
+
+
             var part = Parts.Find(x => x.Id == cmd.ParentId);
-            if (part != null)
-            {
-                Add(part);
+            if (part != null)//when the part is found it must be turned into a PartNode
+            {                //so that it will manage the new Part as its child
+                Add(part.ToPartNode());
                 Parts.Remove(part);
+                return;
             }
-            Nodes.ForEach(x => x.Add(cmd));
+
+            foreach (var node in _partNodes)//when the cmd.ParentId is unknown to the current instance, delegate it to its child nodes
+                node.Add(cmd);
 
         }
 
@@ -73,7 +90,8 @@ namespace Mtx.LearnItAll.Core.Blueprints
         {
             if (parentId != Id)
             {
-                Nodes.ForEach(x => x.ChangeLevel(partName, parentId, newLevel));
+                foreach (var node in _partNodes)
+                    node.ChangeLevel(partName, parentId, newLevel);
             }
             var part = Parts.Find(x => x.Name.Equals(partName, StringComparison.OrdinalIgnoreCase));
             if (part != null)
@@ -86,14 +104,13 @@ namespace Mtx.LearnItAll.Core.Blueprints
         }
 
 
-       
+
         public void Add(PartNode newNode)
         {
             newNode.ParentId = Id;
             MakeSureNameIsNotInUseInPartNodes(newNode.Name);
-            newNode.Summary.RaiseChangeEvent += Summary.RecalculateOnChange;
             Summary.Add(newNode.Summary);
-            Nodes.Add(newNode);
+            _partNodes.Add(newNode);
         }
 
         public bool TryAdd(Guid parentId, PartNode partNode)
@@ -120,8 +137,10 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         private void MakeSureNameIsNotInUseInPartNodes(string name)
         {
-            if (Nodes.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                ThrowErrorForDuplicateName(name);
+            foreach (var node in _partNodes)
+                if (node.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    ThrowErrorForDuplicateName(name);
+
         }
 
         private void MakeSureNameIsNotInUseInParts(string name)
@@ -136,6 +155,6 @@ namespace Mtx.LearnItAll.Core.Blueprints
             throw new InvalidOperationException(errorMessage);
         }
 
-       
+
     }
 }

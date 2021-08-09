@@ -192,6 +192,37 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
 
         }
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void UpdateSummaryGivenPartIsAddedToAlreadyExistingNode(int expectedLevel)
+        {
+            var sut = _fixture.Create<PartNode>();
+            var expectedCounter = Counter.Create(expectedLevel);
+            expectedCounter.AddOne();
+            expectedCounter.AddOne();
+
+            var childNode = _fixture.Create<PartNode>();
+            Name name = _fixture.Create<Name>();
+            var cmd = new AddPartCmd(name, childNode.Id);
+            childNode.Add(cmd);
+            childNode.ChangeLevel(name, childNode.Id, expectedLevel);
+            sut.Add(childNode);
+
+            sut.Add(new AddPartCmd(new Name("new part"), childNode.Id));
+            childNode.ChangeLevel("new part", childNode.Id, expectedLevel);
+
+
+            var actualCounter = sut.Summary.CounterFor(expectedLevel);
+            Assert.Equal(expectedCounter, actualCounter);
+
+
+        }
+
 
     }
 }
