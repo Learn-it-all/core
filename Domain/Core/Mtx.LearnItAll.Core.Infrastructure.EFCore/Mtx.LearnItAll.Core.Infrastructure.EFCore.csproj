@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Services\Mtx.EFCoreServices\Mtx.EFCoreServices.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
-    <ProjectReference Include="..\Services\Mtx.EFCoreServices\Mtx.EFCoreServices.csproj" />
   </ItemGroup>
 
 </Project>

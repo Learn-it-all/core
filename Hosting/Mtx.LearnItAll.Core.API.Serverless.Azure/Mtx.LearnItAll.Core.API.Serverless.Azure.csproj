@@ -12,7 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mtx.LearnItAll.Core.Infrastructure.EFCore\Mtx.LearnItAll.Core.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\..\Domain\Core\Mtx.LearnItAll.Core.Infrastructure.EFCore\Mtx.LearnItAll.Core.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\..\Domain\Core\Mtx.LearnItAll.Core.Infrastructure\Mtx.LearnItAll.Core.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Services\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
   </ItemGroup>
   <ItemGroup>

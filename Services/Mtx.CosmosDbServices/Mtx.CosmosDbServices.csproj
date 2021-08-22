@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
+    <ProjectReference Include="..\..\Domain\Core\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
+    <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Resources\Mtx.LearnItAll.Core.Resources.csproj" />
   </ItemGroup>

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
+    <ProjectReference Include="..\..\Domain\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
   </ItemGroup>
 
 </Project>

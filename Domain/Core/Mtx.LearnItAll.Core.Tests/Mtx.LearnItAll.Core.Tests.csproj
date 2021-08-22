@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
+    <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Resources\Mtx.LearnItAll.Core.Resources.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
   </ItemGroup>
