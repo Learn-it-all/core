@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.Common.Domain", "Domain\Mtx.Common.Domain\Mtx.Common.Domain.csproj", "{93B04C09-5A15-4CD0-8614-D9C75A344193}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnItAll", "LearnItAll\LearnItAll.csproj", "{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{93B04C09-5A15-4CD0-8614-D9C75A344193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93B04C09-5A15-4CD0-8614-D9C75A344193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93B04C09-5A15-4CD0-8614-D9C75A344193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
