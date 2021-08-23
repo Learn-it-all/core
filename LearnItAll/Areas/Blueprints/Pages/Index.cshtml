@@ -1,0 +1,26 @@
+﻿@page
+@model LearnItAll.Areas.Blueprints.Pages.IndexModel
+
+<ul class="list-group list-group-lg list-group-flush list my--4">
+    @foreach (var career in Model.CareerPaths)
+    {
+        <li>
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    @career.Name
+                </div>
+                <div class="col ml--2">
+                    @career.Industry
+                </div>
+                <div class="col-auto">
+                    <!-- We will extend this button with HTMX to perform an AJAX request -->
+                    <button>
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+@{
+}

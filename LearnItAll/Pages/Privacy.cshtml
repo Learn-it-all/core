@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model PrivacyModel
+
+@attribute [AllowAnonymous]
 @{
     ViewData["Title"] = "Privacy Policy";
 }

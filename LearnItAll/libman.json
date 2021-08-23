@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "unpkg",
+      "library": "material-components-web@latest",
+      "destination": "wwwroot\\lib\\material-components-web"
+    },
+    {
+      "provider": "unpkg",
+      "library": "htmx.org@1.1.0",
+      "destination": "wwwroot\\lib\\htmx.org",
+      "files": [
+        "dist/htmx.min.js"
+      ]
+    }
+  ]
+}
