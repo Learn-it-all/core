@@ -17,6 +17,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handlers\**" />
+    <EmbeddedResource Remove="Handlers\**" />
+    <None Remove="Handlers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.2.0" />
   </ItemGroup>
 
@@ -24,10 +30,6 @@
     <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Resources\Mtx.LearnItAll.Core.Resources.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Handlers\" />
   </ItemGroup>
   
 </Project>
