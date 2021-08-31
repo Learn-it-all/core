@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - LearnItAll</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/htmx-custom.css" />
 </head>
 <body>
     <header>
@@ -26,6 +27,11 @@
                         </li>
                           <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Blueprints" asp-page="/Index">Blueprints</a>
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Blueprints" asp-page="/Skills">Skills</a>
+                            </li>
+							</ul>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

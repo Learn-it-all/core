@@ -1,7 +1,20 @@
 ﻿@page
-@model LearnItAll.Areas.Blueprints.Pages.IndexModel
 
-<ul class="list-group list-group-lg list-group-flush list my--4">
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Web
+
+@model LearnItAll.Areas.Blueprints.Pages.IndexModel
+@inject IViewLocalizer Localizer
+
+
+@*https://www.jerriepelser.com/blog/htmx-deleting-items*@
+
+<ul class="list-group list-group-lg list-group-flush list my--4"
+    hx-boost="true"
+    hx-target="closest li"
+    hx-swap="outerHTML swap:1s"
+    
+    >
     @foreach (var career in Model.CareerPaths)
     {
         <li>
@@ -12,11 +25,13 @@
                 <div class="col ml--2">
                     @career.Industry
                 </div>
-                <div class="col-auto">
-                    <!-- We will extend this button with HTMX to perform an AJAX request -->
-                    <button>
-                        Delete
-                    </button>
+                <div class="col-auto" hx-confirm="@Localizer["Do you want to delete '{0}'?",@career.Name]">
+                    <form asp-page-handler="Delete" asp-route-name="@career.Name">
+                        <button type="submit" 
+                        class="btn btn-sm btn-danger d-none d-md-inline-block">
+                            Delete
+                        </button>
+                    </form>
                 </div>
             </div>
         </li>

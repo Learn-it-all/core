@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.Common.Domain", "Domain\Mtx.Common.Domain\Mtx.Common.Domain.csproj", "{93B04C09-5A15-4CD0-8614-D9C75A344193}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnItAll", "LearnItAll\LearnItAll.csproj", "{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnItAll", "LearnItAll\LearnItAll.csproj", "{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.LearnItAll.Core.Handlers", "Mtx.LearnItAll.Core.Handlers\Mtx.LearnItAll.Core.Handlers.csproj", "{A39432C0-6ECD-4808-84D4-258FDFF4AE3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43EA1964-D7CD-4DD0-AF79-9DBAF39557A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39432C0-6ECD-4808-84D4-258FDFF4AE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39432C0-6ECD-4808-84D4-258FDFF4AE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39432C0-6ECD-4808-84D4-258FDFF4AE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39432C0-6ECD-4808-84D4-258FDFF4AE3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{078178FC-E12A-44C2-BCE1-D22FE1D069FF} = {71D108AE-715E-417B-9253-8A8F4C12D610}
 		{7C115F28-9C86-4FE6-A977-7EBF768DBF8C} = {71D108AE-715E-417B-9253-8A8F4C12D610}
 		{93B04C09-5A15-4CD0-8614-D9C75A344193} = {C096BF0B-4846-40F8-9C70-2601306723F6}
+		{A39432C0-6ECD-4808-84D4-258FDFF4AE3D} = {71D108AE-715E-417B-9253-8A8F4C12D610}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6952993D-A228-4D09-9E35-503A5D3DC6A5}
