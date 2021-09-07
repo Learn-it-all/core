@@ -32,7 +32,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
+            var id = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
             return await Task.FromResult(new ContentResult());
         }
 

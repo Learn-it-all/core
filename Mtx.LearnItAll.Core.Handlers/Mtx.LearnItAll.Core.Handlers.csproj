@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Core\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />
+    <ProjectReference Include="..\Domain\Core\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
+    <ProjectReference Include="..\Services\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
   </ItemGroup>
 
 </Project>

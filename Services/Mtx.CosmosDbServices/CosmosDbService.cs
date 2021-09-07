@@ -4,7 +4,8 @@ namespace Mtx.CosmosDbServices
 {
         using System.Collections.Generic;
         using System.Linq;
-        using System.Threading.Tasks;
+    using System.Threading;
+    using System.Threading.Tasks;
         using Microsoft.Azure.Cosmos;
         using Microsoft.Azure.Cosmos.Fluent;
         using Microsoft.Extensions.Configuration;
@@ -22,14 +23,14 @@ namespace Mtx.CosmosDbServices
             this._container = dbClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task AddAsync(SkillBlueprint skillBlueprint)
+        public async Task AddAsync(SkillBlueprint skillBlueprint,CancellationToken cancellationToken = default(CancellationToken))
         {
-            await this._container.CreateItemAsync(skillBlueprint,new PartitionKey(skillBlueprint.Id.ToString()));
+            var response = await this._container.CreateItemAsync(skillBlueprint,new PartitionKey(skillBlueprint.Id.ToString()),cancellationToken: cancellationToken);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await this._container.DeleteItemAsync<SkillBlueprint>(id, new PartitionKey(id));
+            await this._container.DeleteItemAsync<SkillBlueprint>(id, new PartitionKey(id),cancellationToken: cancellationToken);
         }
 
         public async Task<SkillBlueprint> GetSkillBlueprintAsync(string id)

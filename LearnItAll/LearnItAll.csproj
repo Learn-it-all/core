@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Core\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />
+    <ProjectReference Include="..\Hosting\Mtx.LearnItAll.Core.API.Serverless.Azure\Mtx.LearnItAll.Core.API.Serverless.Azure.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Handlers\Mtx.LearnItAll.Core.Handlers.csproj" />
   </ItemGroup>
 

@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Mtx.CosmosDbServices;
+using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
 using Mtx.LearnItAll.Core.Handlers;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,10 @@ namespace LearnItAll
                 // By default, all incoming requests will be authorized according to the default policy
                 options.FallbackPolicy = options.DefaultPolicy;
             });
+
+            services.Configure<CosmosConfig>(Configuration.GetSection("CosmosConfig"));
+            services.InitializeCosmosClientInstance(Configuration);
+
             services.AddRazorPages()
                 .AddMvcOptions(options => { })
                 .AddMicrosoftIdentityUI();
