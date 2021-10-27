@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MediatR;
+using System;
 
 namespace Mtx.LearnItAll.Core.Common.Parts
 {
-    public record AddPartCmd
+    public record AddPartCmd : IRequest<Guid>
     {
 
         public AddPartCmd(Name name, Guid parentId)

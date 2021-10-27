@@ -24,18 +24,38 @@ namespace LearnItAll.Areas.Blueprints.Pages
 
         public SkillBluePrint Skill { get; set; } = new();
         public NewBlueprintModel NewBlueprintModel { get; set; } = new();
+        public AddPartModel AddPartModel { get; set; } = new();
 
         public async Task OnGet()
         {
             await Task.CompletedTask;
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostCreate()
         {
             var id = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
+            Skill.Id = id;
+            Skill.Root.Name = NewBlueprintModel.Name;
             return await Task.FromResult(new ContentResult());
         }
 
+        public async Task<IActionResult> OnPostAdd()
+        {
+            var id = await mediator.Send((AddPartCmd)AddPartModel);
+            Skill.Id = id;
+            Skill.Root.Name = NewBlueprintModel.Name;
+            return await Task.FromResult(new ContentResult());
+        }
+
+    }
+    public class AddPartModel
+    {
+        [Required]
+        [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
+        public string Name { get; set; } = string.Empty;
+        public Guid Parent { get; set; } 
+
+        public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name),model.Parent);
     }
 
     public class NewBlueprintModel
@@ -49,7 +69,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
 
     public class SkillBluePrint
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid? Id { get; set; }
 
         public string Name { get => Root.Name; }
         public List<Part> Parts { get; set; } = new();

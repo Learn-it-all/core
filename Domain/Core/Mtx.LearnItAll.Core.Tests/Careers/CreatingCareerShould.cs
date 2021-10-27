@@ -23,11 +23,12 @@ namespace Mtx.LearnItAll.Core.Tests.Careers
             Assert.NotEqual<Guid>(Guid.Empty, sut.Id);
             Assert.NotEqual<Guid>(dummy.Id, sut.Id);
         }
+
         [Fact]
         public void HasNoRolesGivenItIsNew()
         {
             var sut = _fixture.Create<Career>();
-            IReadOnlyCollection<Role> actual = sut.Roles;
+            IReadOnlyCollection<IRole> actual = sut.Roles;
 
             Assert.Empty(actual);
         }
