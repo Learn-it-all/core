@@ -25,8 +25,8 @@ var client = new ClientBuilder()
     .UseCosmosDBGatewayListProvider(x =>
     {
 
-        x.AccountEndpoint = "https://learn-it-all-cosmos-account-dev.documents.azure.com:443/";
-        x.AccountKey = "LubXYtKazoKDbTOVeWp3O2JgmckNXOKOCGZFkdRZ2wfkSKDq7OSyrQu8SIyQVgfRa0zhOOhV9zqIViGB7oVKoQ==";
+        x.AccountEndpoint = "";
+        x.AccountKey = "";
 
 
     })
