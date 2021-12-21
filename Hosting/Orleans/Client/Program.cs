@@ -11,25 +11,19 @@ using Spectre.Console;
 using System;
 using System.Threading.Tasks;
 
+
 var client = new ClientBuilder()
-    .ConfigureAppConfiguration((host, builder) =>
+    .ConfigureAppConfiguration((hostContext, builder) =>
     {
         builder.AddEnvironmentVariables();
-        if ("Development".Equals(host.HostingEnvironment.EnvironmentName))
+        if (hostContext.HostingEnvironment.EnvironmentName.Equals("Development",StringComparison.OrdinalIgnoreCase))
         {
             builder.AddUserSecrets<Program>();
         }
     })
     .UseLocalhostClustering()
     .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(ISkillBlueprintGrain).Assembly).WithReferences())
-    .UseCosmosDBGatewayListProvider(x =>
-    {
-
-        x.AccountEndpoint = "";
-        x.AccountKey = "";
-
-
-    })
+    
     .UseEnvironment("Development")
     .Build();
 
@@ -69,3 +63,4 @@ finally
     await client.Close();
 
 }
+

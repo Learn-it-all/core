@@ -30,17 +30,20 @@ await Host.CreateDefaultBuilder()
                x.AccountEndpoint = host.Configuration["CosmosDBClusteringOptions:AccountEndpoint"];
                x.AccountKey = host.Configuration["CosmosDBClusteringOptions:AccountKey"];
                x.CanCreateResources = true;
+               
 
            })
            .AddCosmosDBGrainStorageAsDefault(x =>
            {
                x.AccountKey = host.Configuration["CosmosDBStorageOptions:AccountKey"];
                x.AccountEndpoint = host.Configuration["CosmosDBStorageOptions:AccountEndpoint"];
+               x.CanCreateResources = true;
 
            }).AddCosmosDBGrainStorage("skillBlueprintState",x =>
            {
                x.AccountKey = host.Configuration["CosmosDBStorageOptions:AccountKey"];
                x.AccountEndpoint = host.Configuration["CosmosDBStorageOptions:AccountEndpoint"];
+               x.CanCreateResources = true;
            })
            ;
            //.AddCosmosDBGrainStorage(skillBlueprintState)

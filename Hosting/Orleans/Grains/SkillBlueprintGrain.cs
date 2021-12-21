@@ -10,7 +10,7 @@ namespace Grains
 {
     public interface ISkillBlueprintGrain : IGrainWithStringKey
     {
-        Guid SkillId { get; }
+        //Guid SkillId { get; }
 
         Task Add(PartNode part);
         Task Create(Name skillName);
