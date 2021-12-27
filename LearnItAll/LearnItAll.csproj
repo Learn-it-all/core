@@ -9,6 +9,7 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.9" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.16.0" />
   </ItemGroup>
@@ -16,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Core\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />
     <ProjectReference Include="..\Hosting\Mtx.LearnItAll.Core.API.Serverless.Azure\Mtx.LearnItAll.Core.API.Serverless.Azure.csproj" />
+    <ProjectReference Include="..\Mtx.HttpServices\Mtx.HttpServices.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Handlers\Mtx.LearnItAll.Core.Handlers.csproj" />
   </ItemGroup>
 

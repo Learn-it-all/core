@@ -11,8 +11,14 @@ namespace Mtx.LearnItAll.Core.Common.Parts
             Name = name;
             ParentId = parentId;
         }
-
+        public AddPartCmd(Name name, Guid parentId, Guid SkillId)
+        {
+            Name = name;
+            ParentId = parentId;
+            this.SkillId = SkillId;
+        }
         public Name Name { get; }
         public Guid ParentId { get; }
+        public Guid SkillId { get; }
     }
 }

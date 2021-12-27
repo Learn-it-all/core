@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Mtx.CosmosDbServices;
+using Mtx.HttpServices.Sessions;
 using Mtx.LearnItAll.Core.API.Serverless.Azure.Infrastructure.Cosmos;
 using Mtx.LearnItAll.Core.Handlers;
 using System;
@@ -44,7 +46,11 @@ namespace LearnItAll
             });
 
             services.Configure<CosmosConfig>(Configuration.GetSection("CosmosConfig"));
-            services.InitializeCosmosClientInstance(Configuration);
+            services.InitializeCosmosCosmosDbService(Configuration);
+            services.AddTransient<ICosmosDbService>(f =>
+            {
+                return new BlueprintSessionCosmosDbDecorator(f.GetRequiredService<CosmosDbService>(), f.GetRequiredService<IHttpContextAccessor>());
+            });
 
             services.AddRazorPages()
                 .AddMvcOptions(options => { })
@@ -67,11 +73,13 @@ namespace LearnItAll
             });
 
             services.AddMediatR(typeof(CreateSkillBlueprintHandler).Assembly);
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -90,7 +98,7 @@ namespace LearnItAll
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+           
             app.UseSession();
 
             app.UseEndpoints(endpoints =>

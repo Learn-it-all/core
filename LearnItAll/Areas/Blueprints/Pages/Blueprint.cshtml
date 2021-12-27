@@ -1,0 +1,74 @@
+﻿@page
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Web
+
+@inject IViewLocalizer Localizer
+@model LearnItAll.Areas.Blueprints.Pages.BlueprintModel
+
+
+	@if(Model.Blueprint.IsNull)
+	{
+		<div class="row align-items-center">
+			
+			<div class="col-auto box-shadow">
+				<form asp-page-handler="Create" method="post" >
+					<div class="input-group mb-6">
+							<input asp-for=@Model.NewBlueprintModel.Name class="form-control" placeholder="Skill Name" placeholder="Skill Name">
+					<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;">+
+					</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	}
+	else
+	{
+		<div class="row">
+			<div class="col-2">
+				Skill Blueprint: @Model.Blueprint.Name
+			</div>
+			</div>
+		<div class="row">
+				<div class="col-auto">
+					<form asp-page-handler="Add" method="post" >
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<input asp-for=@Model.AddPartModel.Name class="form-control" placeholder="Add a new Part" value="">
+								<input  asp-for=@Model.AddPartModel.ParentId value=@Model.Blueprint.SkillId class="form-control" type="hidden" >
+								<input  asp-for=@Model.AddPartModel.SkillId value=@Model.Blueprint.Id class="form-control" type="hidden" >
+							</div>
+						<button type="submit" class="btn btn-sm btn-default d-none d-md-inline-block">Add a new part to @Model.Blueprint.Name</button>
+						</div>
+					</form>
+				</div>
+		</div>
+		@foreach (var part in Model.Blueprint.Parts)
+		{
+		<div class="row">
+				<div class="col-2">
+			</div>
+			<div class="col-1">
+				@part.Name
+			</div>
+			</div>
+		@*<div class="row">
+				<div class="col-2">
+					<form asp-page-handler="Add" method="post" >
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<input asp-for=@Model.AddPartModel.Name class="form-control" placeholder="Add a new Part" value="">
+								<input  asp-for=@Model.AddPartModel.ParentId value=@Model.Blueprint.SkillId class="form-control" type="hidden" >
+								<input  asp-for=@Model.AddPartModel.SkillId value=@Model.Blueprint.Id class="form-control" type="hidden" >
+							</div>
+						</div>
+						<button type="submit"
+					class="btn btn-sm btn-default d-none d-md-inline-block">
+							Add
+						</button>
+					</form>
+				</div>
+		</div>*@
+		}
+}

@@ -27,6 +27,9 @@ namespace Mtx.LearnItAll.Core.Blueprints
         [JsonIgnore]
         public LifecycleState LifecycleState => _root.LifecycleState;
         
+        [JsonIgnore]
+        public Guid SkillId => _root.Id;
+        
         public string Name => _root.Name;
 
         [JsonIgnore]
@@ -35,6 +38,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         [JsonIgnore]
         public IReadOnlyCollection<Part> Parts => _root.Parts;
 
+        [JsonIgnore]
         public Summary Summary => _root.Summary.Copy();
 
         [JsonProperty]
@@ -47,6 +51,11 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public void Add(AddPartCmd cmd)
         {
             _root.Add(cmd);
+        }
+
+        public bool TryAdd(AddPartCmd cmd, out Guid idOfNewlyAddedPart)
+        {
+            return _root.TryAdd(cmd,out idOfNewlyAddedPart);
         }
     }
 }

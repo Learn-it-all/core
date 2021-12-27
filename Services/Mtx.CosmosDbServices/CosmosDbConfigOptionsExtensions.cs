@@ -12,7 +12,7 @@ namespace Mtx.CosmosDbServices
         /// Creates a Cosmos DB database and a container with the specified partition key. 
         /// </summary>
         /// <returns></returns>
-        public static  void InitializeCosmosClientInstance( this IServiceCollection services,IConfiguration configuration)
+        public static void InitializeCosmosCosmosDbService( this IServiceCollection services,IConfiguration configuration)
         {
             string databaseName = configuration.GetSection("CosmosConfig:DbName").Value;
             string containerName = "Skills";
@@ -40,10 +40,14 @@ namespace Mtx.CosmosDbServices
             };
 
             var client = new CosmosClient(account, key, clientOptions: clientOptions) ;
-            var cosmosDbService = new CosmosDbService(client, databaseName, containerName);
+            services.AddSingleton(client);
+            services.AddTransient<CosmosDbService>(f =>
+            {
+                return new CosmosDbService(client, databaseName, containerName);
+
+            });
             var database = client.CreateDatabaseIfNotExistsAsync(databaseName).Result;
             _= database.Database.CreateContainerIfNotExistsAsync(containerName, "/id").Result;
-            services.AddSingleton<ICosmosDbService>(cosmosDbService);
         }
     }
 

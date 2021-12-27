@@ -30,7 +30,7 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
                     services.AddOptions();
                     services.Configure<CosmosConfig>(hostContext.Configuration.GetSection("CosmosConfig"));
                     services.AddDbContext<CosmosDbContext>();
-                    services.InitializeCosmosClientInstance(hostContext.Configuration);
+                    services.InitializeCosmosCosmosDbService(hostContext.Configuration);
 
 
                 })

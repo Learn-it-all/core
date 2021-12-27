@@ -3,6 +3,7 @@
     public enum LifecycleState
     {
         Unknown = 0,
-        Current = 1,
+        Draft = 1,
+        Current = 2,
     }
 }

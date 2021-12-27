@@ -43,11 +43,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.Handler
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orleans", "Orleans", "{E1D89F2D-DE9A-48B6-8E7E-F29CE3281E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrleansServer", "OrleansServer\OrleansServer.csproj", "{15DA3CA9-B97F-4183-BFAC-FD293DC4A0E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrleansServer", "OrleansServer\OrleansServer.csproj", "{15DA3CA9-B97F-4183-BFAC-FD293DC4A0E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grains", "Hosting\Orleans\Grains\Grains.csproj", "{4188D5FA-DBB1-4475-B26E-6E286C9BFE6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grains", "Hosting\Orleans\Grains\Grains.csproj", "{4188D5FA-DBB1-4475-B26E-6E286C9BFE6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Hosting\Orleans\Client\Client.csproj", "{39F09886-4FB3-48D9-94E9-8B47A1265B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Hosting\Orleans\Client\Client.csproj", "{39F09886-4FB3-48D9-94E9-8B47A1265B90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.HttpServices", "Mtx.HttpServices\Mtx.HttpServices.csproj", "{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +117,10 @@ Global
 		{39F09886-4FB3-48D9-94E9-8B47A1265B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39F09886-4FB3-48D9-94E9-8B47A1265B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39F09886-4FB3-48D9-94E9-8B47A1265B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,6 +142,7 @@ Global
 		{15DA3CA9-B97F-4183-BFAC-FD293DC4A0E4} = {E1D89F2D-DE9A-48B6-8E7E-F29CE3281E34}
 		{4188D5FA-DBB1-4475-B26E-6E286C9BFE6B} = {E1D89F2D-DE9A-48B6-8E7E-F29CE3281E34}
 		{39F09886-4FB3-48D9-94E9-8B47A1265B90} = {E1D89F2D-DE9A-48B6-8E7E-F29CE3281E34}
+		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6952993D-A228-4D09-9E35-503A5D3DC6A5}

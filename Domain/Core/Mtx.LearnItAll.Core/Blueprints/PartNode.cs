@@ -22,7 +22,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public Guid ParentId { get; private set; }
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
-        public LifecycleState LifecycleState { get; private set; } = LifecycleState.Current;
+        public LifecycleState LifecycleState { get; private set; } = LifecycleState.Draft;
 
         public IReadOnlyCollection<PartNode> Nodes => _partNodes;
 
@@ -60,16 +60,17 @@ namespace Mtx.LearnItAll.Core.Blueprints
             }
         }
 
-
-        public void Add(AddPartCmd cmd)
+        public bool TryAdd(AddPartCmd cmd, out Guid idOfNewlyAddedPart)
         {
+            idOfNewlyAddedPart = Guid.Empty;
             if (cmd.ParentId == Id)
             {
                 MakeSureNameIsNotInUseInParts(cmd.Name);
                 var newPart = new Part(cmd.Name, cmd.ParentId);
+                idOfNewlyAddedPart = newPart.Id;
                 Parts.Add(newPart);
                 Summary.AddOneTo(newPart.Level);
-                return;
+                return true;
             }
 
 
@@ -78,11 +79,20 @@ namespace Mtx.LearnItAll.Core.Blueprints
             {                //so that it will manage the new Part as its child
                 Add(part.ToPartNode());
                 Parts.Remove(part);
-                return;
+                idOfNewlyAddedPart = part.Id;
+                return true;
             }
 
             foreach (var node in _partNodes)//when the cmd.ParentId is unknown to the current instance, delegate it to its child nodes
-                node.Add(cmd);
+            {
+                if(node.TryAdd(cmd, out idOfNewlyAddedPart)) return true;
+            }
+            return false;
+        }
+
+        public void Add(AddPartCmd cmd)
+        {
+            TryAdd(cmd, out Guid _);
 
         }
 

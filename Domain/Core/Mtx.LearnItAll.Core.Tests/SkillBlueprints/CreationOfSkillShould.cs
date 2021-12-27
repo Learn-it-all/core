@@ -41,13 +41,13 @@ namespace Mtx.LearnItAll.Core.Tests.Skills
         }
 
         [Fact]
-        public void StartWithCurrentLifecycleState()
+        public void StartWithDraftLifecycleState()
         {
             var sut = _fixture.Create<SkillBlueprint>();
 
             LifecycleState actual = sut.LifecycleState;
 
-            Assert.Equal(LifecycleState.Current, actual);
+            Assert.Equal(LifecycleState.Draft, actual);
         }
 
         [Fact]
