@@ -1,0 +1,28 @@
+﻿
+@using LearnItAll.Models.Skillblueprints
+
+@model PartDetail
+
+<div class="row">
+	<div class="col-1"></div>
+	<div class="col-auto">
+		<i class="h4 bi bi-arrow-return-right"></i>
+		@Model.Part.Name
+		<div class="row align-items-center">
+				<form asp-page-handler="Add" method="post" >
+					<div class="input-group mb-8">
+						<div class="input-group-prepend">
+							<i class="bi bi-arrow-return-right input-group-text"></i>
+						</div>
+						<input name="AddPartModel.Name" id="AddPartModel_Name" class="form-control" placeholder="Add a child node" value="">
+						<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId" value=@Model.Part.Id class="form-control" type="hidden" >
+						<input  name="AddPartModel.SkillId" id="AddPartModel.SkillId" value=@Model.SkillId class="form-control" type="hidden" >
+						
+						<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;" onclick="getFocus('AddPartModel_Name')">+</button>
+					</div>
+				</form>
+			</div>
+	</div>
+
+</div>
+			

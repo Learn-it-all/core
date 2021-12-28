@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grains", "Hosting\Orleans\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Hosting\Orleans\Client\Client.csproj", "{39F09886-4FB3-48D9-94E9-8B47A1265B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.HttpServices", "Mtx.HttpServices\Mtx.HttpServices.csproj", "{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.HttpServices", "Mtx.HttpServices\Mtx.HttpServices.csproj", "{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

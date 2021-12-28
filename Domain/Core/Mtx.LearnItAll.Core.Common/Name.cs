@@ -14,6 +14,11 @@ namespace Mtx.LearnItAll.Core.Common
 
         public Name(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
+            }
+
             if (name.Length > MaxLenght)
                 throw new ArgumentOutOfRangeException(nameof(name), string.Format(Messages.ModelName_CannotExceedMaximunLenght, MaxLenght));
             Value = name;

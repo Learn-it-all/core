@@ -1,0 +1,46 @@
+﻿
+@using LearnItAll.Models.Skillblueprints
+
+@model PartNodeDetail
+
+<div class="row">
+		<div class="col-1"></div>
+	<div class="col-auto">
+		<i class="h2 bi bi-arrow-return-right"></i>
+
+				@Model.PartNode.Name
+			<div class="row align-items-center">
+				<form asp-page-handler="Add" method="post" >
+					<div class="input-group mb-8">
+						<div class="input-group-prepend">
+							<i class="bi bi-arrow-return-right input-group-text"></i>
+						</div>
+						<input name="AddPartModel.Name" id="AddPartModel_Name" class="form-control" placeholder="Add a child node" value="">
+						<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId" value=@Model.PartNode.Id class="form-control" type="hidden" >
+						<input  name="AddPartModel.SkillId" id="AddPartModel.SkillId" value=@Model.SkillId class="form-control" type="hidden" >
+						
+						<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;" onclick="getFocus('AddPartModel_Name')">+</button>
+					</div>
+				</form>
+			</div>
+
+		<ul class="list-group">
+            @foreach (var part in Model.PartNode.Parts)
+            {
+                <li class="list-group-item px-0" style="border: 0px;">
+                    <partial name="_PartDetail" model="new PartDetail{SkillId = Model.SkillId, Part= part}"></partial>
+                </li>
+            }
+        </ul>
+		
+		<ul class="list-group">
+            @foreach (var node in Model.PartNode.Nodes)
+            {
+                <li class="list-group-item px-0" style="border: 0px;">
+                    <partial name="_PartNodeDetail" model="new PartNodeDetail{SkillId = Model.SkillId, PartNode = node}"></partial>
+                </li>
+            }
+        </ul>
+			</div>
+
+</div>

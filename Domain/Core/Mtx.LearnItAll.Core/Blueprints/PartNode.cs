@@ -77,10 +77,10 @@ namespace Mtx.LearnItAll.Core.Blueprints
             var part = Parts.Find(x => x.Id == cmd.ParentId);
             if (part != null)//when the part is found it must be turned into a PartNode
             {                //so that it will manage the new Part as its child
-                Add(part.ToPartNode());
+                var newNodeFromExistingPart = part.ToPartNode();
+                Add(newNodeFromExistingPart);
                 Parts.Remove(part);
-                idOfNewlyAddedPart = part.Id;
-                return true;
+                cmd = new AddPartCmd(cmd.Name, parentId: newNodeFromExistingPart.Id);
             }
 
             foreach (var node in _partNodes)//when the cmd.ParentId is unknown to the current instance, delegate it to its child nodes
