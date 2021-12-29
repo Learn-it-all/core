@@ -28,7 +28,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public LifecycleState LifecycleState => _root.LifecycleState;
         
         [JsonIgnore]
-        public Guid SkillId => _root.Id;
+        public Guid RootPartId => _root.Id;
         
         public string Name => _root.Name;
 

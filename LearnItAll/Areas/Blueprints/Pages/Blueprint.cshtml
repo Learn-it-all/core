@@ -38,7 +38,7 @@
 						</div>
 						<input asp-for=@Model.AddPartModel.Name class="form-control" placeholder="Add a child node" value="">
 <input  asp-for=@Model.AddPartModel.ParentId value=@Model.Blueprint.SkillId class="form-control" type="hidden" >
-						<input  asp-for=@Model.AddPartModel.SkillId value=@Model.Blueprint.Id class="form-control" type="hidden" >
+						<input  asp-for=@Model.AddPartModel.BlueprintId value=@Model.Blueprint.Id class="form-control" type="hidden" >
 						
 						<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;" onclick="getFocus('AddPartModel_Name')">+</button>
 					</div>
@@ -50,7 +50,7 @@
             @foreach (var part in Model.Blueprint.Parts)
             {
                 <li class="list-group-item px-0" style="border: 0px;">
-                    <partial name="_PartDetail" model="new PartDetail{SkillId = Model.Blueprint.Id, Part= part}"></partial>
+                    <partial name="_PartDetail" model="new PartDetail{BlueprintId = Model.Blueprint.Id, Part= part}"></partial>
                 </li>
             }
         </ul>

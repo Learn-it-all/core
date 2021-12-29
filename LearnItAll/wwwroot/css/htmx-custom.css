@@ -2,3 +2,12 @@
     opacity: 0;
     transition: opacity 1s ease-out;
 }
+
+#fade-me-in.htmx-added {
+    opacity: 0;
+}			
+			
+#fade-me-in {
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}

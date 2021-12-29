@@ -28,7 +28,7 @@
             @foreach (var part in Model.PartNode.Parts)
             {
                 <li class="list-group-item px-0" style="border: 0px;">
-                    <partial name="_PartDetail" model="new PartDetail{SkillId = Model.SkillId, Part= part}"></partial>
+                    <partial name="_PartDetail" model="new PartDetail{BlueprintId = Model.SkillId, Part= part}"></partial>
                 </li>
             }
         </ul>

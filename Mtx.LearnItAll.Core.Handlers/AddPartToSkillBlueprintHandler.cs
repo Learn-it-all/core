@@ -18,7 +18,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 
         public async Task<Guid> Handle(AddPartCmd request, CancellationToken cancellationToken)
         {
-            var skill = await cosmosDb.GetSkillBlueprintAsync(request.SkillId.ToString());
+            var skill = await cosmosDb.GetSkillBlueprintAsync(request.BlueprintId.ToString());
             if (skill.TryAdd(request, out Guid partId))
             {
                 await cosmosDb.UpdateAsync(skill.Id.ToString(), skill);

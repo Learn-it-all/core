@@ -31,7 +31,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public AddPartModel AddPartModel { get; set; } = new();
         public Guid IdOfLatestAddedPart { get; set; }
         public Guid BlueprintId { get; set; }
-        public string BlueprintName { get; private set; }
+        public string BlueprintName { get; private set; } = string.Empty;
 
         public async Task OnGet()
         {
@@ -48,8 +48,8 @@ namespace LearnItAll.Areas.Blueprints.Pages
         }
         public async Task<IActionResult> OnPostCreateSimple()
         {
-            var id = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
-            BlueprintId = id;
+            var blueprintdata = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
+            BlueprintId = blueprintdata.Id;
             BlueprintName = NewBlueprintModel.Name;
             return await Task.FromResult(Page());
 
@@ -64,14 +64,14 @@ namespace LearnItAll.Areas.Blueprints.Pages
             }
             catch (Exception e ) 
             {
-                string blueprint = this.HttpContext.Session.GetString(AddPartModel.SkillId.ToString()) ?? throw new InvalidOperationException("SkillBlueprint not found on Session");
+                string blueprint = this.HttpContext.Session.GetString(AddPartModel.BlueprintId.ToString()) ?? throw new InvalidOperationException("SkillBlueprint not found on Session");
                 Blueprint = JsonConvert.DeserializeObject<SkillBluePrint>(blueprint);
                 AddPartModel = new();
                 ModelState.Clear();
                 ModelState.AddModelError($"{nameof(AddPartModel)}.{nameof(AddPartModel.Name)}", e.Message);
                 return await Task.FromResult(Page());
             }
-            string json = this.HttpContext.Session.GetString(AddPartModel.SkillId.ToString()) ?? throw new InvalidOperationException("SkillBlueprint not found on Session");
+            string json = this.HttpContext.Session.GetString(AddPartModel.BlueprintId.ToString()) ?? throw new InvalidOperationException("SkillBlueprint not found on Session");
             Blueprint = JsonConvert.DeserializeObject<SkillBluePrint>(json);
             AddPartModel = new();
             return await Task.FromResult(Page());
@@ -84,9 +84,9 @@ namespace LearnItAll.Areas.Blueprints.Pages
         [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
         public string Name { get; set; } = string.Empty;
         public Guid ParentId { get; set; }
-        public Guid SkillId { get; set; }
+        public Guid BlueprintId { get; set; }
 
-        public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name), model.ParentId,model.SkillId);
+        public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name), model.ParentId,model.BlueprintId);
     }
 
     public class NewBlueprintModel
