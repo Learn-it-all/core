@@ -31,7 +31,8 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public Guid BlueprintId { get; set; }
         [BindProperty]
         public Guid RootPartId { get; set; }
-
+        [BindProperty]
+        public int IdentationLevel { get; set; }
         public async Task OnGet()
         {
             await Task.CompletedTask;
@@ -50,7 +51,15 @@ namespace LearnItAll.Areas.Blueprints.Pages
             try
             {
                 IdOfLatestAddedPart = await mediator.Send((AddPartCmd)AddPartModel);
-                return await this.PartialView("_PartDetail", new PartDetail { Part = new Part { Id = IdOfLatestAddedPart, Name = AddPartModel.Name, ParentId = AddPartModel.ParentId }, BlueprintId = AddPartModel.BlueprintId });
+                return await this.PartialView("_PartDetail",
+                    new PartDetail { 
+                        Part = new Part { 
+                                Id = IdOfLatestAddedPart, 
+                                Name = AddPartModel.Name, 
+                                ParentId = AddPartModel.ParentId,
+                                },
+                        BlueprintId = AddPartModel.BlueprintId,
+                        IdentationLevel = IdentationLevel + 1});
             }
             catch (Exception e)
             {

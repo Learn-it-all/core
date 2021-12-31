@@ -5810,6 +5810,15 @@ var MDCDataTable = /** @class */function (_super) {
         };
         this.headerRow.addEventListener('click', this.headerRowClickListener);
         this.content = this.root.querySelector("." + constants_1.cssClasses.CONTENT);
+        this.handleContentClick = function (event) {
+            var dataRowEl = ponyfill_1.closest(event.target, constants_1.selectors.ROW);
+            if (!dataRowEl) return;
+            _this.foundation.handleRowClick({
+                rowId: _this.getRowIdByRowElement(dataRowEl),
+                row: dataRowEl
+            });
+        };
+        this.content.addEventListener('click', this.handleContentClick);
         this.handleRowCheckboxChange = function (event) {
             _this.foundation.handleRowCheckboxChange(event);
         };
@@ -5817,7 +5826,8 @@ var MDCDataTable = /** @class */function (_super) {
         this.layout();
     };
     /**
-     * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+     * Re-initializes header row checkbox and row checkboxes when selectable rows
+     * are added or removed from table.
      */
     MDCDataTable.prototype.layout = function () {
         this.foundation.layout();
@@ -5891,11 +5901,15 @@ var MDCDataTable = /** @class */function (_super) {
                 }
             }
         }
+        if (this.handleContentClick) {
+            this.content.removeEventListener('click', this.handleContentClick);
+        }
     };
     MDCDataTable.prototype.getDefaultFoundation = function () {
         var _this = this;
-        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+        // DO NOT INLINE this variable. For backward compatibility, foundations take
+        // a Partial<MDCFooAdapter>. To ensure we don't accidentally omit any
+        // methods, we need a separate, strongly typed adapter variable.
         // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
         var adapter = {
             addClass: function addClass(className) {
@@ -5989,6 +6003,9 @@ var MDCDataTable = /** @class */function (_super) {
             notifyUnselectedAll: function notifyUnselectedAll() {
                 _this.emit(constants_1.events.UNSELECTED_ALL, {}, /** shouldBubble */true);
             },
+            notifyRowClick: function notifyRowClick(data) {
+                _this.emit(constants_1.events.ROW_CLICK, data, /** shouldBubble */true);
+            },
             registerHeaderRowCheckbox: function registerHeaderRowCheckbox() {
                 if (_this.headerRowCheckbox) {
                     _this.headerRowCheckbox.destroy();
@@ -6073,6 +6090,9 @@ var MDCDataTable = /** @class */function (_super) {
             this.linearProgress = new component_3.MDCLinearProgress(el);
         }
         return this.linearProgress;
+    };
+    MDCDataTable.prototype.getRowIdByRowElement = function (rowElement) {
+        return rowElement.getAttribute(constants_1.dataAttributes.ROW_ID);
     };
     return MDCDataTable;
 }(component_1.MDCComponent);
@@ -6211,10 +6231,11 @@ var SortValue;
  * Event names used in component.
  */
 exports.events = {
+  ROW_CLICK: 'MDCDataTable:rowClick',
   ROW_SELECTION_CHANGED: 'MDCDataTable:rowSelectionChanged',
   SELECTED_ALL: 'MDCDataTable:selectedAll',
-  UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
-  SORTED: 'MDCDataTable:sorted'
+  SORTED: 'MDCDataTable:sorted',
+  UNSELECTED_ALL: 'MDCDataTable:unselectedAll'
 };
 
 /***/ }),
@@ -6439,6 +6460,9 @@ var MDCDataTableFoundation = /** @class */function (_super) {
                 notifyUnselectedAll: function notifyUnselectedAll() {
                     return undefined;
                 },
+                notifyRowClick: function notifyRowClick() {
+                    return undefined;
+                },
                 registerHeaderRowCheckbox: function registerHeaderRowCheckbox() {
                     return undefined;
                 },
@@ -6484,8 +6508,9 @@ var MDCDataTableFoundation = /** @class */function (_super) {
         configurable: true
     });
     /**
-     * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
-     * Use this if registering checkbox is synchronous.
+     * Re-initializes header row checkbox and row checkboxes when selectable rows
+     * are added or removed from table. Use this if registering checkbox is
+     * synchronous.
      */
     MDCDataTableFoundation.prototype.layout = function () {
         if (this.adapter.isRowsSelectable()) {
@@ -6495,8 +6520,9 @@ var MDCDataTableFoundation = /** @class */function (_super) {
         }
     };
     /**
-     * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
-     * Use this if registering checkbox is asynchronous.
+     * Re-initializes header row checkbox and row checkboxes when selectable rows
+     * are added or removed from table. Use this if registering checkbox is
+     * asynchronous.
      */
     MDCDataTableFoundation.prototype.layoutAsync = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -6642,6 +6668,17 @@ var MDCDataTableFoundation = /** @class */function (_super) {
         });
     };
     /**
+     * Handles data table row click event.
+     */
+    MDCDataTableFoundation.prototype.handleRowClick = function (_a) {
+        var rowId = _a.rowId,
+            row = _a.row;
+        this.adapter.notifyRowClick({
+            rowId: rowId,
+            row: row
+        });
+    };
+    /**
      * Shows progress indicator blocking only the table body content when in
      * loading state.
      */
@@ -6784,6 +6821,7 @@ __exportStar(__webpack_require__(/*! ./types */ "./packages/mdc-data-table/types
  */
 
 Object.defineProperty(exports, "__esModule", { value: true });
+;
 
 /***/ }),
 
@@ -7919,7 +7957,7 @@ exports.areTopsMisaligned = areTopsMisaligned;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.announce = exports.DATA_MDC_DOM_ANNOUNCE = exports.AnnouncerPriority = void 0;
 /**
- * Priorities for the announce function
+ * Priorities for the announce function.
  */
 var AnnouncerPriority;
 (function (AnnouncerPriority) {
@@ -7933,8 +7971,8 @@ exports.DATA_MDC_DOM_ANNOUNCE = 'data-mdc-dom-announce';
 /**
  * Announces the given message with optional priority, defaulting to "polite"
  */
-function announce(message, priority) {
-    Announcer.getInstance().say(message, priority);
+function announce(message, options) {
+    Announcer.getInstance().say(message, options);
 }
 exports.announce = announce;
 var Announcer = /** @class */function () {
@@ -7948,35 +7986,40 @@ var Announcer = /** @class */function () {
         }
         return Announcer.instance;
     };
-    Announcer.prototype.say = function (message, priority) {
-        if (priority === void 0) {
-            priority = AnnouncerPriority.POLITE;
-        }
-        var liveRegion = this.getLiveRegion(priority);
+    Announcer.prototype.say = function (message, options) {
+        var _a, _b;
+        var priority = (_a = options === null || options === void 0 ? void 0 : options.priority) !== null && _a !== void 0 ? _a : AnnouncerPriority.POLITE;
+        var ownerDocument = (_b = options === null || options === void 0 ? void 0 : options.ownerDocument) !== null && _b !== void 0 ? _b : document;
+        var liveRegion = this.getLiveRegion(priority, ownerDocument);
         // Reset the region to pick up the message, even if the message is the
         // exact same as before.
         liveRegion.textContent = '';
         // Timeout is necessary for screen readers like NVDA and VoiceOver.
         setTimeout(function () {
             liveRegion.textContent = message;
-            document.addEventListener('click', clearLiveRegion);
+            ownerDocument.addEventListener('click', clearLiveRegion);
         }, 1);
         function clearLiveRegion() {
             liveRegion.textContent = '';
-            document.removeEventListener('click', clearLiveRegion);
+            ownerDocument.removeEventListener('click', clearLiveRegion);
         }
     };
-    Announcer.prototype.getLiveRegion = function (priority) {
-        var existingLiveRegion = this.liveRegions.get(priority);
-        if (existingLiveRegion && document.body.contains(existingLiveRegion)) {
+    Announcer.prototype.getLiveRegion = function (priority, ownerDocument) {
+        var documentLiveRegions = this.liveRegions.get(ownerDocument);
+        if (!documentLiveRegions) {
+            documentLiveRegions = new Map();
+            this.liveRegions.set(ownerDocument, documentLiveRegions);
+        }
+        var existingLiveRegion = documentLiveRegions.get(priority);
+        if (existingLiveRegion && ownerDocument.body.contains(existingLiveRegion)) {
             return existingLiveRegion;
         }
-        var liveRegion = this.createLiveRegion(priority);
-        this.liveRegions.set(priority, liveRegion);
+        var liveRegion = this.createLiveRegion(priority, ownerDocument);
+        documentLiveRegions.set(priority, liveRegion);
         return liveRegion;
     };
-    Announcer.prototype.createLiveRegion = function (priority) {
-        var el = document.createElement('div');
+    Announcer.prototype.createLiveRegion = function (priority, ownerDocument) {
+        var el = ownerDocument.createElement('div');
         el.style.position = 'absolute';
         el.style.top = '-9999px';
         el.style.left = '-9999px';
@@ -7985,7 +8028,7 @@ var Announcer = /** @class */function () {
         el.setAttribute('aria-atomic', 'true');
         el.setAttribute('aria-live', priority);
         el.setAttribute(exports.DATA_MDC_DOM_ANNOUNCE, 'true');
-        document.body.appendChild(el);
+        ownerDocument.body.appendChild(el);
         return el;
     };
     return Announcer;
@@ -13963,7 +14006,8 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
         cancelAnimationFrame(this.animationRequestId);
     };
     /**
-     * @param corner Default anchor corner alignment of top-left menu surface corner.
+     * @param corner Default anchor corner alignment of top-left menu surface
+     *     corner.
      */
     MDCMenuSurfaceFoundation.prototype.setAnchorCorner = function (corner) {
         this.anchorCorner = corner;
@@ -13987,9 +14031,17 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
     MDCMenuSurfaceFoundation.prototype.setIsHoisted = function (isHoisted) {
         this.isHoistedElement = isHoisted;
     };
-    /** Used to set the menu-surface calculations based on a fixed position menu. */
+    /**
+     * Used to set the menu-surface calculations based on a fixed position menu.
+     */
     MDCMenuSurfaceFoundation.prototype.setFixedPosition = function (isFixedPosition) {
         this.isFixedPosition = isFixedPosition;
+    };
+    /**
+     * @return Returns true if menu is in fixed (`position: fixed`) position.
+     */
+    MDCMenuSurfaceFoundation.prototype.isFixed = function () {
+        return this.isFixedPosition;
     };
     /** Sets the menu-surface position on the page. */
     MDCMenuSurfaceFoundation.prototype.setAbsolutePosition = function (x, y) {
@@ -14112,11 +14164,13 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
             anchorSize = _b.anchorSize,
             surfaceSize = _b.surfaceSize;
         var position = (_a = {}, _a[horizontalAlignment] = horizontalOffset, _a[verticalAlignment] = verticalOffset, _a);
-        // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
+        // Center align when anchor width is comparable or greater than menu
+        // surface, otherwise keep corner.
         if (anchorSize.width / surfaceSize.width > constants_1.numbers.ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO) {
             horizontalAlignment = 'center';
         }
-        // If the menu-surface has been hoisted to the body, it's no longer relative to the anchor element
+        // If the menu-surface has been hoisted to the body, it's no longer relative
+        // to the anchor element
         if (this.isHoistedElement || this.isFixedPosition) {
             this.adjustPositionForHoistedElement(position);
         }
@@ -14227,7 +14281,8 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
     };
     /**
      * @param corner Origin corner of the menu surface.
-     * @return Maximum height of the menu surface, based on available space. 0 indicates should not be set.
+     * @return Maximum height of the menu surface, based on available space. 0
+     *     indicates should not be set.
      */
     MDCMenuSurfaceFoundation.prototype.getMenuSurfaceMaxHeight = function (corner) {
         if (this.maxHeight > 0) {
@@ -14254,7 +14309,8 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
     };
     /**
      * @param corner Origin corner of the menu surface.
-     * @return Horizontal offset of menu surface origin corner from corresponding anchor corner.
+     * @return Horizontal offset of menu surface origin corner from corresponding
+     *     anchor corner.
      */
     MDCMenuSurfaceFoundation.prototype.getHorizontalOriginOffset = function (corner) {
         var anchorSize = this.measurements.anchorSize;
@@ -14276,7 +14332,8 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
     };
     /**
      * @param corner Origin corner of the menu surface.
-     * @return Vertical offset of menu surface origin corner from corresponding anchor corner.
+     * @return Vertical offset of menu surface origin corner from corresponding
+     *     anchor corner.
      */
     MDCMenuSurfaceFoundation.prototype.getVerticalOriginOffset = function (corner) {
         var anchorSize = this.measurements.anchorSize;
@@ -14290,7 +14347,10 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
         }
         return y;
     };
-    /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
+    /**
+     * Calculates the offsets for positioning the menu-surface when the
+     * menu-surface has been hoisted to the body.
+     */
     MDCMenuSurfaceFoundation.prototype.adjustPositionForHoistedElement = function (position) {
         var e_1, _a;
         var _b = this.measurements,
@@ -14307,11 +14367,11 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
                     position[prop] = (viewportSize.width - surfaceSize.width) / 2;
                     continue;
                 }
-                // Hoisted surfaces need to have the anchor elements location on the page added to the
-                // position properties for proper alignment on the body.
+                // Hoisted surfaces need to have the anchor elements location on the page
+                // added to the position properties for proper alignment on the body.
                 value += viewportDistance[prop];
-                // Surfaces that are absolutely positioned need to have additional calculations for scroll
-                // and bottom positioning.
+                // Surfaces that are absolutely positioned need to have additional
+                // calculations for scroll and bottom positioning.
                 if (!this.isFixedPosition) {
                     if (prop === 'top') {
                         value += windowScroll.y;
@@ -14337,8 +14397,9 @@ var MDCMenuSurfaceFoundation = /** @class */function (_super) {
         }
     };
     /**
-     * The last focused element when the menu surface was opened should regain focus, if the user is
-     * focused on or within the menu surface when it is closed.
+     * The last focused element when the menu surface was opened should regain
+     * focus, if the user is focused on or within the menu surface when it is
+     * closed.
      */
     MDCMenuSurfaceFoundation.prototype.maybeRestoreFocus = function () {
         var _this = this;
@@ -14848,6 +14909,10 @@ var MDCMenu = /** @class */function (_super) {
                 var list = _this.items;
                 list[index].removeAttribute(attr);
             },
+            getAttributeFromElementAtIndex: function getAttributeFromElementAtIndex(index, attr) {
+                var list = _this.items;
+                return list[index].getAttribute(attr);
+            },
             elementContainsClass: function elementContainsClass(element, className) {
                 return element.classList.contains(className);
             },
@@ -14935,7 +15000,8 @@ var strings = {
     ARIA_DISABLED_ATTR: 'aria-disabled',
     CHECKBOX_SELECTOR: 'input[type="checkbox"]',
     LIST_SELECTOR: '.mdc-list,.mdc-deprecated-list',
-    SELECTED_EVENT: 'MDCMenu:selected'
+    SELECTED_EVENT: 'MDCMenu:selected',
+    SKIP_RESTORE_FOCUS: 'data-menu-item-skip-restore-focus'
 };
 exports.strings = strings;
 var numbers = {
@@ -15072,6 +15138,9 @@ var MDCMenuFoundation = /** @class */function (_super) {
                 removeAttributeFromElementAtIndex: function removeAttributeFromElementAtIndex() {
                     return undefined;
                 },
+                getAttributeFromElementAtIndex: function getAttributeFromElementAtIndex() {
+                    return null;
+                },
                 elementContainsClass: function elementContainsClass() {
                     return false;
                 },
@@ -15126,7 +15195,8 @@ var MDCMenuFoundation = /** @class */function (_super) {
             return;
         }
         this.adapter.notifySelected({ index: index });
-        this.adapter.closeSurface();
+        var skipRestoreFocus = this.adapter.getAttributeFromElementAtIndex(index, constants_2.strings.SKIP_RESTORE_FOCUS) === 'true';
+        this.adapter.closeSurface(skipRestoreFocus);
         // Wait for the menu to close before adding/removing classes that affect styles.
         this.closeAnimationEndTimerId = setTimeout(function () {
             // Recompute the index in case the menu contents have changed.
@@ -16276,7 +16346,9 @@ var MDCRipple = /** @class */function (_super) {
     }
     MDCRipple.attachTo = function (root, opts) {
         if (opts === void 0) {
-            opts = { isUnbounded: undefined };
+            opts = {
+                isUnbounded: undefined
+            };
         }
         var ripple = new MDCRipple(root);
         // Only override unbounded behavior if option is explicitly specified
@@ -20912,7 +20984,9 @@ var MDCSlider = /** @class */function (_super) {
                     track.appendChild(tickMarksContainer);
                 }
                 if (tickMarks.length !== tickMarksContainer.children.length) {
-                    tickMarksContainer.innerHTML = '';
+                    while (tickMarksContainer.firstChild) {
+                        tickMarksContainer.removeChild(tickMarksContainer.firstChild);
+                    }
                     _this.addTickMarks(tickMarksContainer, tickMarks);
                 } else {
                     _this.updateTickMarks(tickMarksContainer, tickMarks);
@@ -21716,10 +21790,10 @@ var MDCSliderFoundation = /** @class */function (_super) {
      * Emits custom dragStart event, along with focusing the underlying input.
      */
     MDCSliderFoundation.prototype.handleDragStart = function (event, value, thumb) {
+        this.adapter.emitDragStartEvent(value, thumb);
         this.adapter.focusInput(thumb);
         // Prevent the input (that we just focused) from losing focus.
         event.preventDefault();
-        this.adapter.emitDragStartEvent(value, thumb);
     };
     /**
      * @return The thumb to be moved based on initial down event.
@@ -28419,7 +28493,8 @@ var cssClasses = {
     ROOT: 'mdc-text-field',
     TEXTAREA: 'mdc-text-field--textarea',
     WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
-    WITH_TRAILING_ICON: 'mdc-text-field--with-trailing-icon'
+    WITH_TRAILING_ICON: 'mdc-text-field--with-trailing-icon',
+    WITH_INTERNAL_COUNTER: 'mdc-text-field--with-internal-counter'
 };
 exports.cssClasses = cssClasses;
 var numbers = {
@@ -28427,13 +28502,15 @@ var numbers = {
 };
 exports.numbers = numbers;
 /**
- * Whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+ * Whitelist based off of
+ * https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
  * under the "Validation-related attributes" section.
  */
 var VALIDATION_ATTR_WHITELIST = ['pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength'];
 exports.VALIDATION_ATTR_WHITELIST = VALIDATION_ATTR_WHITELIST;
 /**
- * Label should always float for these types as they show some UI even if value is empty.
+ * Label should always float for these types as they show some UI even if value
+ * is empty.
  */
 var ALWAYS_FLOAT_TYPES = ['color', 'date', 'datetime-local', 'month', 'range', 'time', 'week'];
 exports.ALWAYS_FLOAT_TYPES = ALWAYS_FLOAT_TYPES;
@@ -30357,6 +30434,9 @@ var MDCTooltip = /** @class */function (_super) {
             setAttribute: function setAttribute(attr, value) {
                 _this.root.setAttribute(attr, value);
             },
+            removeAttribute: function removeAttribute(attr) {
+                _this.root.removeAttribute(attr);
+            },
             addClass: function addClass(className) {
                 _this.root.classList.add(className);
             },
@@ -30473,6 +30553,9 @@ var MDCTooltip = /** @class */function (_super) {
                 }
                 topCaret.removeAttribute('style');
                 bottomCaret.removeAttribute('style');
+            },
+            getActiveElement: function getActiveElement() {
+                return document.activeElement;
             }
         };
         //tslint:enable:object-literal-sort-keys
@@ -30553,8 +30636,7 @@ var attributes = {
     ARIA_HASPOPUP: 'aria-haspopup',
     PERSISTENT: 'data-mdc-tooltip-persistent',
     SCROLLABLE_ANCESTOR: 'tooltip-scrollable-ancestor',
-    HAS_CARET: 'data-mdc-tooltip-has-caret',
-    HIDDEN_FROM_SCREENREADER: 'data-hide-tooltip-from-screenreader'
+    HAS_CARET: 'data-mdc-tooltip-has-caret'
 };
 exports.attributes = attributes;
 var events = {
@@ -30780,7 +30862,7 @@ var MDCTooltipFoundation = /** @class */function (_super) {
             _this.handleRichTooltipFocusOut(evt);
         };
         _this.windowScrollHandler = function () {
-            _this.handleWindowChangeEvent();
+            _this.handleWindowScrollEvent();
         };
         _this.windowResizeHandler = function () {
             _this.handleWindowChangeEvent();
@@ -30794,6 +30876,9 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     return null;
                 },
                 setAttribute: function setAttribute() {
+                    return undefined;
+                },
+                removeAttribute: function removeAttribute() {
                     return undefined;
                 },
                 addClass: function addClass() {
@@ -30882,6 +30967,9 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                 },
                 clearTooltipCaretStyles: function clearTooltipCaretStyles() {
                     return undefined;
+                },
+                getActiveElement: function getActiveElement() {
+                    return null;
                 }
             };
         },
@@ -30991,7 +31079,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
         // Hide the tooltip immediately on ESC key.
         var key = keyboard_1.normalizeKey(evt);
         if (key === keyboard_1.KEY.ESCAPE) {
-            var tooltipContainsActiveElement = document.activeElement instanceof HTMLElement && this.adapter.tooltipContainsElement(document.activeElement);
+            var activeElement = this.adapter.getActiveElement();
+            var tooltipContainsActiveElement = activeElement instanceof HTMLElement && this.adapter.tooltipContainsElement(activeElement);
             if (tooltipContainsActiveElement) {
                 this.adapter.focusAnchorElement();
             }
@@ -31003,6 +31092,16 @@ var MDCTooltipFoundation = /** @class */function (_super) {
             var tooltipContainsRelatedTargetElement = evt.relatedTarget instanceof HTMLElement && this.adapter.tooltipContainsElement(evt.relatedTarget);
             // If focus changed to the tooltip element, don't hide the tooltip.
             if (tooltipContainsRelatedTargetElement) {
+                return;
+            }
+            if (evt.relatedTarget === null && this.interactiveTooltip) {
+                // If evt.relatedTarget is null, it is because focus is moving to an
+                // element that is not focusable. This should only occur in instances
+                // of a screen reader in browse mode/linear navigation mode. If the
+                // tooltip is interactive (and so the entire content is not read by
+                // the screen reader upon the tooltip being opened), we want to allow
+                // users to read the content of the tooltip (and not just the focusable
+                // elements).
                 return;
             }
         }
@@ -31024,6 +31123,26 @@ var MDCTooltipFoundation = /** @class */function (_super) {
         // If the focus is still within the anchor or the tooltip, do not hide the
         // tooltip.
         if (anchorOrTooltipContainsRelatedTargetElement) {
+            return;
+        }
+        if (evt.relatedTarget === null && this.interactiveTooltip) {
+            // If evt.relatedTarget is null, it is because focus is moving to an
+            // element that is not focusable. This should only occur in instances
+            // of a screen reader in browse mode/linear navigation mode. If the
+            // tooltip is interactive (and so the entire content is not read by
+            // the screen reader upon the tooltip being opened), we want to allow
+            // users to read the content of the tooltip (and not just the focusable
+            // elements).
+            return;
+        }
+        this.hide();
+    };
+    MDCTooltipFoundation.prototype.handleWindowScrollEvent = function () {
+        if (this.persistentTooltip) {
+            // Persistent tooltips remain visible on user scroll, call appropriate
+            // handler to ensure the tooltip remains pinned to the anchor on page
+            // scroll.
+            this.handleWindowChangeEvent();
             return;
         }
         this.hide();
@@ -31050,10 +31169,7 @@ var MDCTooltipFoundation = /** @class */function (_super) {
             return;
         }
         this.tooltipShown = true;
-        var showTooltipOptions = this.parseShowTooltipOptions();
-        if (!showTooltipOptions.hideFromScreenreader) {
-            this.adapter.setAttribute('aria-hidden', 'false');
-        }
+        this.adapter.removeAttribute('aria-hidden');
         if (this.richTooltip) {
             if (this.interactiveTooltip) {
                 this.adapter.setAnchorAttribute('aria-expanded', 'true');
@@ -31191,10 +31307,6 @@ var MDCTooltipFoundation = /** @class */function (_super) {
     };
     MDCTooltipFoundation.prototype.setHideDelay = function (delayMs) {
         this.hideDelayMs = delayMs;
-    };
-    MDCTooltipFoundation.prototype.parseShowTooltipOptions = function () {
-        var hideFromScreenreader = Boolean(this.adapter.getAnchorAttribute(constants_1.attributes.HIDDEN_FROM_SCREENREADER));
-        return { hideFromScreenreader: hideFromScreenreader };
     };
     MDCTooltipFoundation.prototype.isTooltipMultiline = function () {
         var tooltipSize = this.adapter.getTooltipSize();
@@ -31715,6 +31827,7 @@ var MDCTooltipFoundation = /** @class */function (_super) {
      * transform-origin on the tooltip itself for entrance animations.
      */
     MDCTooltipFoundation.prototype.setCaretPositionStyles = function (position, caretSize) {
+        var e_7, _a;
         var values = this.calculateCaretPositionOnTooltip(position, caretSize);
         if (!values) {
             return { yTransformOrigin: 0, xTransformOrigin: 0 };
@@ -31732,6 +31845,20 @@ var MDCTooltipFoundation = /** @class */function (_super) {
         var scaleX = Math.cos(skewRadians);
         this.adapter.setTooltipCaretStyle('transform', "rotate(" + values.rotation + "deg) skewY(" + values.skew + "deg) scaleX(" + scaleX + ")");
         this.adapter.setTooltipCaretStyle('transform-origin', values.xAlignment + " " + values.yAlignment);
+        try {
+            for (var _b = __values(values.caretCorners), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var corner = _c.value;
+                this.adapter.setTooltipCaretStyle(corner, '0');
+            }
+        } catch (e_7_1) {
+            e_7 = { error: e_7_1 };
+        } finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            } finally {
+                if (e_7) throw e_7.error;
+            }
+        }
         return {
             yTransformOrigin: values.yTransformOrigin,
             xTransformOrigin: values.xTransformOrigin
@@ -31756,6 +31883,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
         var indentedFromHeight = "calc(" + tooltipHeight + " - " + indentedFromEdge + ")";
         var verticalRotation = 35;
         var horizontalRotation = Math.abs(90 - verticalRotation);
+        var bottomRightTopLeftBorderRadius = ['border-bottom-right-radius', 'border-top-left-radius'];
+        var bottomLeftTopRightBorderRadius = ['border-bottom-left-radius', 'border-top-right-radius'];
         var skewDeg = 20;
         switch (tooltipPos) {
             case constants_1.PositionWithCaret.BELOW_CENTER:
@@ -31767,7 +31896,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: -1 * verticalRotation,
                     skew: -1 * skewDeg,
                     xTransformOrigin: midpointWidth,
-                    yTransformOrigin: flushWithEdge
+                    yTransformOrigin: flushWithEdge,
+                    caretCorners: bottomRightTopLeftBorderRadius
                 };
             case constants_1.PositionWithCaret.BELOW_END:
                 return {
@@ -31778,7 +31908,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? verticalRotation : -1 * verticalRotation,
                     skew: isLTR ? skewDeg : -1 * skewDeg,
                     xTransformOrigin: isLTR ? indentedFromWidth : indentedFromEdge,
-                    yTransformOrigin: flushWithEdge
+                    yTransformOrigin: flushWithEdge,
+                    caretCorners: isLTR ? bottomLeftTopRightBorderRadius : bottomRightTopLeftBorderRadius
                 };
             case constants_1.PositionWithCaret.BELOW_START:
                 return {
@@ -31789,7 +31920,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? -1 * verticalRotation : verticalRotation,
                     skew: isLTR ? -1 * skewDeg : skewDeg,
                     xTransformOrigin: isLTR ? indentedFromEdge : indentedFromWidth,
-                    yTransformOrigin: flushWithEdge
+                    yTransformOrigin: flushWithEdge,
+                    caretCorners: isLTR ? bottomRightTopLeftBorderRadius : bottomLeftTopRightBorderRadius
                 };
             case constants_1.PositionWithCaret.TOP_SIDE_END:
                 return {
@@ -31800,7 +31932,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
                     skew: isLTR ? -1 * skewDeg : skewDeg,
                     xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
-                    yTransformOrigin: indentedFromEdge
+                    yTransformOrigin: indentedFromEdge,
+                    caretCorners: isLTR ? bottomRightTopLeftBorderRadius : bottomLeftTopRightBorderRadius
                 };
             case constants_1.PositionWithCaret.CENTER_SIDE_END:
                 return {
@@ -31811,7 +31944,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
                     skew: isLTR ? -1 * skewDeg : skewDeg,
                     xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
-                    yTransformOrigin: midpointHeight
+                    yTransformOrigin: midpointHeight,
+                    caretCorners: isLTR ? bottomRightTopLeftBorderRadius : bottomLeftTopRightBorderRadius
                 };
             case constants_1.PositionWithCaret.BOTTOM_SIDE_END:
                 return {
@@ -31822,7 +31956,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
                     skew: isLTR ? skewDeg : -1 * skewDeg,
                     xTransformOrigin: isLTR ? flushWithEdge : tooltipWidth,
-                    yTransformOrigin: indentedFromHeight
+                    yTransformOrigin: indentedFromHeight,
+                    caretCorners: isLTR ? bottomLeftTopRightBorderRadius : bottomRightTopLeftBorderRadius
                 };
             case constants_1.PositionWithCaret.TOP_SIDE_START:
                 return {
@@ -31833,7 +31968,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
                     skew: isLTR ? skewDeg : -1 * skewDeg,
                     xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
-                    yTransformOrigin: indentedFromEdge
+                    yTransformOrigin: indentedFromEdge,
+                    caretCorners: isLTR ? bottomLeftTopRightBorderRadius : bottomRightTopLeftBorderRadius
                 };
             case constants_1.PositionWithCaret.CENTER_SIDE_START:
                 return {
@@ -31844,7 +31980,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? -1 * horizontalRotation : horizontalRotation,
                     skew: isLTR ? skewDeg : -1 * skewDeg,
                     xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
-                    yTransformOrigin: midpointHeight
+                    yTransformOrigin: midpointHeight,
+                    caretCorners: isLTR ? bottomLeftTopRightBorderRadius : bottomRightTopLeftBorderRadius
                 };
             case constants_1.PositionWithCaret.BOTTOM_SIDE_START:
                 return {
@@ -31855,7 +31992,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? horizontalRotation : -1 * horizontalRotation,
                     skew: isLTR ? -1 * skewDeg : skewDeg,
                     xTransformOrigin: isLTR ? tooltipWidth : flushWithEdge,
-                    yTransformOrigin: indentedFromHeight
+                    yTransformOrigin: indentedFromHeight,
+                    caretCorners: isLTR ? bottomRightTopLeftBorderRadius : bottomLeftTopRightBorderRadius
                 };
             case constants_1.PositionWithCaret.ABOVE_CENTER:
                 return {
@@ -31866,7 +32004,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: verticalRotation,
                     skew: skewDeg,
                     xTransformOrigin: midpointWidth,
-                    yTransformOrigin: tooltipHeight
+                    yTransformOrigin: tooltipHeight,
+                    caretCorners: bottomLeftTopRightBorderRadius
                 };
             case constants_1.PositionWithCaret.ABOVE_END:
                 return {
@@ -31877,7 +32016,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? -1 * verticalRotation : verticalRotation,
                     skew: isLTR ? -1 * skewDeg : skewDeg,
                     xTransformOrigin: isLTR ? indentedFromWidth : indentedFromEdge,
-                    yTransformOrigin: tooltipHeight
+                    yTransformOrigin: tooltipHeight,
+                    caretCorners: isLTR ? bottomRightTopLeftBorderRadius : bottomLeftTopRightBorderRadius
                 };
             default:
             case constants_1.PositionWithCaret.ABOVE_START:
@@ -31889,7 +32029,8 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                     rotation: isLTR ? verticalRotation : -1 * verticalRotation,
                     skew: isLTR ? skewDeg : -1 * skewDeg,
                     xTransformOrigin: isLTR ? indentedFromEdge : indentedFromWidth,
-                    yTransformOrigin: tooltipHeight
+                    yTransformOrigin: tooltipHeight,
+                    caretCorners: isLTR ? bottomLeftTopRightBorderRadius : bottomRightTopLeftBorderRadius
                 };
         }
     };
@@ -31928,7 +32069,7 @@ var MDCTooltipFoundation = /** @class */function (_super) {
         });
     };
     MDCTooltipFoundation.prototype.destroy = function () {
-        var e_7, _a;
+        var e_8, _a;
         if (this.frameId) {
             cancelAnimationFrame(this.frameId);
             this.frameId = null;
@@ -31957,13 +32098,13 @@ var MDCTooltipFoundation = /** @class */function (_super) {
                 var fn = _c.value;
                 fn();
             }
-        } catch (e_7_1) {
-            e_7 = { error: e_7_1 };
+        } catch (e_8_1) {
+            e_8 = { error: e_8_1 };
         } finally {
             try {
                 if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
             } finally {
-                if (e_7) throw e_7.error;
+                if (e_8) throw e_8.error;
             }
         }
         this.animFrame.cancelAll();
@@ -32027,43 +32168,6 @@ __exportStar(__webpack_require__(/*! ./adapter */ "./packages/mdc-tooltip/adapte
 __exportStar(__webpack_require__(/*! ./component */ "./packages/mdc-tooltip/component.ts"), exports);
 __exportStar(__webpack_require__(/*! ./foundation */ "./packages/mdc-tooltip/foundation.ts"), exports);
 __exportStar(__webpack_require__(/*! ./constants */ "./packages/mdc-tooltip/constants.ts"), exports);
-__exportStar(__webpack_require__(/*! ./types */ "./packages/mdc-tooltip/types.ts"), exports);
-
-/***/ }),
-
-/***/ "./packages/mdc-tooltip/types.ts":
-/*!***************************************!*\
-  !*** ./packages/mdc-tooltip/types.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * @license
- * Copyright 2020 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
-Object.defineProperty(exports, "__esModule", { value: true });
 
 /***/ }),
 
