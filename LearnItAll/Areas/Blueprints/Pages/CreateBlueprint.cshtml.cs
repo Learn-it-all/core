@@ -51,6 +51,8 @@ namespace LearnItAll.Areas.Blueprints.Pages
             try
             {
                 IdOfLatestAddedPart = await mediator.Send((AddPartCmd)AddPartModel);
+                if (IdOfLatestAddedPart == Guid.Empty) return await Task.FromResult(this.BadRequest($"Could not find the Id '{AddPartModel.ParentId}' in the Skill of id '{AddPartModel.BlueprintId}'"));
+                
                 return await this.PartialView("_PartDetail",
                     new PartDetail { 
                         Part = new Part { 

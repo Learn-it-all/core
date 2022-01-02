@@ -2,35 +2,38 @@
 @using LearnItAll.Models.Skillblueprints
 @model PartDetail
 
-@*		@if(Model.IsRoot)
+		@if(Model.IsRoot)
 		{
-<i class="bi bi-caret-right"></i><h5>Skill Blueprint: @Model.Part.Name</h5>
+			<button type="button" onclick="toggleCollapseOfAllElementsInPage()" class="btn btn-primary expand-parts">Expand/Collapse All</button>
+			<h5>Skill Blueprint: @Model.Part.Name</h5>
 		} 
-		else
+
+		<div id="level-identation" class="myfaded toggle-me collapse show" style="padding-left: @(Model.IdentationLevel * 15)px;">
+		
+		@if(!Model.IsRoot)
 		{
-		}*@
-		<div id="level-identation" style="padding-left: @(Model.IdentationLevel * 15)px;">
 			<a href="#Item-@Model.Part.Id" class="list-group-item" data-bs-toggle="collapse" role="button" aria-expanded="false">
 			<i class="bi bi-caret-right"></i>@Model.Part.Name</a>
+		}
 			
-			<div class="list-group collapse" id="Item-@Model.Part.Id">
-				<div  hx-boost="true"
-				        hx-target="#Item-@Model.Part.Id"
-				        hx-swap="beforeend settle:1s"
-				        class="list-group-item  align-items-center">
-										<form asp-page-handler="Add" method="post" >
-												<div class="input-group mb-8">
-													<div class="input-group-prepend">
-														<i class="bi bi-arrow-return-right input-group-text"></i>
-													</div>
-													<input name="AddPartModel.Name" id="AddPartModel_Name" class="form-control" placeholder="Add a child node" value="">
-													<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId" value=@Model.Part.Id class="form-control" type="hidden" >
-													<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden" >
-													<input  name="IdentationLevel" id="IdentationLevel" value=@Model.IdentationLevel class="form-control" type="hidden" >
-													
-													<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;">+</button>
+		<div class="list-group collapse show  toggle-me " id="Item-@Model.Part.Id">
+			<div  hx-boost="true"
+			        hx-target="#Item-@Model.Part.Id"
+			        hx-swap="afterend settle:1s"
+			        class="list-group-item  align-items-center">
+									<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
+											<div class="input-group mb-8">
+												<div class="input-group-prepend">
+													<i class="bi bi-arrow-return-right input-group-text"></i>
 												</div>
-										</form>
-				</div>
+												<input name="AddPartModel.Name" id="AddPartModel_Name_@Model.Part.Id" class="form-control" placeholder="Add a child node" value="">
+												<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
+												<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
+												<input  name="IdentationLevel" id="IdentationLevel_@Model.Part.Id" value=@Model.IdentationLevel class="form-control" type="hidden" >
+												
+												<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;">+</button>
+											</div>
+									</form>
 			</div>
 		</div>
+	</div>

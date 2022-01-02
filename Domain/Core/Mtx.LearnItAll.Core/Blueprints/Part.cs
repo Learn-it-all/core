@@ -29,6 +29,6 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         public void ChangeLevel(int newLevel) => Level = SkillLevel.Convert(newLevel);
         
-        public static implicit operator PartNode(Part part) => new PartNode(new Name(part.Name),part.ParentId);
+        public static implicit operator PartNode(Part part) => new PartNode(part);
     }
 }
