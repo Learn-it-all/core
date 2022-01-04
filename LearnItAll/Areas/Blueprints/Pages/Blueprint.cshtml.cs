@@ -57,10 +57,11 @@ namespace LearnItAll.Areas.Blueprints.Pages
 
         public async Task<IActionResult> OnPostAdd()
         {
+            var result = AddPartResult.FailureForUnknownReason;
             try
             {
-                IdOfLatestAddedPart = await mediator.Send((AddPartCmd)AddPartModel);
-
+                result = await mediator.Send((AddPartCmd)AddPartModel);
+                IdOfLatestAddedPart = result.IdOfAddedPart;
             }
             catch (Exception e ) 
             {

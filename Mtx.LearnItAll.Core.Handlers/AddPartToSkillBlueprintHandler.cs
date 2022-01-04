@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mtx.LearnItAll.Core.Handlers
 {
-    public class AddPartToSkillBlueprintHandler : IRequestHandler<AddPartCmd,Guid>
+    public class AddPartToSkillBlueprintHandler : IRequestHandler<AddPartCmd, AddPartResult>
     {
         private readonly ICosmosDbService cosmosDb;
 
@@ -16,19 +16,13 @@ namespace Mtx.LearnItAll.Core.Handlers
             this.cosmosDb = cosmosDb;
         }
 
-        public async Task<Guid> Handle(AddPartCmd request, CancellationToken cancellationToken)
+        public async Task<AddPartResult> Handle(AddPartCmd request, CancellationToken cancellationToken)
         {
             var skill = await cosmosDb.GetSkillBlueprintAsync(request.BlueprintId.ToString());
-            if (skill.TryAdd(request, out Guid partId))
-            {
+            if (skill.TryAdd(request, out AddPartResult result))
                 await cosmosDb.UpdateAsync(skill.Id.ToString(), skill);
-                return partId;
-            }
-            else
-            {
-                return Guid.Empty;
-            }
-            
+
+            return result;            
         }
 
     }

@@ -1,6 +1,7 @@
 using LearnItAll.Models.Skillblueprints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -48,26 +49,31 @@ namespace LearnItAll.Areas.Blueprints.Pages
 
         public async Task<IActionResult> OnPostAdd()
         {
-            try
-            {
-                IdOfLatestAddedPart = await mediator.Send((AddPartCmd)AddPartModel);
-                if (IdOfLatestAddedPart == Guid.Empty) return await Task.FromResult(this.BadRequest($"Could not find the Id '{AddPartModel.ParentId}' in the Skill of id '{AddPartModel.BlueprintId}'"));
-                
+            var result = AddPartResult.FailureForUnknownReason;
+            //Note: any exception thrown by the mediator handler will bubble up and endup in http 500;
+            //to handle exceptions there a exception handler is required to be implemented 
+            //see https://github.com/jbogard/MediatR/tree/master/samples/MediatR.Examples/ExceptionHandler
+            //and https://github.com/jbogard/MediatR/wiki#exceptions-handling
+            result = await mediator.Send((AddPartCmd)AddPartModel);
+            IdOfLatestAddedPart = result.IdOfAddedPart;
+
+            if (result.IsSuccess)
                 return await this.PartialView("_PartDetail",
-                    new PartDetail { 
-                        Part = new Part { 
-                                Id = IdOfLatestAddedPart, 
-                                Name = AddPartModel.Name, 
-                                ParentId = AddPartModel.ParentId,
-                                },
+                    new PartDetail
+                    {
+                        Part = new Part
+                        {
+                            Id = IdOfLatestAddedPart,
+                            Name = AddPartModel.Name,
+                            ParentId = AddPartModel.ParentId,
+                        },
                         BlueprintId = AddPartModel.BlueprintId,
-                        IdentationLevel = IdentationLevel + 1});
-            }
-            catch (Exception e)
+                        IdentationLevel = IdentationLevel + 1
+                    });
+            else
             {
-                //TODO: render the error using HTMX
-                return await Task.FromResult(new BadRequestObjectResult(e));
-                //return await this.PartialView("_ErrorPartial", e.Message);
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                return await this.PartialView("_ErrorPartial", result.Message);
             }
 
         }

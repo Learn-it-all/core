@@ -53,9 +53,9 @@ namespace Mtx.LearnItAll.Core.Blueprints
             _root.Add(cmd);
         }
 
-        public bool TryAdd(AddPartCmd cmd, out Guid idOfNewlyAddedPart)
+        public bool TryAdd(AddPartCmd cmd, out AddPartResult result)
         {
-            return _root.TryAdd(cmd,out idOfNewlyAddedPart);
+            return _root.TryAdd(cmd,out result);
         }
     }
 }

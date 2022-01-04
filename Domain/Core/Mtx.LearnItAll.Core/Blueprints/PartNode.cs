@@ -65,14 +65,22 @@ namespace Mtx.LearnItAll.Core.Blueprints
             }
         }
 
-        public bool TryAdd(AddPartCmd cmd, out Guid idOfNewlyAddedPart)
+        public bool TryAdd(AddPartCmd cmd, out AddPartResult result)
         {
-            idOfNewlyAddedPart = Guid.Empty;
             if (cmd.ParentId == Id)
             {
-                MakeSureNameIsNotInUseInParts(cmd.Name);
+                try
+                {
+                    MakeSureNameIsNotInUseInParts(cmd.Name);
+                }
+                catch (Exception)
+                {
+
+                    result = AddPartResult.FailureForNameAlreadyInUse;
+                    return false;
+                }
                 var newPart = new Part(cmd.Name, cmd.ParentId);
-                idOfNewlyAddedPart = newPart.Id;
+                result = AddPartResult.Success(newPart.Id);
                 Parts.Add(newPart);
                 Summary.AddOneTo(newPart.Level);
                 return true;
@@ -89,14 +97,17 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
             foreach (var node in _partNodes)//when the cmd.ParentId is unknown to the current instance, delegate it to its child nodes
             {
-                if(node.TryAdd(cmd, out idOfNewlyAddedPart)) return true;
+                if (node.TryAdd(cmd, out result)) return true;
+                if (result == AddPartResult.FailureForNameAlreadyInUse) return false;
             }
+
+            result =  AddPartResult.FailureForPartNotFound;
             return false;
         }
 
         public void Add(AddPartCmd cmd)
         {
-            TryAdd(cmd, out Guid _);
+            TryAdd(cmd, out AddPartResult _);
 
         }
 
