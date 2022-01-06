@@ -26,6 +26,17 @@ namespace Mtx.LearnItAll.Core.Calculations
             Expert += another.Expert;
         }
 
+        public void Subtract(Summary another)
+        {
+            Unknown -= another.Unknown;
+            Unfamiliar -= another.Unfamiliar;
+            Novice -= another.Novice;
+            AdvancedBeginner -= another.AdvancedBeginner;
+            Competent -= another.Competent;
+            Proficient -= another.Proficient;
+            Expert -= another.Expert;
+        }
+
 
         public void RecalculateOnChange(object? sender, SummaryChangedEventArgs e)
         {

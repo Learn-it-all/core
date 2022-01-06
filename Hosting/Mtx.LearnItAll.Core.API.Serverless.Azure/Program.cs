@@ -25,7 +25,7 @@ namespace Mtx.LearnItAll.Core.API.Serverless.Azure
                          builder.AddUserSecrets<Program>();
                      }
                  })
-                .ConfigureServices(async (hostContext, services) =>
+                .ConfigureServices( (hostContext, services) =>
                 {
                     services.AddOptions();
                     services.Configure<CosmosConfig>(hostContext.Configuration.GetSection("CosmosConfig"));

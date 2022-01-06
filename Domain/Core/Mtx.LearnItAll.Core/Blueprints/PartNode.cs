@@ -2,11 +2,11 @@
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace Mtx.LearnItAll.Core.Blueprints
 {
@@ -20,13 +20,17 @@ namespace Mtx.LearnItAll.Core.Blueprints
         private ObservableCollection<PartNode> _partNodes = new();
 
         public Guid ParentId { get; private set; }
+
+
+
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public LifecycleState LifecycleState { get; private set; } = LifecycleState.Draft;
 
         public IReadOnlyCollection<PartNode> Nodes => _partNodes;
+        public IReadOnlyCollection<Part> Parts => _parts;
 
-        public List<Part> Parts { get; private set; } = new();
+        private List<Part> _parts = new();
         public Summary Summary { get; private set; } = new Summary();
         public Guid Id { get; private set; } = Guid.NewGuid();
 
@@ -81,18 +85,18 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 }
                 var newPart = new Part(cmd.Name, cmd.ParentId);
                 result = AddPartResult.Success(newPart.Id);
-                Parts.Add(newPart);
+                _parts.Add(newPart);
                 Summary.AddOneTo(newPart.Level);
                 return true;
             }
 
 
-            var part = Parts.Find(x => x.Id == cmd.ParentId);
+            var part = _parts.Find(x => x.Id == cmd.ParentId);
             if (part != null)//when the part is found it must be turned into a PartNode
             {                //so that it will manage the new Part (from the cmd) as its child
                 var newNodeFromExistingPart = part.ToPartNode();
                 Add(newNodeFromExistingPart);
-                Parts.Remove(part);
+                _parts.Remove(part);
             }
 
             foreach (var node in _partNodes)//when the cmd.ParentId is unknown to the current instance, delegate it to its child nodes
@@ -101,13 +105,14 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 if (result == AddPartResult.FailureForNameAlreadyInUse) return false;
             }
 
-            result =  AddPartResult.FailureForPartNotFound;
+            result = AddPartResult.FailureForPartNotFound;
             return false;
         }
 
         public void Add(AddPartCmd cmd)
         {
-            TryAdd(cmd, out AddPartResult _);
+            TryAdd(cmd, out AddPartResult result);
+            if (result == AddPartResult.FailureForNameAlreadyInUse) ThrowErrorForDuplicateName(cmd.Name);
 
         }
 
@@ -118,7 +123,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 foreach (var node in _partNodes)
                     node.ChangeLevel(partName, parentId, newLevel);
             }
-            var part = Parts.Find(x => x.Name.Equals(partName, StringComparison.OrdinalIgnoreCase));
+            var part = _parts.Find(x => x.Name.Equals(partName, StringComparison.OrdinalIgnoreCase));
             if (part != null)
             {
                 var currentLevel = part.Level;
@@ -160,6 +165,36 @@ namespace Mtx.LearnItAll.Core.Blueprints
             }
         }
 
+        public bool TryDeletePart(DeletePartCmd cmd, out DeletePartResult result)
+        {
+            var part = _parts.Where(x => x.Id == cmd.PartId).FirstOrDefault();
+            result = DeletePartResult.FailureForPartNotFound;
+
+            if (part != null)
+            {
+                _parts.Remove(part);
+                Summary.SubtractOneFrom(part.Level);
+                result = DeletePartResult.Success(part.Name);
+                return true;
+            }
+            else
+            {
+                foreach (var node in _partNodes)
+                {
+                    if (node.Id == cmd.PartId)
+                    {
+                        Summary.Subtract(node.Summary);
+                        _partNodes.Remove(node);
+                        result = DeletePartResult.Success(node.Name);
+                        return true;
+
+                    }
+                    if (node.TryDeletePart(cmd, out result)) return true;
+                }
+            }
+            return false;
+        }
+
         private void MakeSureNameIsNotInUseInPartNodes(string name)
         {
             foreach (var node in _partNodes)
@@ -170,7 +205,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         private void MakeSureNameIsNotInUseInParts(string name)
         {
-            if (Parts.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            if (_parts.Exists(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
                 ThrowErrorForDuplicateName(name);
         }
 

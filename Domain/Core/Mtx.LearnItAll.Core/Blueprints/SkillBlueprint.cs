@@ -57,5 +57,9 @@ namespace Mtx.LearnItAll.Core.Blueprints
         {
             return _root.TryAdd(cmd,out result);
         }
+        public bool TryDeletePart(DeletePartCmd cmd, out DeletePartResult result)
+        {
+            return TryDeletePart(cmd,out result);
+        }
     }
 }
