@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace LearnItAll.Areas.Blueprints.Pages
 {
-    [AllowAnonymous]
     [BindProperties]
     public class CreateBlueprintModel : PageModel
     {
@@ -23,17 +22,14 @@ namespace LearnItAll.Areas.Blueprints.Pages
         }
 
         public SkillBluePrint Blueprint { get; set; } = NullSkillBluePrint.New();
-        [BindProperty]
         public NewBlueprintModel NewBlueprintModel { get; set; } = new();
-        [BindProperty]
         public AddPartModel AddPartModel { get; set; } = new();
+        public DeletePartModel DeletePartModel { get; set; } = new();
         public Guid IdOfLatestAddedPart { get; set; }
-        [BindProperty]
         public Guid BlueprintId { get; set; }
-        [BindProperty]
         public Guid RootPartId { get; set; }
-        [BindProperty]
         public int IdentationLevel { get; set; }
+
         public async Task OnGet()
         {
             await Task.CompletedTask;
@@ -70,6 +66,21 @@ namespace LearnItAll.Areas.Blueprints.Pages
                         BlueprintId = AddPartModel.BlueprintId,
                         IdentationLevel = IdentationLevel + 1
                     });
+            else
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                return await this.PartialView("_ErrorPartial", result.Message);
+            }
+
+        }
+
+        public async Task<IActionResult> OnPostDelete()
+        {
+            var result = DeletePartResult.FailureForPartNotFound;
+            result = await mediator.Send((DeletePartCmd)DeletePartModel);
+
+            if (result.IsSuccess)
+                return await Task.FromResult(new OkResult());
             else
             {
                 Response.StatusCode = StatusCodes.Status400BadRequest;

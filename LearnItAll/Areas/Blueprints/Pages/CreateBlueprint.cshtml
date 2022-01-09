@@ -14,11 +14,11 @@
 		<div  hx-boost="true"
                 hx-target="this"
                 hx-swap="outerHTML settle:1s"
-                class="row align-items-center">
+                class="align-items-center">
                 <div id="fade-me-in" class="just-padding">
                     <div id="delete" class="list-group list-group-root well">
     			    	<form asp-page-handler="Create" method="post" >
-    			    		<div class="input-group mb-6">
+    			    		<div class="input-group mb-3">
     			    				<input autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control" placeholder="Skill Name" placeholder="Skill Name">
     			    		<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;">+
     			    		</button>

@@ -2,10 +2,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mtx.CosmosDbServices.JsonNetServices
 {
@@ -24,21 +20,6 @@ namespace Mtx.CosmosDbServices.JsonNetServices
 
             var obj = JObject.Load(reader);
             return obj.ToObject<SkillBlueprint>(serializer);
-            //// First, just read the JSON as a JObject
-
-            //// Then look at the $type property:
-            //var typeName = obj["$type"]?.Value<string>();
-            //switch (typeName)
-            //{
-            //    case "fileItem":
-            //        // Deserialize as a FileItem
-            //        return obj.ToObject<FileItem>(serializer);
-            //    case "folderItem":
-            //        // Deserialize as a FolderItem
-            //        return obj.ToObject<FolderItem>(serializer);
-            //    default:
-            //        throw new InvalidOperationException($"Unknown type name '{typeName}'");
-            //}
         }
 
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)

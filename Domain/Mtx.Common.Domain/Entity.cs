@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using MediatR;
-//using Newtonsoft.Json;
-//using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Mtx.Common.Domain
 {
     public abstract class Entity 
     {
-        [Newtonsoft.Json.JsonIgnore]//ignore when writing to Cosmos
+        [JsonIgnore]
         private List<INotification> _domainEvents = new();
 
         public Guid Id { get;private set; } = Guid.NewGuid();
 
-        [System.Text.Json.Serialization.JsonIgnore] //ignore on http response
+        [JsonIgnore]
         public List<INotification> DomainEvents => _domainEvents;
 
         public DateTime CreatedDate { get; set; }

@@ -117,5 +117,31 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
 
             Assert.Equal(expectedSummary, sut.Summary);
         }
+
+        [Fact]
+        public void TurnPartNodeIntoPartGivenItsDeletedPartWasTheLastChild()
+        {
+            var sut = _fixture.Create<PartNode>();
+            var childToBecomePartAfterDeletion = _fixture.Create<PartNode>();
+            var toDelete = _fixture.Create<Part>();
+            childToBecomePartAfterDeletion.Add(toDelete);
+            sut.Add(childToBecomePartAfterDeletion);
+            var expectedSummary = new Summary();
+            expectedSummary.AddOneTo(SkillLevel.Unknown);
+            var cmd = new DeletePartCmd(sut.Id, toDelete.Id);
+
+            //Act
+            _ = sut.TryDeletePart(cmd, out DeletePartResult _);
+
+            Assert.Equal(expectedSummary, sut.Summary);
+            Assert.DoesNotContain(sut.Nodes, x => x.Id == childToBecomePartAfterDeletion.Id);
+            Assert.Contains(sut.Parts, x => x.Id == childToBecomePartAfterDeletion.Id);
+        }
+
+        [Fact]
+        public void TurnPartNodeIntoPartGivenItsDeletedPartNodeWasTheLastChild()
+        {
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,16 +21,13 @@ namespace Mtx.LearnItAll.Core.Blueprints
         private ObservableCollection<PartNode> _partNodes = new();
 
         public Guid ParentId { get; private set; }
-
-
-
+        [JsonIgnore]
+        public bool IsEmpty => _partNodes.Count == 0 & _parts.Count == 0;
         public string Name { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public LifecycleState LifecycleState { get; private set; } = LifecycleState.Draft;
-
         public IReadOnlyCollection<PartNode> Nodes => _partNodes;
         public IReadOnlyCollection<Part> Parts => _parts;
-
         private List<Part> _parts = new();
         public Summary Summary { get; private set; } = new Summary();
         public Guid Id { get; private set; } = Guid.NewGuid();
@@ -85,8 +83,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 }
                 var newPart = new Part(cmd.Name, cmd.ParentId);
                 result = AddPartResult.Success(newPart.Id);
-                _parts.Add(newPart);
-                Summary.AddOneTo(newPart.Level);
+                AddNewPart(newPart);
                 return true;
             }
 
@@ -96,7 +93,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
             {                //so that it will manage the new Part (from the cmd) as its child
                 var newNodeFromExistingPart = part.ToPartNode();
                 Add(newNodeFromExistingPart);
-                _parts.Remove(part);
+                RemovePartAndUpdateSummary(part);
             }
 
             foreach (var node in _partNodes)//when the cmd.ParentId is unknown to the current instance, delegate it to its child nodes
@@ -109,13 +106,19 @@ namespace Mtx.LearnItAll.Core.Blueprints
             return false;
         }
 
+        private void AddNewPart(Part newPart)
+        {
+            _parts.Add(newPart);
+            Summary.AddOneTo(newPart.Level);
+        }
+
         public void Add(AddPartCmd cmd)
         {
             TryAdd(cmd, out AddPartResult result);
             if (result == AddPartResult.FailureForNameAlreadyInUse) ThrowErrorForDuplicateName(cmd.Name);
 
         }
-
+        
         public void ChangeLevel(string partName, Guid parentId, int newLevel)
         {
             if (parentId != Id)
@@ -172,8 +175,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
             if (part != null)
             {
-                _parts.Remove(part);
-                Summary.SubtractOneFrom(part.Level);
+                RemovePartAndUpdateSummary(part);
                 result = DeletePartResult.Success(part.Name);
                 return true;
             }
@@ -183,16 +185,42 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 {
                     if (node.Id == cmd.PartId)
                     {
-                        Summary.Subtract(node.Summary);
-                        _partNodes.Remove(node);
+                        RemovePartNodeAndUpdateSummary(node);
                         result = DeletePartResult.Success(node.Name);
                         return true;
 
                     }
-                    if (node.TryDeletePart(cmd, out result)) return true;
+                    if (node.TryDeletePart(cmd, out result))
+                    {
+                        if (node.IsEmpty)
+                        {
+                            TurnNodeIntoPart(node: node);
+                        }
+                        return true;
+                    }
                 }
             }
             return false;
+        }
+
+        private void RemovePartNodeAndUpdateSummary(PartNode node)
+        {
+            Summary.Subtract(node.Summary);
+            _partNodes.Remove(node);
+        }
+
+        private void TurnNodeIntoPart(PartNode node)
+        {
+            RemovePartNodeAndUpdateSummary(node);
+            var part = new Part(id: node.Id, level: SkillLevel.Unknown, new Name(node.Name), parent: Id);
+            _parts.Add(part);
+            Summary.AddOneTo(part.Level);
+        }
+
+        private void RemovePartAndUpdateSummary(Part part)
+        {
+            _parts.Remove(part);
+            Summary.SubtractOneFrom(part.Level);
         }
 
         private void MakeSureNameIsNotInUseInPartNodes(string name)

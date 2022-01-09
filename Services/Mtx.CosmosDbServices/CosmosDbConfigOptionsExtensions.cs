@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -43,7 +44,8 @@ namespace Mtx.CosmosDbServices
             services.AddSingleton(client);
             services.AddTransient<CosmosDbService>(f =>
             {
-                return new CosmosDbService(client, databaseName, containerName);
+                var ctx = f.GetRequiredService<IHttpContextAccessor>();
+                return new CosmosDbService(client, databaseName, containerName,ctx);
 
             });
             var database = client.CreateDatabaseIfNotExistsAsync(databaseName).Result;

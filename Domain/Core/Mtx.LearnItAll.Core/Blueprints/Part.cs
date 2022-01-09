@@ -3,6 +3,9 @@ using System;
 
 namespace Mtx.LearnItAll.Core.Blueprints
 {
+    /// <summary>
+    /// A Part represents a leaf in an object graph. In other words, it describes part of a Skill and has never child nodes.
+    /// </summary>
     public record Part
     {
         public int Level { get;  set; }
@@ -16,6 +19,11 @@ namespace Mtx.LearnItAll.Core.Blueprints
         {
             Name = name;
             ParentId = parent;
+        }
+        internal Part(Guid id, SkillLevel level, Name name, Guid parent) : this(name,parent)
+        {
+            Id = id;
+            Level = level;
         }
 
 #pragma warning disable CS8618 

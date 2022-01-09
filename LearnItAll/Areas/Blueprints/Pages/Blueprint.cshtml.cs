@@ -89,6 +89,13 @@ namespace LearnItAll.Areas.Blueprints.Pages
 
         public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name), model.ParentId,model.BlueprintId);
     }
+    public class DeletePartModel
+    {
+        public Guid PartId { get; set; }
+        public Guid BlueprintId { get; set; }
+
+        public static implicit operator DeletePartCmd(DeletePartModel model) => new DeletePartCmd(partId:model.PartId, blueprintId: model.BlueprintId);
+    }
 
     public class NewBlueprintModel
     {

@@ -1,7 +1,10 @@
 ﻿
 @using LearnItAll.Models.Skillblueprints
 @model PartDetail
-
+@{
+	if(@Model == null) return;
+}
+<div id="delete-part-@Model.Part.Id">
 		@if(Model.IsRoot)
 		{
 			<button type="button" onclick="toggleCollapseOfAllElementsInPage()" class="btn btn-primary expand-parts">Expand/Collapse All</button>
@@ -12,6 +15,16 @@
 		
 		@if(!Model.IsRoot)
 		{
+			<div  hx-boost="true"
+			        hx-target="#delete-part-@Model.Part.Id"
+			        hx-swap="outerHTML settle:1s"
+			        class="list-group-item  align-items-center">
+									<form asp-page-handler="Delete" Method="post" id="form-@Model.Part.Id" >
+												<input  name="DeletePartModel.PartId" id="DeletePartModel_PartId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
+												<input  name="DeletePartModel.BlueprintId" id="DeletePartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
+												<button type="submit" class="btn btn-outline-secondary"><i class="bi bi-trash"></i></button>
+									</form>
+			</div>
 			<a href="#Item-@Model.Part.Id" class="list-group-item" data-bs-toggle="collapse" role="button" aria-expanded="false">
 			<i class="bi bi-caret-right"></i>@Model.Part.Name</a>
 		}
@@ -37,3 +50,4 @@
 			</div>
 		</div>
 	</div>
+</div>
