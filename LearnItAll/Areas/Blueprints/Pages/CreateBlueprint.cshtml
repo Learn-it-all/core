@@ -8,13 +8,12 @@
 @model LearnItAll.Areas.Blueprints.Pages.CreateBlueprintModel
 			
 
-<div class="just-padding">
-    <div class="list-group list-group-root well">
+<ul id="root" class="list-group p-3">
 
-		<div  hx-boost="true"
+		<li  hx-boost="true"
                 hx-target="this"
                 hx-swap="outerHTML settle:1s"
-                class="align-items-center">
+                class="list-group-item">
                 <div id="fade-me-in" class="just-padding">
                     <div id="delete" class="list-group list-group-root well">
     			    	<form asp-page-handler="Create" method="post" >
@@ -26,9 +25,8 @@
     			    	</form>
 		            </div>
 		        </div>
-		</div>
-    </div>
-</div>
+		</li>
+</ul>
 
 @section scripts {
     <script>

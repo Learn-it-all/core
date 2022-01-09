@@ -8,7 +8,7 @@
 	<div class="col-auto">
 		<i class="h2 bi bi-arrow-return-right"></i>
 
-				@Model.PartNode.Name
+				@Model?.PartNode?.Name
 			<div class="row align-items-center">
 				<form asp-page-handler="Add" method="post" >
 					<div class="input-group mb-8">
