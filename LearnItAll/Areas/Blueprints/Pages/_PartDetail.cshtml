@@ -10,15 +10,23 @@
 		<div class="myfaded toggle-me collapse show" style="padding-left: @(Model.IdentationLevel * 15)px;">
 			<div class="row justify-content-start">
 				<div class="col-sm-6">
-					<div class="input-group">
-						<button type="button" class="btn btn-outline-secondary"><i class="bi bi-trash"></i></button>
-						<div class="form-control fw-bold text-break">@Model.Part.Name</div>
-					</div>
+						<div  hx-boost="true"
+						    hx-target="#delete-part_@Model.Part.Id"
+						    hx-swap="outerHTML settle:1s">
+											<form asp-page-handler="Delete" Method="post" id="form-delete_@Model.Part.Id" >
+														<input  name="DeletePartModel.PartId" id="DeletePartModel_PartId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
+														<input  name="DeletePartModel.BlueprintId" id="DeletePartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
+														<div class="input-group">
+															<button type="submit" class="btn btn-outline-secondary"><i class="bi bi-trash"></i></button>
+															<div class="form-control fw-bold text-break">@Model.Part.Name</div>
+														</div>											
+											</form>
+						</div>
 				</div>
 				<div class="col-sm-6">
 					<div  hx-boost="true"
-					        hx-target="#delete-part_@Model.Part.Id"
-					        hx-swap="afterend settle:1s">
+					        hx-target="#children_@Model.Part.Id"
+					        hx-swap="afterbegin settle:1s">
 											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
 													<div class="input-group">
 															<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
@@ -34,5 +42,7 @@
 				</div>
 			</div>
 		</div>
+		<ul id="children_@Model.Part.Id">
+		</ul>
 	</li>
 		
