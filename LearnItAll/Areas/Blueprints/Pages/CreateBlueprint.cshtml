@@ -30,19 +30,12 @@
 
 @section scripts {
     <script>
-            $(function() {
-            
-      $('.list-group-item').on('click', function() {
-                                $('.bi', this)
-                                  .toggleClass('bi-caret-right')
-                                  .toggleClass('bi-caret-down');
-                              });
-    
-                            });
     htmx.on("htmx:afterRequest", function(evt) {
         var formThatTriggeredTheSubmit = evt.detail.elt;
-        formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]').value='';
-    
+        const textAreaName = formThatTriggeredTheSubmit.querySelector('textarea[name="AddPartModel.Name"]');
+        textAreaName.value = '';
+        textAreaName.rows = "1";
+        textAreaName.style.height='';
     });
     htmx.logAll();
 
@@ -61,5 +54,40 @@
         evt.detail.isError = false;
     } 
 });
+
+//https://jsfiddle.net/radonirinamaminiaina/zfnj5rv4/
+ document.addEventListener("dragenter", function( event ) {
+      // highlight potential drop target when the draggable element enters it
+     if ( event.target.type == "textarea" ) {
+          event.target.style.background = "purple";
+     }
+
+  }, false);
+
+  document.addEventListener("dragleave", function( event ) {
+      // reset background of potential drop target when the draggable element leaves it
+     if ( event.target.type == "textarea" ) {
+          event.target.style.background = "";
+          event.target.style.height = "";
+      }
+
+  }, false);
+
+   document.addEventListener("drop", function( event ) {
+      // prevent default action (open as link for some elements)
+      event.preventDefault();
+      // move dragged elem to the selected drop target
+      if ( event.target.type == "textarea" ) {
+          event.target.style.background = "";
+         // dragged.parentNode.removeChild( dragged );
+          event.target.value = event.dataTransfer.getData('text/plain');
+          const items = event.target.value.split('\n').length;
+          if(items > 1){
+            const height =  items * 38;
+            event.target.style.height = height + "px";
+          }
+      }
+    
+  }, false);
     </script>
 }

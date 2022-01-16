@@ -25,19 +25,24 @@
 				</div>
 				<div class="col-sm-6">
 					<div  hx-boost="true"
+							hx-indicator="#add-spinner_@Model.Part.Id"
 					        hx-target="#children_@Model.Part.Id"
 					        hx-swap="afterbegin settle:1s">
 											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
 													<div class="input-group">
-															<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-														<input name="AddPartModel.Name" id="AddPartModel_Name_@Model.Part.Id" class="form-control" placeholder="Add child" value="">
+														<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
+														<textarea name="AddPartModel.Name" id="AddPartModel_Name_@Model.Part.Id" class="form-control" placeholder="Add child" rows="1"></textarea>
 														<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
 														<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
 														<input  name="IdentationLevel" id="IdentationLevel_@Model.Part.Id" value=@Model.IdentationLevel class="form-control" type="hidden" >
 														
-														<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;">+</button>
+														<button type="submit" class="btn btn-outline-secondary">
+														<i class="bi bi-plus-square-fill"></i>
+
+														</button>
 													</div>
 											</form>
+						<div id="add-spinner_@Model.Part.Id" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
 					</div>
 				</div>
 			</div>
