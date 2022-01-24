@@ -88,7 +88,16 @@ const inputTextToReceiveDraggableContent = "AddPartModel.Name";
               let body = modal.querySelector('[name=modal-body]');
             const height =  size * 38;
             body.style.height = height + "px";
-            body.innerHTML = data;
+            let row = body.querySelector('#row1');
+            row.id = "row_" + event.target.id;
+            items.forEach((element,index)  => {
+                let newRow = row.cloneNode(true);
+                newRow.id = row.id +"_" + index;
+                let newPartName = newRow.querySelector("[name='"+inputTextToReceiveDraggableContent+"'");
+                newPartName.value = element;
+                row.parentNode.appendChild(newRow);
+
+            });
               const button = document.getElementById("open-modal-"+event.target.id);
               button.click();
           } else {
