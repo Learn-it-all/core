@@ -1,6 +1,5 @@
 using LearnItAll.Models.Skillblueprints;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -24,6 +23,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public SkillBluePrint Blueprint { get; set; } = NullSkillBluePrint.New();
         public NewBlueprintModel NewBlueprintModel { get; set; } = new();
         public AddPartModel AddPartModel { get; set; } = new();
+
         public DeletePartModel DeletePartModel { get; set; } = new();
         public Guid IdOfLatestAddedPart { get; set; }
         public Guid BlueprintId { get; set; }

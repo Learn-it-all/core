@@ -6,9 +6,9 @@
 }
 
 		
-	<li id="delete-part_@Model.Part.Id" class="list-group-item p-3">
+	<li id="delete-part_@Model.Part.Id" class="list-group-item">
 		<div class="myfaded toggle-me collapse show" style="padding-left: @(Model.IdentationLevel * 15)px;">
-			<div class="row justify-content-start">
+			<div class="row justify-content-md-center row-cols-2">
 				<div class="col-sm-6">
 						<div  hx-boost="true"
 						    hx-target="#delete-part_@Model.Part.Id"
@@ -31,14 +31,12 @@
 											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
 													<div class="input-group">
 														<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-														<textarea name="AddPartModel.Name" id="AddPartModel_Name_@Model.Part.Id" class="form-control" placeholder="Add child" rows="1"></textarea>
+														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" placeholder="Add child">
 														<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
 														<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
 														<input  name="IdentationLevel" id="IdentationLevel_@Model.Part.Id" value=@Model.IdentationLevel class="form-control" type="hidden" >
-														
 														<button type="submit" class="btn btn-outline-secondary">
 														<i class="bi bi-plus-square-fill"></i>
-
 														</button>
 													</div>
 											</form>
@@ -46,6 +44,52 @@
 					</div>
 				</div>
 			</div>
+						<!-- Button trigger modal -->
+						<button id="open-modal-AddPartModel_Name-@Model.Part.Id" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-AddPartModel_Name-@Model.Part.Id">
+						  Add multiple
+						</button>
+						
+						<!-- Modal -->
+						<div class="modal fade" id="modal-AddPartModel_Name-@Model.Part.Id" tabindex="-1" aria-labelledby="title-AddPartModel_Name-@Model.Part.Id" aria-hidden="true">
+						  <div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<h5 class="modal-title" id="title-AddPartModel_Name-@Model.Part.Id">Adding multiple parts to @Model.Part.Name</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							  </div>
+							  <div name="modal-body" class="modal-body">
+							  @{
+								var localSpinnerId = Guid.NewGuid().ToString();
+							  }
+								<div id="@localSpinnerId" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
+								 <div id="row1" class="row">
+									  <div class="col-sm-6">
+											<div  hx-boost="true"
+													hx-indicator="#@localSpinnerId"
+													hx-target="#children_@Model.Part.Id"
+													hx-swap="afterbegin settle:1s">
+																	<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
+																			<div class="input-group">
+																				<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
+																				<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" placeholder="Add child">
+																				<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
+																				<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
+																				<input  name="IdentationLevel" id="IdentationLevel_@Model.Part.Id" value=@Model.IdentationLevel class="form-control" type="hidden" >
+																				<button type="submit" class="btn btn-outline-secondary">
+																				<i class="bi bi-plus-square-fill"></i>
+																				</button>
+																			</div>
+																	</form>
+											</div>
+									</div>
+								</div>
+							  </div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							  </div>
+							</div>
+						  </div>
+						</div>
 		</div>
 		<ul id="children_@Model.Part.Id">
 		</ul>
