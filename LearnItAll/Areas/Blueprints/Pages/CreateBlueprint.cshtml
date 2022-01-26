@@ -8,23 +8,26 @@
 @model LearnItAll.Areas.Blueprints.Pages.CreateBlueprintModel
 			
 
-<ul id="root" class="list-group p-3">
+<ul id="root" class="list-group list-group-flush">
 
 		<li  hx-boost="true"
                 hx-target="this"
                 hx-swap="outerHTML settle:1s"
+				hx-indicator="#root-spinner"
                 class="list-group-item">
-                <div id="fade-me-in" class="just-padding">
-                    <div id="delete" class="list-group list-group-root well">
+                <div class="row g-2">
+                    <div class="col-md">
     			    	<form asp-page-handler="Create" method="post" >
-    			    		<div class="input-group mb-3">
-    			    				<input autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control" placeholder="Skill Name" placeholder="Skill Name">
-    			    		<button type="submit" class="btn btn-outline-secondary" style="font-size: 1.0rem; color: cornflowerblue;">+
-    			    		</button>
-    			    		</div>
+                            <div class="form-floating btn-space">
+    			    			<input id="root-input" autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control" placeholder="Skill Name">
+                                 <label for="root-input">Skill name, type it and then hit enter to create it</label>
+                            </div>
+    			    		<button type="submit" class="btn btn-primary">Create</button>
     			    	</form>
+				        <div id="root-spinner" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
 		            </div>
 		        </div>
+
 		</li>
 </ul>
 
@@ -32,10 +35,8 @@
     <script>
     htmx.on("htmx:afterRequest", function(evt) {
         var formThatTriggeredTheSubmit = evt.detail.elt;
-        const textAreaName = formThatTriggeredTheSubmit.querySelector('textarea[name="AddPartModel.Name"]');
-        textAreaName.value = '';
-        textAreaName.rows = "1";
-        textAreaName.style.height='';
+        const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
+        input.value = '';
     });
     htmx.logAll();
 
@@ -55,12 +56,15 @@
     } 
 });
 
+// draggable content on inputs to create several new parts all at once
 const inputTextToReceiveDraggableContent = "AddPartModel.Name";
+const backgroundColorOfTextInput ="bg-secondary";
 //https://jsfiddle.net/radonirinamaminiaina/zfnj5rv4/
  document.addEventListener("dragenter", function( event ) {
       // highlight potential drop target when the draggable element enters it
      if ( event.target.name == inputTextToReceiveDraggableContent ) {
-          event.target.style.background = "red";
+        htmx.addClass(event.target, backgroundColorOfTextInput);
+
      }
 
   }, false);
@@ -68,45 +72,46 @@ const inputTextToReceiveDraggableContent = "AddPartModel.Name";
   document.addEventListener("dragleave", function( event ) {
       // reset background of potential drop target when the draggable element leaves it
      if ( event.target.name == inputTextToReceiveDraggableContent ) {
-          event.target.style.background = "";
-          event.target.style.height = "";
+        htmx.removeClass(event.target, backgroundColorOfTextInput);          
+        event.target.style.height = "";
       }
 
   }, false);
 
-   document.addEventListener("drop", function( event ) {
-      // prevent default action (open as link for some elements)
-      event.preventDefault();
-      // move dragged elem to the selected drop target
-      if ( event.target.name == inputTextToReceiveDraggableContent ) {
-          event.target.style.background = "";
-          let data = event.dataTransfer.getData('text/plain');
-          const items = data.split('\r\n');
-          const size = items.length;
-          if(size > 1){
+document.addEventListener("drop", function( event ) {
+    // prevent default action (open as link for some elements)
+    event.preventDefault();
+    // move dragged elem to the selected drop target
+    if ( event.target.name == inputTextToReceiveDraggableContent ) {
+        htmx.removeClass(event.target, backgroundColorOfTextInput);          
+        let data = event.dataTransfer.getData('text/plain');
+        const items = data.split('\r\n');
+        const size = items.length;
+        if(size > 1){
               const modal = document.getElementById("modal-"+event.target.id);
               let body = modal.querySelector('[name=modal-body]');
-            const height =  size * 38;
-            body.style.height = height + "px";
-            let row = body.querySelector('#row1');
-            row.id = "row_" + event.target.id;
-            items.forEach((element,index)  => {
-                let newRow = row.cloneNode(true);
-                newRow.id = row.id +"_" + index;
-                let newPartName = newRow.querySelector("[name='"+inputTextToReceiveDraggableContent+"'");
-                newPartName.value = element;
-                row.parentNode.appendChild(newRow);
-
-            });
+              const height =  size * 38;
+              body.style.height = height + "px";
+              let row = body.querySelector('#row1');
+              row.id = "row_" + event.target.id;
+              items.forEach((element,index)  => {
+                  let newRow = row.cloneNode(true);
+                  htmx.removeClass(newRow, "d-none");
+                  newRow.id = row.id +"_" + index;
+                  let newPartName = newRow.querySelector("[name='"+inputTextToReceiveDraggableContent+"'");
+                  newPartName.value = element;
+                  row.parentNode.appendChild(newRow);
+                  htmx.process(newRow);//this will add all new rows to htmx
+              });
               const button = document.getElementById("open-modal-"+event.target.id);
               button.click();
-          } else {
-              event.target.value = data;
-          }
-          event.target.style.background = "";
-          event.target.style.height = "";
+        } else {
+            event.target.value = data;
+        }
+        event.target.style.background = "";
+        event.target.style.height = "";
     }
-    });
+});
 
        
     </script>
