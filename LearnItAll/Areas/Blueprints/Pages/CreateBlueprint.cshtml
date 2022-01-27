@@ -15,14 +15,16 @@
                 hx-swap="outerHTML settle:1s"
 				hx-indicator="#root-spinner"
                 class="list-group-item">
-                <div class="row g-2">
-                    <div class="col-md">
+                <div class="row">
+                    <div class="col-sm-6">
     			    	<form asp-page-handler="Create" method="post" >
-                            <div class="form-floating btn-space">
+                            <div class="input-group ">
+                            <div class="form-floating flex-grow-1">
     			    			<input id="root-input" autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control" placeholder="Skill Name">
-                                 <label for="root-input">Skill name, type it and then hit enter to create it</label>
+                                 <label for="root-input">Type the skill name and hit enter to create it</label>
                             </div>
     			    		<button type="submit" class="btn btn-primary">Create</button>
+                            </div>
     			    	</form>
 				        <div id="root-spinner" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
 		            </div>

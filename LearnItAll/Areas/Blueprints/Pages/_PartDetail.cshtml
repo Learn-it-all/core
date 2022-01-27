@@ -6,7 +6,7 @@
 }
 
 		
-	<li id="delete-part_@Model.Part.Id" class="list-group-item">
+	<li id="delete-part_@Model.Part.Id" class="list-group-item p-0">
 			<div class="row justify-content-md-right row-cols-2">
 				<div class="col-sm-6">
 						<div  hx-boost="true"
@@ -26,7 +26,8 @@
 					<div  hx-boost="true"
 							hx-indicator="#add-spinner_@Model.Part.Id"
 					        hx-target="#children_@Model.Part.Id"
-					        hx-swap="afterbegin settle:1s">
+					        hx-swap="afterbegin settle:1s"
+							class="btn-space">
 											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
 													<div class="input-group">
 														<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
@@ -41,12 +42,13 @@
 											</form>
 						<div id="add-spinner_@Model.Part.Id" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
 					</div>
-				</div>
-			</div>
 						<!-- Button trigger modal -->
-						<button id="open-modal-AddPartModel_Name-@Model.Part.Id" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-AddPartModel_Name-@Model.Part.Id">
+						<button id="open-modal-AddPartModel_Name-@Model.Part.Id" type="button" class="btn btn-primary visually-hidden" data-bs-toggle="modal" data-bs-target="#modal-AddPartModel_Name-@Model.Part.Id">
 						  Add multiple
 						</button>
+				</div>
+			</div>
+					
 						
 						<!-- Modal -->
 						<div class="modal fade" id="modal-AddPartModel_Name-@Model.Part.Id" tabindex="-1" aria-labelledby="title-AddPartModel_Name-@Model.Part.Id" aria-hidden="true">
