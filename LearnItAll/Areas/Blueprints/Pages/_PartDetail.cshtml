@@ -42,8 +42,8 @@
 											</form>
 						<div id="add-spinner_@Model.Part.Id" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
 					</div>
-						<!-- Button trigger modal -->
-						<button id="open-modal-AddPartModel_Name-@Model.Part.Id" type="button" class="btn btn-primary visually-hidden" data-bs-toggle="modal" data-bs-target="#modal-AddPartModel_Name-@Model.Part.Id">
+						<!-- Button shows the modal -->
+						<button id="open-modal-AddPartModel_Name-@Model.Part.Id" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#modal-AddPartModel_Name-@Model.Part.Id">
 						  Add multiple
 						</button>
 				</div>
@@ -68,20 +68,21 @@
 									 <div name="template row"  id="row1" class="row d-none">
 										  <div class="col-sm-6">
 												<div  hx-boost="true"
+														hx-target ="#children_@Model.Part.Id"
 														hx-indicator="#@localSpinnerId"
-														hx-swap="afterbegin swap:1s">
-																		<form asp-page-handler="Add" method="post" >
-																				<div class="input-group">
-																					<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-																					<input	name="AddPartModel.Name"  class="form-control" placeholder="Add child">
-																					<input  name="AddPartModel.ParentId"  value=@Model.Part.Id class="form-control" type="hidden" >
-																					<input  name="AddPartModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden" >
-																					<input  name="IdentationLevel"  value=@Model.IdentationLevel class="form-control" type="hidden" >
-																					<button type="submit" class="btn btn-outline-secondary">
-																					<i class="bi bi-plus-square-fill"></i>
-																					</button>
-																				</div>
-																		</form>
+														hx-swap="afterbegin">
+															<form asp-page-handler="Add" method="post" >
+																	<div class="input-group">
+																		<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
+																		<input	name="AddPartModel.Name"  class="form-control" placeholder="Add child">
+																		<input  name="AddPartModel.ParentId"  value=@Model.Part.Id class="form-control" type="hidden" >
+																		<input  name="AddPartModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden" >
+																		<input  name="IdentationLevel"  value=@Model.IdentationLevel class="form-control" type="hidden" >
+																		<button type="submit" class="btn btn-outline-secondary">
+																		<i class="bi bi-plus-square-fill"></i>
+																		</button>
+																	</div>
+															</form>
 												</div>
 										</div>
 									</div>

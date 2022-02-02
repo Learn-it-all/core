@@ -40,7 +40,8 @@
     htmx.on("htmx:afterRequest", function(evt) {
         var formThatTriggeredTheSubmit = evt.detail.elt;
         const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
-        input.value = '';
+        if(input)
+            input.value = '';
     });
     htmx.logAll();
 
@@ -94,7 +95,7 @@ document.addEventListener("drop", function( event ) {
         if(size > 1){
               const modal = document.getElementById("modal-"+event.target.id);
               let body = modal.querySelector('[name=modal-body]');
-              const height =  size * 38;
+              const height =  size * 38 + 100;
               body.style.height = height + "px";
               let row = body.querySelector('#row1');
               row.id = "row_" + event.target.id;
