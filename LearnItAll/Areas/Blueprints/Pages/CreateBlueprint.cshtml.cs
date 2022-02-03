@@ -28,7 +28,6 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public Guid IdOfLatestAddedPart { get; set; }
         public Guid BlueprintId { get; set; }
         public Guid RootPartId { get; set; }
-        public int IdentationLevel { get; set; }
 
         public async Task OnGet()
         {
@@ -64,7 +63,6 @@ namespace LearnItAll.Areas.Blueprints.Pages
                             ParentId = AddPartModel.ParentId,
                         },
                         BlueprintId = AddPartModel.BlueprintId,
-                        IdentationLevel = IdentationLevel + 1
                     });
             else
             {
@@ -86,10 +84,9 @@ namespace LearnItAll.Areas.Blueprints.Pages
                 Response.StatusCode = StatusCodes.Status400BadRequest;
                 return await this.PartialView("_ErrorPartial", result.Message);
             }
-
         }
-
     }
+
     public static class PageModelExtensions
     {
         public static Task<PartialViewResult> PartialView(this PageModel page, string name, object model)

@@ -1,5 +1,9 @@
 ﻿
 @using LearnItAll.Models.Skillblueprints
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
 @model PartDetail
 @{
 	if(@Model == null) return; //to shutup the compiler error regarding possible null
@@ -11,7 +15,7 @@
 				<div class="col-sm-6">
 						<div  hx-boost="true"
 						    hx-target="#delete-part_@Model.Part.Id"
-						    hx-swap="outerHTML swap:1s"  hx-confirm="Are you sure?">
+						    hx-swap="outerHTML swap:1s"  hx-confirm="@localizer["Are you sure?"]">
 											<form asp-page-handler="Delete" Method="post" id="form-delete_@Model.Part.Id" >
 														<input  name="DeletePartModel.PartId" id="DeletePartModel_PartId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
 														<input  name="DeletePartModel.BlueprintId" id="DeletePartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
@@ -31,10 +35,9 @@
 											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
 													<div class="input-group">
 														<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" placeholder="Add a child node">
+														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" placeholder="@localizer["Add a child node"]">
 														<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
 														<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
-														<input  name="IdentationLevel" id="IdentationLevel_@Model.Part.Id" value=@Model.IdentationLevel class="form-control" type="hidden" >
 														<button type="submit" class="btn btn-outline-secondary">
 														<i class="bi bi-plus-square-fill"></i>
 														</button>
@@ -44,7 +47,7 @@
 					</div>
 						<!-- Button shows the modal -->
 						<button id="open-modal-AddPartModel_Name-@Model.Part.Id" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#modal-AddPartModel_Name-@Model.Part.Id">
-						  Add multiple
+						  @localizer["Add multiple"]
 						</button>
 				</div>
 			</div>
@@ -55,8 +58,8 @@
 						  <div class="modal-dialog">
 							<div class="modal-content">
 							  <div class="modal-header">
-								<h5 class="modal-title" id="title-AddPartModel_Name-@Model.Part.Id">Adding multiple children to @Model.Part.Name</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								<h5 class="modal-title" id="title-AddPartModel_Name-@Model.Part.Id">@localizer["Adding multiple children to"] <span class="fw-bold">@Model.Part.Name</span></h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@localizer["Close"]"></button>
 							  </div>
 							  <div name="modal-body" class="modal-body">
 								@{
@@ -65,8 +68,8 @@
 								}
 									<div id="@localSpinnerId" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true">
 									</div>
-									 <div name="template row"  id="row1" class="row d-none">
-										  <div class="col-sm-6">
+									 <div name="modal-form-row"  id="row1" class="row row-cols-1 d-none">
+										  <div class="col-sm-12">
 												<div  hx-boost="true"
 														hx-target ="#children_@Model.Part.Id"
 														hx-indicator="#@localSpinnerId"
@@ -74,10 +77,9 @@
 															<form asp-page-handler="Add" method="post" >
 																	<div class="input-group">
 																		<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-																		<input	name="AddPartModel.Name"  class="form-control" placeholder="Add child">
+																		<input	name="AddPartModel.Name"  class="form-control" placeholder="@(localizer["Add a child node"])">
 																		<input  name="AddPartModel.ParentId"  value=@Model.Part.Id class="form-control" type="hidden" >
 																		<input  name="AddPartModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden" >
-																		<input  name="IdentationLevel"  value=@Model.IdentationLevel class="form-control" type="hidden" >
 																		<button type="submit" class="btn btn-outline-secondary">
 																		<i class="bi bi-plus-square-fill"></i>
 																		</button>
@@ -88,7 +90,7 @@
 									</div>
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button id="close-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">@localizer["Close"]</button>
 							  </div>
 							</div>
 						  </div>

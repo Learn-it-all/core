@@ -20,10 +20,10 @@
     			    	<form asp-page-handler="Create" method="post" >
                             <div class="input-group ">
                             <div class="form-floating flex-grow-1">
-    			    			<input id="root-input" autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control" placeholder="Skill Name">
-                                 <label for="root-input">Type the skill name and hit enter to create it</label>
+    			    			<input id="root-input" autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control">
+                                 <label for="root-input">@Localizer["Type the skill name and hit enter to create it"]</label>
                             </div>
-    			    		<button type="submit" class="btn btn-primary">Create</button>
+    			    		<button type="submit" class="btn btn-primary">@Localizer["Create"]</button>
                             </div>
     			    	</form>
 		            </div>
@@ -37,13 +37,30 @@
 
 @section scripts {
     <script>
+
     htmx.on("htmx:afterRequest", function(evt) {
         var formThatTriggeredTheSubmit = evt.detail.elt;
         const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
-        if(input)
+        if(input){
             input.value = '';
+            //below we identify if the form is part of a modal. If that is the case, we want to delete the row where
+            //the form is and also automatically close the modal if the only form there is the one that serves as a template
+            //for the drag&drop functionality
+            const parentRowOfTheForm = htmx.closest(input,'div[name="modal-form-row"]');
+            if(parentRowOfTheForm){
+                const modal = htmx.closest(parentRowOfTheForm,'div.modal-content');
+                htmx.remove(parentRowOfTheForm);
+                const remainingForms = modal.querySelectorAll('div[name="modal-form-row"]').length - 1;//-1 because we don't want to count the template row (the #row1)
+                if(remainingForms < 1)
+                {
+                    const closeButton = modal.querySelector("#close-modal");
+                    closeButton.click();
+
+                }
+            }
+        }
     });
-    htmx.logAll();
+    htmx.logAll(); //htmx debug on browser's console window
 
     //https://htmx.org/docs/#modifying_swapping_behavior_with_events
     document.body.addEventListener('htmx:beforeSwap', function(evt) {
@@ -98,18 +115,17 @@ document.addEventListener("drop", function( event ) {
               const height =  size * 38 + 100;
               body.style.height = height + "px";
               let row = body.querySelector('#row1');
-              row.id = "row_" + event.target.id;
               items.filter(v => v).forEach((element,index)  => {
                   let newRow = row.cloneNode(true);
                   htmx.removeClass(newRow, "d-none");
-                  newRow.id = row.id +"_" + index;
+                  newRow.id = + event.target.id +"_" + index;
                   let newPartName = newRow.querySelector("[name='"+inputTextToReceiveDraggableContent+"'");
                   newPartName.value = element;
                   row.parentNode.appendChild(newRow);
                   htmx.process(newRow);
               });
               const button = document.getElementById("open-modal-"+event.target.id);
-              button.click();
+              button.click();//shows the modal
         } else {
             event.target.value = data;
         }
