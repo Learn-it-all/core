@@ -35,49 +35,58 @@
 		</li>
 </ul>
 
+
 @section scripts {
-    <script>
+<script>
+
+    addAllParts = function(button){
+        const modalContent = htmx.closest(button,'div.modal-content');
+        const modalbody = modalContent.querySelector('div.modal-body');
+        const buttons = modalbody.querySelectorAll('button[name="submit-part"]');
+        buttons.forEach(button => button.click());
+    }
 
     htmx.on("htmx:afterRequest", function(evt) {
+        const status = evt.detail.xhr.status;
         var formThatTriggeredTheSubmit = evt.detail.elt;
         const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
         if(input){
-            input.value = '';
-            //below we identify if the form is part of a modal. If that is the case, we want to delete the row where
-            //the form is and also automatically close the modal if the only form there is the one that serves as a template
-            //for the drag&drop functionality
-            const parentRowOfTheForm = htmx.closest(input,'div[name="modal-form-row"]');
-            if(parentRowOfTheForm){
-                const modal = htmx.closest(parentRowOfTheForm,'div.modal-content');
-                htmx.remove(parentRowOfTheForm);
-                const remainingForms = modal.querySelectorAll('div[name="modal-form-row"]').length - 1;//-1 because we don't want to count the template row (the #row1)
-                if(remainingForms < 1)
-                {
-                    const closeButton = modal.querySelector("#close-modal");
-                    closeButton.click();
 
+            if(status < 300){
+                input.value = '';
+                //below we identify if the form is part of a modal. If that is the case, we want to delete the row where
+                //the form is and also automatically close the modal if the only form there is the one that serves as a template
+                //for the drag&drop functionality
+                const parentRowOfTheForm = htmx.closest(input,'div[name="modal-form-row"]');
+                if(parentRowOfTheForm){
+                    const modal = htmx.closest(parentRowOfTheForm,'div.modal-content');
+                    htmx.remove(parentRowOfTheForm);
+                    const remainingForms = modal.querySelectorAll('div[name="modal-form-row"]').length - 1;//-1 because we don't want to count the template row (the #row1)
+                    if(remainingForms < 1)
+                    {
+                        const closeButton = modal.querySelector("#close-modal");
+                        closeButton.click();
+
+                    }
                 }
+            } else {
+                let errorMessage = formThatTriggeredTheSubmit.querySelector("small");
+                if(status < 500){
+                    errorMessage.innerHTML = evt.detail.xhr.response;
+                } 
+                errorMessage.toggleAttribute("hidden");
             }
         }
     });
-    htmx.logAll(); //htmx debug on browser's console window
 
-    //https://htmx.org/docs/#modifying_swapping_behavior_with_events
-    document.body.addEventListener('htmx:beforeSwap', function(evt) {
-    if(evt.detail.xhr.status === 400){
-        // alert the user when a 400 occurs (maybe use a nicer mechanism than alert())
-        alert("Error: Could Not Find Resource");
-    } else if(evt.detail.xhr.status === 422){
-        // allow 422 responses to swap as we are using this as a signal that
-        // a form was submitted with bad data and want to rerender with the
-        // errors
-        //
-        // set isError to false to avoid error logging in console
-        evt.detail.shouldSwap = true;
-        evt.detail.isError = false;
-    } 
-});
+    resetErrorMessageForPartNameOnFocus = function(formElement){
+        var inputParent = htmx.closest(formElement,'form');
+        var message = inputParent.querySelector("small");
+        message.setAttribute("hidden","");
+        message.innerText = "@Localizer["ooops! Something went wrong. Please try again."]";
+    }
 
+  
 // draggable content on inputs to create several new parts all at once
 const inputTextToReceiveDraggableContent = "AddPartModel.Name";
 const backgroundColorOfTextInput ="bg-secondary";
@@ -86,20 +95,26 @@ const backgroundColorOfTextInput ="bg-secondary";
       // highlight potential drop target when the draggable element enters it
      if ( event.target.name == inputTextToReceiveDraggableContent ) {
         htmx.addClass(event.target, backgroundColorOfTextInput);
-
      }
 
   }, false);
 
-  document.addEventListener("dragleave", function( event ) {
-      // reset background of potential drop target when the draggable element leaves it
-     if ( event.target.name == inputTextToReceiveDraggableContent ) {
-        htmx.removeClass(event.target, backgroundColorOfTextInput);          
-        event.target.style.height = "";
-      }
+document.addEventListener("dragleave", function( event ) {
+    // reset background of potential drop target when the draggable element leaves it
+    if ( event.target.name == inputTextToReceiveDraggableContent ) {
+    htmx.removeClass(event.target, backgroundColorOfTextInput);          
+    event.target.style.height = "";
+    }
 
-  }, false);
+}, false);
 
+enableSubmitOfNewRow = function(row) {
+    var submit = row.querySelector("button");
+    submit.toggleAttribute("disabled");
+}
+deleteFormRowFromModalOnModalHide = function(modal,rowThatWillDeleteItSelf){
+    modal.addEventListener('hidden.bs.modal',event => rowThatWillDeleteItSelf.remove());
+}
 document.addEventListener("drop", function( event ) {
     // prevent default action (open as link for some elements)
     event.preventDefault();
@@ -118,6 +133,8 @@ document.addEventListener("drop", function( event ) {
               items.filter(v => v).forEach((element,index)  => {
                   let newRow = row.cloneNode(true);
                   htmx.removeClass(newRow, "d-none");
+                  enableSubmitOfNewRow(newRow);
+                  deleteFormRowFromModalOnModalHide(modal,newRow);
                   newRow.id = + event.target.id +"_" + index;
                   let newPartName = newRow.querySelector("[name='"+inputTextToReceiveDraggableContent+"'");
                   newPartName.value = element;
@@ -133,8 +150,6 @@ document.addEventListener("drop", function( event ) {
         event.target.style.height = "";
     }
 });
-
-       
     </script>
 
 }

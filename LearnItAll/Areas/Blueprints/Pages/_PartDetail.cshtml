@@ -1,8 +1,26 @@
 ﻿
+
 @using LearnItAll.Models.Skillblueprints
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer localizer
+@*
+
+	READ ME
+	About his Partial View
+
+
+	Before changing ids, names, the element hierarchy, etc, consider the impacted javascript functions 
+	and events declared on "CreateBlueprint.cshtml", as those scripts are heavily dependant on 
+	the current structure of this page.
+
+	This page is used everytime the user creates a Skill Blueprint or ANY of it's nodes, in a recursive 
+	fashion, to create a three that represents all nodes and make it possible to the user to create 
+	child nodes on any part of the three. Any inline JS or CSS declared in this page will be repeated for 
+	every node present on the three, creating a mess.
+
+	DO NOT declare any inline CSS or JS in this file.
+*@
 
 @model PartDetail
 @{
@@ -35,13 +53,14 @@
 											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
 													<div class="input-group">
 														<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" placeholder="@localizer["Add a child node"]">
+														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" oninput=resetErrorMessageForPartNameOnFocus(this) onfocus=resetErrorMessageForPartNameOnFocus(this) placeholder="@localizer["Add a child node"]">
 														<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
 														<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
-														<button type="submit" class="btn btn-outline-secondary">
+														<button type="submit" onsubmit=resetErrorMessageForPartNameOnFocus(this) class="btn btn-outline-secondary">
 														<i class="bi bi-plus-square-fill"></i>
 														</button>
 													</div>
+											<small hidden class="text-danger">@localizer["ooops! Something went wrong. Please try again."]</small>
 											</form>
 						<div id="add-spinner_@Model.Part.Id" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true"></div>
 					</div>
@@ -54,7 +73,7 @@
 					
 						
 						<!-- Modal -->
-						<div class="modal fade" id="modal-AddPartModel_Name-@Model.Part.Id" tabindex="-1" aria-labelledby="title-AddPartModel_Name-@Model.Part.Id" aria-hidden="true">
+						<div class="modal fade" id="modal-AddPartModel_Name-@Model.Part.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="title-AddPartModel_Name-@Model.Part.Id" aria-hidden="true">
 						  <div class="modal-dialog">
 							<div class="modal-content">
 							  <div class="modal-header">
@@ -68,6 +87,12 @@
 								}
 									<div id="@localSpinnerId" class="spinner-border spinner-border-sm htmx-indicator" role="status" aria-hidden="true">
 									</div>
+									@*
+									#row1 below serves as a template for the current modal. it will be duplicated for every item a user 
+									drags and drops into the input field of above form.
+									Check eventlistener drop from CreateBlueprint.cshtml for more details.
+									*@
+
 									 <div name="modal-form-row"  id="row1" class="row row-cols-1 d-none">
 										  <div class="col-sm-12">
 												<div  hx-boost="true"
@@ -77,19 +102,21 @@
 															<form asp-page-handler="Add" method="post" >
 																	<div class="input-group">
 																		<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
-																		<input	name="AddPartModel.Name"  class="form-control" placeholder="@(localizer["Add a child node"])">
+																		<input	name="AddPartModel.Name"  class="form-control" oninput=resetErrorMessageForPartNameOnFocus(this) onfocus=resetErrorMessageForPartNameOnFocus(this) placeholder="@(localizer["Add a child node"])">
 																		<input  name="AddPartModel.ParentId"  value=@Model.Part.Id class="form-control" type="hidden" >
 																		<input  name="AddPartModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden" >
-																		<button type="submit" class="btn btn-outline-secondary">
+																		<button name="submit-part" onsubmit=resetErrorMessageForPartNameOnFocus(this) disabled type="submit" class="btn btn-outline-secondary">
 																		<i class="bi bi-plus-square-fill"></i>
 																		</button>
 																	</div>
+																	<small hidden class="text-danger">@localizer["ooops! Something went wrong. Please try again."]</small>
 															</form>
 												</div>
 										</div>
 									</div>
 							  </div>
 							  <div class="modal-footer">
+								<button type="button" onclick=addAllParts(this) class="btn btn-primary">@localizer["Add all shown"]</button>										
 								<button id="close-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">@localizer["Close"]</button>
 							  </div>
 							</div>
