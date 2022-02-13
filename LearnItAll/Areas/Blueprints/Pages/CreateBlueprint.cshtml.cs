@@ -25,6 +25,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public AddPartModel AddPartModel { get; set; } = new();
 
         public DeletePartModel DeletePartModel { get; set; } = new();
+        public DeleteBlueprintModel DeleteBlueprintModel { get; set; } = new();
         public Guid IdOfLatestAddedPart { get; set; }
         public Guid BlueprintId { get; set; }
         public Guid RootPartId { get; set; }
@@ -78,6 +79,20 @@ namespace LearnItAll.Areas.Blueprints.Pages
             result = await mediator.Send((DeletePartCmd)DeletePartModel);
 
             if (result.IsSuccess)
+                return await Task.FromResult(new OkResult());
+            else
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                return await this.PartialView("_ErrorPartial", result.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnPostDeleteBlueprint()
+        {
+            var result = DeleteBlueprintResult.CreateInternalError;
+            result = await mediator.Send((DeleteBlueprintCmd)DeleteBlueprintModel);
+
+            if (result.Success)
                 return await Task.FromResult(new OkResult());
             else
             {

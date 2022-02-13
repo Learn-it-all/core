@@ -79,31 +79,6 @@ namespace LearnItAll.Areas.Blueprints.Pages
         }
 
     }
-    public class AddPartModel
-    {
-        [Required]
-        [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
-        public string Name { get; set; } = string.Empty;
-        public Guid ParentId { get; set; }
-        public Guid BlueprintId { get; set; }
-
-        public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name), model.ParentId,model.BlueprintId);
-    }
-    public class DeletePartModel
-    {
-        public Guid PartId { get; set; }
-        public Guid BlueprintId { get; set; }
-
-        public static implicit operator DeletePartCmd(DeletePartModel model) => new DeletePartCmd(partId:model.PartId, blueprintId: model.BlueprintId);
-    }
-
-    public class NewBlueprintModel
-    {
-        [Required]
-        [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
-        public string Name { get; set; } = string.Empty;
-
-        public static implicit operator CreateSkillBlueprintCmd(NewBlueprintModel model) => new CreateSkillBlueprintCmd(new Name(model.Name));
-    }
+  
 }
 

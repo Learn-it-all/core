@@ -7,7 +7,7 @@
 @*
 
 	READ ME
-	About his Partial View
+	About this Partial View
 
 
 	Before changing ids, names, the element hierarchy, etc, consider the impacted javascript functions 
@@ -30,20 +30,40 @@
 		
 	<li id="delete-part_@Model.Part.Id" class="list-group-item p-0">
 			<div class="row justify-content-md-right row-cols-2">
-				<div class="col-sm-6">
-						<div  hx-boost="true"
-						    hx-target="#delete-part_@Model.Part.Id"
-						    hx-swap="outerHTML swap:1s"  hx-confirm="@localizer["Are you sure?"]">
-											<form asp-page-handler="Delete" Method="post" id="form-delete_@Model.Part.Id" >
-														<input  name="DeletePartModel.PartId" id="DeletePartModel_PartId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
-														<input  name="DeletePartModel.BlueprintId" id="DeletePartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
-														<div class="input-group">
-															<button type="submit" class="btn btn-outline-secondary" ><i class="bi bi-trash"></i></button>
-															<div readonly class="form-control fw-bold text-break">@Model.Part.Name</div>
-														</div>											
-											</form>
-						</div>
-				</div>
+				@if(Model.IsRoot)
+				{
+					<div class="col-sm-6">
+							<div  hx-boost="true"
+							    hx-target="#delete-part_@Model.Part.Id"
+							    hx-swap="outerHTML swap:1s"  hx-confirm="@localizer["Are you sure? It will delete the whole Blueprint."]">
+												<form asp-page-handler="DeleteBlueprint" Method="post" id="form-delete_@Model.Part.Id" >
+															<input  name="DeleteBlueprintModel.BlueprintId" id="DeleteBlueprintModel.BlueprintId_@Model.Part.ParentId" value=@Model.BlueprintId class="form-control" type="hidden" >
+															<div class="input-group">
+																<button type="submit" class="btn btn-outline-secondary bg-danger" ><i class="bg-danger bi bi-trash text-white"></i></button>
+																<div readonly class="form-control fw-bold text-break">@Model.Part.Name</div>
+															</div>											
+												</form>
+							</div>
+					</div>
+				}
+				else
+				{
+					
+					<div class="col-sm-6">
+							<div  hx-boost="true"
+							    hx-target="#delete-part_@Model.Part.Id"
+							    hx-swap="outerHTML swap:1s"  hx-confirm="@localizer["Are you sure?"]">
+												<form asp-page-handler="Delete" Method="post" id="form-delete_@Model.Part.Id" >
+															<input  name="DeletePartModel.PartId" id="DeletePartModel_PartId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
+															<input  name="DeletePartModel.BlueprintId" id="DeletePartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
+															<div class="input-group">
+																<button type="submit" class="btn btn-outline-secondary bg-danger" ><i class="bg-danger bi bi-trash text-white"></i></button>
+																<div readonly class="form-control fw-bold text-break">@Model.Part.Name</div>
+															</div>											
+												</form>
+							</div>
+					</div>
+				}
 				<div class="col-sm-6">
 					<div  hx-boost="true"
 							hx-indicator="#add-spinner_@Model.Part.Id"
@@ -56,8 +76,8 @@
 														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" oninput=resetErrorMessageForPartNameOnFocus(this) onfocus=resetErrorMessageForPartNameOnFocus(this) placeholder="@localizer["Add a child node"]">
 														<input  name="AddPartModel.ParentId" id="AddPartModel_ParentId_@Model.Part.Id" value=@Model.Part.Id class="form-control" type="hidden" >
 														<input  name="AddPartModel.BlueprintId" id="AddPartModel.BlueprintId_@Model.Part.Id" value=@Model.BlueprintId class="form-control" type="hidden" >
-														<button type="submit" onsubmit=resetErrorMessageForPartNameOnFocus(this) class="btn btn-outline-secondary">
-														<i class="bi bi-plus-square-fill"></i>
+														<button type="submit" onsubmit=resetErrorMessageForPartNameOnFocus(this) class="btn btn-outline-primary bg-primary">
+														<i class="bi bi-plus-circle bg-primary text-white"></i>
 														</button>
 													</div>
 											<small hidden class="text-danger">@localizer["ooops! Something went wrong. Please try again."]</small>
