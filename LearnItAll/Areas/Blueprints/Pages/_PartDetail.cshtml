@@ -136,7 +136,23 @@
 									</div>
 							  </div>
 							  <div class="modal-footer">
-								<button type="button" onclick=addAllParts(this) class="btn btn-primary">@localizer["Add all shown"]</button>										
+									<div name="modal-form-submit-all" id="modal-form-submit-all_@Model.Part.Id" class="row row-cols-1">
+										<div>
+											<div hx-boost="true"
+												 hx-target="#children_@Model.Part.Id"
+												 hx-indicator="#@localSpinnerId"
+												 hx-swap="afterbegin">
+												<form asp-page-handler="AddMany" method="post" name="form-add-many-names">
+														<div class="input-group" name="add-many-names">
+														<input name="AddManyPartsModel.ParentId" value=@Model.Part.Id class="form-control" type="hidden">
+														<input name="AddManyPartsModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden">
+													</div>
+													<small hidden class="text-danger">@localizer["ooops! Something went wrong. Please try again."]</small>
+												<button type="button" onclick=addAllPartsSingleRequest(this) class="btn btn-primary">@localizer["Add all shown (new)"]</button>										
+												</form>
+											</div>
+										</div>
+									</div>
 								<button id="close-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">@localizer["Close"]</button>
 							  </div>
 							</div>

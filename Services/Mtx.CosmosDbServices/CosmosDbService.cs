@@ -43,6 +43,7 @@ public class CosmosDbService : ICosmosDbService
 
     }
 
+    //SELECT * FROM c where STRINGEQUALS(c._root.name,'c#', true) performs insensitive string 
     public async Task<IEnumerable<SkillBlueprint>> GetItemAsync(string queryString)
     {
         var query = this._container.GetItemQueryIterator<SkillBlueprint>(new QueryDefinition(queryString));
@@ -61,6 +62,11 @@ public class CosmosDbService : ICosmosDbService
     {
         skillBlueprint.ModifiedDate = System.DateTime.Now;
         skillBlueprint.ModifiedBy = _httpContext?.HttpContext?.User?.Identity?.Name ?? "anonymous user";
-        await this._container.UpsertItemAsync<SkillBlueprint>(skillBlueprint, new PartitionKey(id));
+        var result = await this._container.UpsertItemAsync<SkillBlueprint>(skillBlueprint, new PartitionKey(id));
+        var retries = 0;
+        while (result.StatusCode == System.Net.HttpStatusCode.Conflict && retries++ < 3)
+        {
+            result = await this._container.UpsertItemAsync<SkillBlueprint>(skillBlueprint, new PartitionKey(id));
+        }
     }
 }

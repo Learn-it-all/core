@@ -46,6 +46,26 @@
         buttons.forEach(button => button.click());
     }
 
+     addAllPartsSingleRequest = function(button){
+        const modalContent = htmx.closest(button,'div.modal-content');
+            const names = modalContent.querySelectorAll('input[name="AddPartModel.Name"]');
+            const inputGroup = modalContent.querySelector("div[name='add-many-names']");
+            names.forEach(name => addNameInput(inputGroup,name.value))
+            const form = modalContent.querySelector("form[name='form-add-many-names']")
+            form.submit();
+    }
+
+    addNameInput = function (container, name) {
+        if(container && name)
+        {
+            input = document.createElement("input");
+            input.type = "hidden";
+                input.name = "AddManyPartsModel.Names";
+            input.value = name;
+            container.appendChild(input);
+        }
+    }
+
     htmx.on("htmx:afterRequest", function(evt) {
         const status = evt.detail.xhr.status;
         var formThatTriggeredTheSubmit = evt.detail.elt;

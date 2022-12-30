@@ -1,4 +1,5 @@
-﻿using Mtx.LearnItAll.Core.Common;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Newtonsoft.Json;
 using System;
@@ -58,6 +59,20 @@ public class AddPartModel
 
     public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name), model.ParentId, model.BlueprintId);
 }
+
+public class AddManyPartsModel : IModelValidator
+{
+    [Required]
+    public List<string> Names { get; set; } = new List<string>();
+    public Guid ParentId { get; set; }
+    public Guid BlueprintId { get; set; }
+
+    public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
+    {
+        return new List<ModelValidationResult>();
+    }
+
+ }
 public class DeletePartModel
 {
     public Guid PartId { get; set; }

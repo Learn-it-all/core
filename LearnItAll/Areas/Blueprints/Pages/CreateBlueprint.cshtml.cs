@@ -1,12 +1,9 @@
 using LearnItAll.Models.Skillblueprints;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Mtx.LearnItAll.Core.Common.Parts;
-using System;
-using System.Threading.Tasks;
 
 namespace LearnItAll.Areas.Blueprints.Pages
 {
@@ -23,6 +20,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public SkillBluePrint Blueprint { get; set; } = NullSkillBluePrint.New();
         public NewBlueprintModel NewBlueprintModel { get; set; } = new();
         public AddPartModel AddPartModel { get; set; } = new();
+        public AddManyPartsModel AddManyPartsModel { get; set; } = new();
 
         public DeletePartModel DeletePartModel { get; set; } = new();
         public DeleteBlueprintModel DeleteBlueprintModel { get; set; } = new();
@@ -40,6 +38,35 @@ namespace LearnItAll.Areas.Blueprints.Pages
             var blueprintData = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
 
             return await this.PartialView("_PartDetail", new RootPartDetail { Part = new Part { Id = blueprintData.RootPartId, Name = NewBlueprintModel.Name, ParentId = blueprintData.Id }, BlueprintId = blueprintData.Id });
+
+        }
+        public async Task<IActionResult> OnPostAddMany(CancellationToken ct)
+        {
+            var result = AddPartResult.FailureForUnknownReason;
+            //Note: any exception thrown by the mediator handler will bubble up and endup in http 500;
+            //to handle exceptions there a exception handler is required to be implemented 
+            //see https://github.com/jbogard/MediatR/tree/master/samples/MediatR.Examples/ExceptionHandler
+            //and https://github.com/jbogard/MediatR/wiki#exceptions-handling
+            result = await mediator.Send(new AddManyPartsCmd(new List<Mtx.LearnItAll.Core.Common.Name>(),AddManyPartsModel.ParentId));
+            IdOfLatestAddedPart = result.IdOfAddedPart;
+
+            if (result.IsSuccess)
+                return await this.PartialView("_PartDetail",
+                    new PartDetail
+                    {
+                        Part = new Part
+                        {
+                            Id = IdOfLatestAddedPart,
+                            Name = AddPartModel.Name,
+                            ParentId = AddPartModel.ParentId,
+                        },
+                        BlueprintId = AddPartModel.BlueprintId,
+                    });
+            else
+            {
+                Response.StatusCode = StatusCodes.Status400BadRequest;
+                return await this.PartialView("_ErrorPartial", result.Message);
+            }
 
         }
 

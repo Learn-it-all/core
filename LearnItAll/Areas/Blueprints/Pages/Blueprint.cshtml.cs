@@ -29,6 +29,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
         public NewBlueprintModel NewBlueprintModel { get; set; } = new();
         [BindProperty]
         public AddPartModel AddPartModel { get; set; } = new();
+        public AddManyPartsModel AddManyPartsModel { get; set; } = new();
         public Guid IdOfLatestAddedPart { get; set; }
         public Guid BlueprintId { get; set; }
         public string BlueprintName { get; private set; } = string.Empty;
@@ -75,6 +76,13 @@ namespace LearnItAll.Areas.Blueprints.Pages
             string json = this.HttpContext.Session.GetString(AddPartModel.BlueprintId.ToString()) ?? throw new InvalidOperationException("SkillBlueprint not found on Session");
             Blueprint = JsonConvert.DeserializeObject<SkillBluePrint>(json);
             AddPartModel = new();
+            return await Task.FromResult(Page());
+        }
+
+        public async Task<IActionResult> OnPostAddMany()
+        {
+            var result = AddPartResult.FailureForUnknownReason;
+          
             return await Task.FromResult(Page());
         }
 
