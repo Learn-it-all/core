@@ -3,7 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <ProduceReferenceAssemblyInOutDir>true</ProduceReferenceAssemblyInOutDir>
+  </PropertyGroup>
   <PropertyGroup>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
@@ -28,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
+    <ProjectReference Include="..\..\Mtx.Common.Resources\Mtx.Common.Resources.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Resources\Mtx.LearnItAll.Core.Resources.csproj" />
   </ItemGroup>

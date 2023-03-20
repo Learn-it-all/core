@@ -1,15 +1,16 @@
 ﻿using AutoFixture;
+using Mtx.LearnItAll.Core;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Calculations;
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
-using Mtx.LearnItAll.Core.Resources;
+using SemanticComparison.Fluent;
 using System;
 using System.Linq;
+using Tests;
 using Xunit;
-using SemanticComparison.Fluent;
 
-namespace Mtx.LearnItAll.Core.Tests.PartNodes
+namespace PartNodes
 {
     public class AddingPartShould : Test
     {
@@ -36,7 +37,7 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
             var cmd = new AddPartCmd(new Name("name"), sut.Id);
             sut.Add(cmd);
 
-            Assert.Throws<InvalidOperationException>(()=> sut.Add(cmd));
+            Assert.Throws<InvalidOperationException>(() => sut.Add(cmd));
 
         }
 

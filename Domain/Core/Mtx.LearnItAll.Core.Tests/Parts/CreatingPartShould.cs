@@ -1,9 +1,11 @@
 ﻿using AutoFixture;
+using Mtx.LearnItAll.Core;
 using Mtx.LearnItAll.Core.Blueprints;
 using System;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Parts
+namespace Parts
 {
     public class CreatingPartShould : Test
     {

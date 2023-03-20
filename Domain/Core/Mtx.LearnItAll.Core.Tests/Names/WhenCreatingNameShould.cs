@@ -1,32 +1,29 @@
 using AutoFixture;
-using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests
+namespace Names
 {
-    public class ModelNameTest
+    public class WhenCreatingNameShould : Test
 
     {
-        private Fixture _fixture => new Fixture();
-
-        public ModelNameTest()
+        public WhenCreatingNameShould()
         {
 
         }
 
         [Fact]
-        public void Exists()
+        public void Exist()
         {
             _ = _fixture.Create<Name>();
 
         }
 
         [Fact]
-        public void Ctor_NameHasNoMoreThan50Chars()
+        public void EnforceMaxLength()
         {
             string outOfRangeName = new(Enumerable.Repeat('a', 51).ToArray());
 

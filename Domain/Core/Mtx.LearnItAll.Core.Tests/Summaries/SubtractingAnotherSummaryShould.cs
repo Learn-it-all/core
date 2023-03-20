@@ -1,8 +1,9 @@
 ﻿using AutoFixture;
 using Mtx.LearnItAll.Core.Calculations;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Summaries
+namespace Summaries
 {
     public class SubtractingAnotherSummaryShould : Test
     {

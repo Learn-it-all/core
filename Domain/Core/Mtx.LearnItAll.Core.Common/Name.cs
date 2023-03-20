@@ -1,8 +1,5 @@
 ﻿using Mtx.LearnItAll.Core.Resources;
-using Newtonsoft.Json;
 using System;
-using System.ComponentModel;
-using System.Globalization;
 
 namespace Mtx.LearnItAll.Core.Common
 {
@@ -19,7 +16,7 @@ namespace Mtx.LearnItAll.Core.Common
             }
 
             if (name.Length > MaxLenght)
-                throw new ArgumentOutOfRangeException(nameof(name), string.Format(Messages.ModelName_CannotExceedMaximunLenght, MaxLenght));
+                throw new ArgumentOutOfRangeException(nameof(name), string.Format(CoreMessages.ModelName_CannotExceedMaximunLenght, MaxLenght));
             Value = name;
         }
 

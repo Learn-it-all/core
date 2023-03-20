@@ -3,9 +3,11 @@ using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Calculations;
 using Mtx.LearnItAll.Core.Common;
 using System;
+using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests
+namespace Tests
 {
+    [Trait("Domain","Core")]
     public abstract class Test
     {
         protected Fixture _fixture = new();

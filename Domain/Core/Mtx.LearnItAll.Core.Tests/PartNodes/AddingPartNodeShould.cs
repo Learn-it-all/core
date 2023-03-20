@@ -6,9 +6,10 @@ using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
 using System;
 using System.Linq;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.PartNodes
+namespace PartNodes
 {
     public class AddingPartNodeShould : Test
     {
@@ -33,7 +34,7 @@ namespace Mtx.LearnItAll.Core.Tests.PartNodes
         {
             var dummySkill = _fixture.Create<PartNode>();
             var sut = _fixture.Create<PartNode>();
-            var expectedErrorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, dummySkill.Name, sut.Name);
+            var expectedErrorMessage = string.Format(CoreMessages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, dummySkill.Name, sut.Name);
 
             sut.Add(newNode: dummySkill);
             Assert.Throws<InvalidOperationException>(() =>

@@ -1,8 +1,10 @@
 ﻿using AutoFixture;
+using Mtx.LearnItAll.Core;
 using Mtx.LearnItAll.Core.Blueprints;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Parts
+namespace Parts
 {
     public class ChangingPartLevelShould : Test
     {

@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Messages.Designer.cs">
+    <Compile Update="CoreMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Messages.resx</DependentUpon>
+      <DependentUpon>CoreMessages.resx</DependentUpon>
     </Compile>
     <Compile Update="Text.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Messages.resx">
+    <EmbeddedResource Update="CoreMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <LastGenOutput>CoreMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Text.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

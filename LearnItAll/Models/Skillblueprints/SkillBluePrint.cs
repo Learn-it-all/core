@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Mtx.LearnItAll.Core.Common;
+﻿using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LearnItAll.Models.Skillblueprints;
@@ -60,19 +57,27 @@ public class AddPartModel
     public static implicit operator AddPartCmd(AddPartModel model) => new AddPartCmd(new Name(model.Name), model.ParentId, model.BlueprintId);
 }
 
-public class AddManyPartsModel : IModelValidator
+public class PartName
 {
     [Required]
-    public List<string> Names { get; set; } = new List<string>();
+    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
+    public string Name { get; set; } = string.Empty;
+}
+
+public class AddManyPartsModel
+{
+    [Required]
+    public List<PartName> Names { get; set; } = new List<PartName>();
     public Guid ParentId { get; set; }
     public Guid BlueprintId { get; set; }
 
-    public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
+    public AddMultiplePartsCmd ToCmd()
     {
-        return new List<ModelValidationResult>();
+        var names = Names.Select(x => new Name(x.Name));
+        return new AddMultiplePartsCmd(names, ParentId, BlueprintId);
     }
+}
 
- }
 public class DeletePartModel
 {
     public Guid PartId { get; set; }

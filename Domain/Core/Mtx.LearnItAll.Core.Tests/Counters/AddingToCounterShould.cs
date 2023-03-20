@@ -1,7 +1,9 @@
-﻿using Mtx.LearnItAll.Core.Calculations;
+﻿using Mtx.LearnItAll.Core;
+using Mtx.LearnItAll.Core.Calculations;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Counters
+namespace Counters
 {
     public class AddingToCounterShould : Test
     {
@@ -50,7 +52,7 @@ namespace Mtx.LearnItAll.Core.Tests.Counters
         }
 
         [Fact]
-        public void KeepsCounterAsWholeNumberGivenNewValueIsSmallerThanZero()
+        public void KeepCounterAsWholeNumberGivenNewValueIsSmallerThanZero()
         {
             var sut = new Counter(SkillLevel.Unknown, 0);
 

@@ -1,13 +1,15 @@
 ﻿using AutoFixture;
+using Mtx.LearnItAll.Core;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Calculations;
 using Mtx.LearnItAll.Core.Common;
 using Mtx.LearnItAll.Core.Common.Parts;
 using System;
 using System.Linq;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Parts
+namespace Parts
 {
     public class DeletingPartShould : Test
     {

@@ -9,8 +9,9 @@ using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Common;
 using Xunit;
 using Mtx.LearnItAll.Core.Calculations;
+using Tests;
 
-namespace Mtx.LearnItAll.Core.Tests.PartNodes
+namespace PartNodes
 {
     public class ChangingPartLevelOnPartNodeShould : Test
     {

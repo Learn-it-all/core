@@ -239,7 +239,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
         private void ThrowErrorForDuplicateName(string name)
         {
-            var errorMessage = string.Format(Messages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, name, Name);
+            var errorMessage = string.Format(CoreMessages.SkillModel_CannotAddDuplicateNameForChildOnSameLevel, name, Name);
             throw new InvalidOperationException(errorMessage);
         }
 

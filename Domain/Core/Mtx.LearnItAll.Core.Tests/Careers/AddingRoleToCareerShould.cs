@@ -2,8 +2,10 @@
 using AutoFixture;
 using System.Linq;
 using Mtx.LearnItAll.Core.Common;
+using Tests;
+using Mtx.LearnItAll.Core;
 
-namespace Mtx.LearnItAll.Core.Tests.Careers
+namespace Careers
 {
 
     public class AddingRoleToCareerShould : Test

@@ -3,8 +3,10 @@ using AutoFixture;
 using Mtx.LearnItAll.Core.Common;
 using System;
 using System.Collections.Generic;
+using Tests;
+using Mtx.LearnItAll.Core;
 
-namespace Mtx.LearnItAll.Core.Tests.Careers
+namespace Careers
 {
     public class CreatingCareerShould : Test
     {

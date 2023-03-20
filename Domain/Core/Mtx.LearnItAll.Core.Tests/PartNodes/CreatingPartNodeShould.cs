@@ -3,8 +3,9 @@ using Xunit;
 using AutoFixture;
 using Mtx.LearnItAll.Core.Calculations;
 using System;
+using Tests;
 
-namespace Mtx.LearnItAll.Core.Tests.PartNodes
+namespace PartNodes
 {
     public class CreatingPartNodeShould : Test
     {

@@ -1,9 +1,10 @@
 ﻿using AutoFixture;
 using Mtx.LearnItAll.Core.Calculations;
 using SemanticComparison.Fluent;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Summaries
+namespace Summaries
 {
     public class CreatingSummaryShould : Test
     {

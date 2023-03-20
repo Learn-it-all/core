@@ -57,6 +57,20 @@ namespace Mtx.LearnItAll.Core.Blueprints
         {
             return _root.TryAdd(cmd,out result);
         }
+        public AddMultiplePartsResult Add(AddMultiplePartsCmd cmd)
+        {
+
+            var finalResult = new AddMultiplePartsResult();
+            var result = AddPartResult.FailureForUnknownReason;
+            foreach(var name in cmd.Names)
+            {
+                _root.TryAdd(new AddPartCmd(name, cmd.ParentId, Id), out result);
+                if (result == AddPartResult.FailureForPartNotFound) return new AddMultiplePartsResultNoParentNodeFound(cmd.Names);
+                finalResult.Add(name, result);
+            }
+
+            return finalResult;
+        }
         public bool TryDeletePart(DeletePartCmd cmd, out DeletePartResult result)
         {
             return _root.TryDeletePart(cmd,out result);

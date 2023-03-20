@@ -3,9 +3,10 @@ using Mtx.Common.Domain;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common;
 using System;
+using Tests;
 using Xunit;
 
-namespace Mtx.LearnItAll.Core.Tests.Skills
+namespace Skills
 {
 
     public class CreationOfSkillShould : Test
@@ -61,6 +62,4 @@ namespace Mtx.LearnItAll.Core.Tests.Skills
         }
 
     }
-
-
 }

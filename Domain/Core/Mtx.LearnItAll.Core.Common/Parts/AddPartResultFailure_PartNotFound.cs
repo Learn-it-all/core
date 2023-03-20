@@ -1,8 +1,10 @@
-﻿namespace Mtx.LearnItAll.Core.Common.Parts
+﻿using Mtx.LearnItAll.Core.Resources;
+
+namespace Mtx.LearnItAll.Core.Common.Parts
 {
     public record AddPartResultFailure_PartNotFound : AddPartResult
     {
         public override int Code => 3;
-        public override string Message => $"Operation failed. The provided parent is not part of the given Skill Blueprint";
+        public override string Message => CoreMessages.Skill_ParentIdDoesNotExist;
     }
 }
