@@ -1,0 +1,11 @@
+﻿
+
+@using LearnItAll.Models.Skillblueprints
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@model AddManyPartsModelResult
+@foreach(var part in Model.Details)
+{
+	<partial name="_PartDetail" model="@part"/>
+}
+

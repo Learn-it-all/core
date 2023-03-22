@@ -2,6 +2,7 @@
 using Mtx.LearnItAll.Core.Common.Parts;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
 
 namespace LearnItAll.Models.Skillblueprints;
 public class SkillBluePrint
@@ -76,6 +77,20 @@ public class AddManyPartsModel
         var names = Names.Select(x => new Name(x.Name));
         return new AddMultiplePartsCmd(names, ParentId, BlueprintId);
     }
+}
+
+public class AddManyPartsModelResult
+{
+	public List<PartDetail> Details { get; set; } = new ();
+	public Guid ParentId { get; set; }
+	public Guid BlueprintId { get; set; }
+
+	public AddManyPartsModelResult(Guid parentId, Guid blueprintId, AddMultiplePartsResult multiplePartsResult)
+	{
+		ParentId = parentId;
+		BlueprintId = blueprintId;
+        Details = multiplePartsResult.Results.Select(part => new PartDetail { BlueprintId = BlueprintId, Part = new Part { Id = part.Value.IdOfAddedPart, Name = part.Key, ParentId = ParentId } }).ToList();
+	}
 }
 
 public class DeletePartModel

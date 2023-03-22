@@ -17,7 +17,7 @@ public class WhenAddingMultiplePartsShould : Test
         var sut = _fixture.Create<SkillBlueprint>();
         var names = _fixture.CreateMany<Name>();
         PartNode part = _fixture.Create<PartNode>();
-        var cmd = new AddMultiplePartsCmd(names, sut.RootPartId);
+        var cmd = new AddMultiplePartsCmd(names, part.Id, sut.RootPartId);
         sut.Add(part);
 
         //Act
@@ -35,7 +35,7 @@ public class WhenAddingMultiplePartsShould : Test
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
-        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.IdOfAddedPart);
+        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.IdOfAddedPart,sut.RootPartId);
 
         //Act
         var actualResult = sut.Add(cmd);
@@ -51,7 +51,7 @@ public class WhenAddingMultiplePartsShould : Test
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
-        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.IdOfAddedPart);
+        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.IdOfAddedPart, sut.RootPartId);
         _ = sut.Add(cmd);
 
         //Act
@@ -68,7 +68,7 @@ public class WhenAddingMultiplePartsShould : Test
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
-        var cmd = new AddMultiplePartsCmd(names, parentId: Guid.NewGuid());
+        var cmd = new AddMultiplePartsCmd(names, parentId: Guid.NewGuid(), sut.RootPartId);
 
         //Act
         var actualResult = sut.Add(cmd);

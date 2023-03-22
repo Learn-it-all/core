@@ -41,7 +41,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         [JsonIgnore]
         public Summary Summary => _root.Summary.Copy();
 
-        [JsonProperty]
+        [JsonProperty(PropertyName ="root")]
         private readonly PartNode _root;
 
         public void Add(PartNode skill)

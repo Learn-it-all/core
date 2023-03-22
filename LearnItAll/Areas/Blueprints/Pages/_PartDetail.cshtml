@@ -70,7 +70,7 @@
 					        hx-target="#children_@Model.Part.Id"
 					        hx-swap="afterbegin settle:1s"
 							class="btn-space">
-											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" >
+											<form asp-page-handler="Add" method="post" id="form-@Model.Part.Id" name="form-add-one-part">
 													<div class="input-group">
 														<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
 														<input	name="AddPartModel.Name" id="AddPartModel_Name-@Model.Part.Id" class="form-control" oninput=resetErrorMessageForPartNameOnFocus(this) onfocus=resetErrorMessageForPartNameOnFocus(this) placeholder="@localizer["Add a child node"]">
@@ -119,7 +119,7 @@
 														hx-target ="#children_@Model.Part.Id"
 														hx-indicator="#@localSpinnerId"
 														hx-swap="afterbegin">
-															<form asp-page-handler="Add" method="post" >
+															<form asp-page-handler="Add" method="post" name="form-add-one-part">
 																	<div class="input-group">
 																		<i class="bi bi-arrow-return-right input-group-text d-none d-lg-block"></i>
 																		<input	name="AddPartModel.Name"  class="form-control" oninput=resetErrorMessageForPartNameOnFocus(this) onfocus=resetErrorMessageForPartNameOnFocus(this) placeholder="@(localizer["Add a child node"])">
@@ -135,20 +135,21 @@
 										</div>
 									</div>
 							  </div>
-							  <div class="modal-footer">
+							  <div class="modal-footer" name="modal-footer">
 									<div name="modal-form-submit-all" id="modal-form-submit-all_@Model.Part.Id" class="row row-cols-1">
 										<div>
 											<div hx-boost="true"
 												 hx-target="#children_@Model.Part.Id"
 												 hx-indicator="#@localSpinnerId"
 												 hx-swap="afterbegin">
-												<form asp-page-handler="AddMany" method="post" name="form-add-many-names">
+												<form asp-page-handler="AddMany" method="post" name="form-add-all-parts">
 														<div class="input-group" name="add-many-names">
 														<input name="AddManyPartsModel.ParentId" value=@Model.Part.Id class="form-control" type="hidden">
 														<input name="AddManyPartsModel.BlueprintId" value=@Model.BlueprintId class="form-control" type="hidden">
 													</div>
 													<small hidden class="text-danger">@localizer["ooops! Something went wrong. Please try again."]</small>
-												<button type="button" onclick=addAllPartsSingleRequest(this) class="btn btn-primary">@localizer["Add all shown"]</button>										
+													<div onclick=addAllPartsSingleRequest(this) name="submit-multiple-parts" class="btn btn-primary">@localizer["Add all shown"]</div>
+													<button type="submit" name="submit-multiple-parts" class="invisible" />
 												</form>
 											</div>
 										</div>

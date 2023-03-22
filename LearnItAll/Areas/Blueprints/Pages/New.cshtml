@@ -42,7 +42,7 @@
 
 @section scripts {
 <script>
-
+    htmx.logAll();
     addAllParts = function(button){
         const modalContent = htmx.closest(button,'div.modal-content');
         const modalbody = modalContent.querySelector('div.modal-body');
@@ -54,10 +54,11 @@
         const modalContent = htmx.closest(button,'div.modal-content');
         const names = modalContent.querySelectorAll('input[name="AddPartModel.Name"]');
         const inputGroup = modalContent.querySelector("div[name='add-many-names']");
-        index = -1
+        var index = -1
         names.forEach(name => addNameInput(inputGroup,name.value,index++))
-        const form = modalContent.querySelector("form[name='form-add-many-names']")
-        form.submit();
+        const form = htmx.closest(button,"form[name='form-add-all-parts']");
+        const submit = form.querySelector("button[name='submit-multiple-parts']");
+        submit.click()
     }
 
     addNameInput = function (container, name,index) {
@@ -75,10 +76,9 @@
     htmx.on("htmx:afterRequest", function(evt) {
         const status = evt.detail.xhr.status;
         var formThatTriggeredTheSubmit = evt.detail.elt;
-        const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
-        if(input){
-
-            if(status < 300){
+        if(formThatTriggeredTheSubmit.name == "form-add-one-part"){
+            const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
+            if(status < 400){
                 input.value = '';
                 //below we identify if the form is part of a modal. If that is the case, we want to delete the row where
                 //the form is and also automatically close the modal if the only form there is the one that serves as a template
@@ -103,12 +103,15 @@
                 errorMessage.toggleAttribute("hidden");
             }
         }
-        if (formThatTriggeredTheSubmit.name == "modal-form-submit-all")
+        if (formThatTriggeredTheSubmit.name == "form-add-all-parts")
         {
-            if (status < 300) {
-                const modal = htmx.closest(formThatTriggeredTheSubmit, "#close-modal");
-                const closeButton = modal.querySelector("#close-modal");
-                closeButton.click();
+            if (status < 400) {
+                const modalFooter = htmx.closest(formThatTriggeredTheSubmit,'div[name="modal-footer"]');
+                if(modalFooter){
+                        const closeButton = modalFooter.querySelector("#close-modal");
+                        closeButton.click();
+
+                }
 
             } else {
                 let errorMessage = formThatTriggeredTheSubmit.querySelector("small");
