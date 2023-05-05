@@ -13,7 +13,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
     {
 
 #pragma warning disable CS8618
-        private SkillBlueprint()
+        protected SkillBlueprint()
 #pragma warning restore CS8618 
         {
         }

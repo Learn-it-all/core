@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Mtx.CosmosDbServices;
+using Common.CosmosDbServices;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
 using System.Threading;
@@ -19,7 +19,7 @@ namespace Mtx.LearnItAll.Core.Handlers
         public async Task<SkillBlueprintData> Handle(CreateSkillBlueprintCmd request, CancellationToken cancellationToken)
         {
             var newBlueprint = new SkillBlueprint(request.Name);
-            await cosmosDb.AddAsync(newBlueprint, cancellationToken);
+            await cosmosDb.AddAsync(newBlueprint, newBlueprint.Id,cancellationToken);
 
             return new SkillBlueprintData { Id = newBlueprint.Id, RootPartId = newBlueprint.RootPartId };
         }

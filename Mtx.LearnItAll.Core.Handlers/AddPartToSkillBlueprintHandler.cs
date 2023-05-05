@@ -1,8 +1,9 @@
 ﻿using MediatR;
-using Mtx.CosmosDbServices;
+using Common.CosmosDbServices;
 using Mtx.LearnItAll.Core.Common.Parts;
 using System.Threading;
 using System.Threading.Tasks;
+using Mtx.LearnItAll.Core.Blueprints;
 
 namespace Mtx.LearnItAll.Core.Handlers
 {
@@ -17,9 +18,9 @@ namespace Mtx.LearnItAll.Core.Handlers
 
         public async Task<AddPartResult> Handle(AddPartCmd request, CancellationToken cancellationToken)
         {
-            var skill = await cosmosDb.GetSkillBlueprintAsync(request.BlueprintId.ToString());
+            var skill = await cosmosDb.GetAsync<SkillBlueprint>(request.BlueprintId);
             if (skill.TryAdd(request, out AddPartResult result))
-                await cosmosDb.UpdateAsync(skill.Id.ToString(), skill);
+                await cosmosDb.UpdateAsync(skill.Id, skill,cancellationToken);
 
             return result;
         }

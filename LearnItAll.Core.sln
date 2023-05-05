@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.Common.Resources", "Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.CosmosDbServices", "..\..\Common.CosmosDbServices\Common.CosmosDbServices.csproj", "{9681335C-47DA-4160-8443-86592CAF24A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices", "Domain\Core\Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices\Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices.csproj", "{94E65702-11B5-493E-BB7D-9DCB649A7BC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{9681335C-47DA-4160-8443-86592CAF24A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9681335C-47DA-4160-8443-86592CAF24A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9681335C-47DA-4160-8443-86592CAF24A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 		{0EBF62DE-C71F-4B9D-8719-9C37E93AA3D7} = {C096BF0B-4846-40F8-9C70-2601306723F6}
 		{9681335C-47DA-4160-8443-86592CAF24A3} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
+		{94E65702-11B5-493E-BB7D-9DCB649A7BC4} = {71D108AE-715E-417B-9253-8A8F4C12D610}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6952993D-A228-4D09-9E35-503A5D3DC6A5}
