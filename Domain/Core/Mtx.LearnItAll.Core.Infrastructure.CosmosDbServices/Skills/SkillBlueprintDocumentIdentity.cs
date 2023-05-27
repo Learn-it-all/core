@@ -1,5 +1,5 @@
-﻿using Common.CosmosDbServices.Entities;
-using Microsoft.Azure.Cosmos;
+﻿using Microsoft.Azure.Cosmos;
+using Mtx.CosmosDbServices.Entities;
 using Mtx.LearnItAll.Core.Blueprints;
 
 namespace Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices.Skills;

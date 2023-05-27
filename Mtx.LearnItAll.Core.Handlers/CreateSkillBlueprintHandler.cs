@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Common.CosmosDbServices;
+using Mtx.CosmosDbServices;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
 using System.Threading;

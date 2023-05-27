@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Common.CosmosDbServices\Common.CosmosDbServices.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core\Mtx.LearnItAll.Core.csproj" />
   </ItemGroup>
 

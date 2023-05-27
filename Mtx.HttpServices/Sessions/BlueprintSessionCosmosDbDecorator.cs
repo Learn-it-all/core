@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Mtx.CosmosDbServices;
-using Mtx.LearnItAll.Core.Blueprints;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -25,32 +23,26 @@ namespace Mtx.HttpServices.Sessions
             this.http = http;
         }
 
-        public async Task AddAsync(SkillBlueprint skillBlueprint, CancellationToken cancellationToken = default)
-        {
-            await decorated.AddAsync(skillBlueprint, cancellationToken);
-            http.HttpContext.Session.SetString(skillBlueprint.Id.ToString(), JsonConvert.SerializeObject(skillBlueprint));
-        }
+		public async Task AddAsync<T>(T item, object partitionKey, CancellationToken cancellationToken)
+		{
+			await decorated.AddAsync(item, partitionKey, cancellationToken);
+			//http.HttpContext.Session.SetString(item.Id.ToString(), JsonConvert.SerializeObject(skillBlueprint));
 
-        public async Task DeleteAsync(string id, CancellationToken cancellationToken = default)
-        {
-            await decorated.DeleteAsync(id, cancellationToken);
+		}
 
-        }
+		public Task<T?> GetAsync<T>(object id, CancellationToken ct = default)
+		{
+			return decorated.GetAsync<T>(id, ct);
+		}
 
-        public async Task<IEnumerable<SkillBlueprint>> GetItemAsync(string queryString)
-        {
-            return await decorated.GetItemAsync(queryString);
-        }
+		public Task<List<T>> GetItemsAsync<T>(object query, CancellationToken cancellationToken)
+		{
+			return decorated.GetItemsAsync<T>(query, cancellationToken);
+		}
 
-        public async Task<SkillBlueprint> GetSkillBlueprintAsync(string id)
-        {
-            return await decorated.GetSkillBlueprintAsync(id);
-        }
-
-        public async Task UpdateAsync(string id, SkillBlueprint skillBlueprint)
-        {
-            await decorated.UpdateAsync(id, skillBlueprint);
-            http.HttpContext.Session.SetString(skillBlueprint.Id.ToString(), JsonConvert.SerializeObject(skillBlueprint));
-        }
-    }
+		public Task UpdateAsync<T>(T item, object id, object partitionKey, CancellationToken ct)
+		{
+			return decorated.UpdateAsync(item, id, partitionKey, ct);
+		}
+	}
 }

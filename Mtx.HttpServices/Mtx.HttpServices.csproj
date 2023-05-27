@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
+    <ProjectReference Include="..\..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
   </ItemGroup>
 
 </Project>
