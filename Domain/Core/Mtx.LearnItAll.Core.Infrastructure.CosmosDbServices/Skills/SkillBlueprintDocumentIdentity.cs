@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Cosmos;
-using Mtx.CosmosDbServices.Entities;
+﻿using Mtx.CosmosDbServices.Entities;
 using Mtx.LearnItAll.Core.Blueprints;
 
 namespace Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices.Skills;
@@ -10,9 +9,9 @@ public record SkillBlueprintDocumentIdentity : ICosmosDocumentIdentity
 
 	public SkillBlueprintDocumentIdentity(Guid id)
 	{
-		CosmosId = id.ToString();
-		PartitionKey = new(CosmosId);
+		Id = id.ToString();
+		PartitionKey = Id;
 	}
-	public string CosmosId { get; }
-	public PartitionKey PartitionKey { get; }
+	public string Id { get; }
+	public object PartitionKey { get; }
 }

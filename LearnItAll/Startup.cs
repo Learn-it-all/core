@@ -34,7 +34,7 @@ namespace LearnItAll
             services.InitializeCosmosCosmosDbService(Configuration);
             services.AddTransient<ICosmosDbService>(f =>
             {
-                return new BlueprintSessionCosmosDbDecorator(f.GetRequiredService<CosmosDbService>(), f.GetRequiredService<IHttpContextAccessor>());
+                return new CachedInSessionCosmosDbServiceDecorator(f.GetRequiredService<CosmosDbService>(), f.GetRequiredService<IHttpContextAccessor>());
             });
 
             services.AddRazorPages()
