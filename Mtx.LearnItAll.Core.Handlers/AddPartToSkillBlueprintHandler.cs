@@ -2,7 +2,7 @@
 using Mtx.CosmosDbServices;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
-using System.Net.Http;
+using Mtx.Results;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,21 +20,24 @@ namespace Mtx.LearnItAll.Core.Handlers
 		public async Task<AddPartResult> Handle(AddPartCmd request, CancellationToken cancellationToken)
 		{
 			var result = await cosmosDb.GetAsync<SkillBlueprint>(id: request.BlueprintId, partitionKey: request.BlueprintId, cancellationToken);
-			if(result.IsError)
+			if (result.IsError)
 			{
 				return AddPartResult.FromResult(result.Result);
 			}
-			AddPartResult tryAddResult = AddPartResult.FailureForUnknownReason;
 
-			if (result.IsSuccessAndHasValue)
+			var skill = result.Contents;
+			if (result.Contents.TryAdd(request, out var tryAddResult))
 			{
-				var skill = result.Contents;
-				if (result.Contents.TryAdd(request, out tryAddResult))
-					await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
-				return tryAddResult;
-			}
 
-			return result;
+				var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
+				if (updateResult.IsError)
+				{
+					return AddPartResult.FromResult(result.Result);
+
+				}
+			}
+			return tryAddResult;
+
 		}
 
 		public async Task<AddMultiplePartsResult> Handle(AddMultiplePartsCmd request, CancellationToken cancellationToken)
@@ -48,14 +51,14 @@ namespace Mtx.LearnItAll.Core.Handlers
 				{
 
 					var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
-				
+
 				}
 				return result;
 
 			}
 			else
 			{
-				return new AddMultiplePartsResult()
+				return new AddMultiplePartsResult();
 			}
 
 
