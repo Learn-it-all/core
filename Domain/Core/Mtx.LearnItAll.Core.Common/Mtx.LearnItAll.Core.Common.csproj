@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Mtx.Results\Mtx.Results\Mtx.Results.csproj" />
     <ProjectReference Include="..\..\Mtx.Common.Resources\Mtx.Common.Resources.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Resources\Mtx.LearnItAll.Core.Resources.csproj" />
   </ItemGroup>

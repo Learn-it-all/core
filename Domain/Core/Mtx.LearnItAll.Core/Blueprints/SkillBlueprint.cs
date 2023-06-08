@@ -65,7 +65,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
             foreach(var name in cmd.Names)
             {
                 _root.TryAdd(new AddPartCmd(name, cmd.ParentId, Id), out result);
-                if (result == AddPartResult.FailureForPartNotFound) return new AddMultiplePartsResultNoParentNodeFound(cmd.Names);
+                if (result == AddPartResult.FailureForParentNodeNotFound) return new AddMultiplePartsResultNoParentNodeFound(cmd.Names);
                 finalResult.Add(name, result);
             }
 

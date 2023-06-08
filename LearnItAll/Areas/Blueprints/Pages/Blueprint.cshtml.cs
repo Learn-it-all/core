@@ -62,7 +62,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
             try
             {
                 result = await mediator.Send((AddPartCmd)AddPartModel);
-                IdOfLatestAddedPart = result.IdOfAddedPart;
+                IdOfLatestAddedPart = result.Contents.Value;
             }
             catch (Exception e ) 
             {

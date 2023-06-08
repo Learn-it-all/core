@@ -102,7 +102,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
                 if (result == AddPartResult.FailureForNameAlreadyInUse) return false;
             }
 
-            result = AddPartResult.FailureForPartNotFound;
+            result = AddPartResult.FailureForParentNodeNotFound;
             return false;
         }
 

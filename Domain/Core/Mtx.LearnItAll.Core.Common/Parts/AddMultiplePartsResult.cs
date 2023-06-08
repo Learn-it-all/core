@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Mtx.Results;
+using System.Collections.Generic;
 
 namespace Mtx.LearnItAll.Core.Common.Parts
 {
@@ -6,6 +7,7 @@ namespace Mtx.LearnItAll.Core.Common.Parts
     {
         protected readonly Dictionary<Name, AddPartResult> _results = new();
 
+        public Result Result { get; protected set; }
         public IReadOnlyDictionary<Name, AddPartResult> Results => _results;
         public virtual bool HasErrors { get; private set; }
 

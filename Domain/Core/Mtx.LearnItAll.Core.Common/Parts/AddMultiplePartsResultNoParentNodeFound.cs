@@ -7,7 +7,7 @@ namespace Mtx.LearnItAll.Core.Common.Parts
         public AddMultiplePartsResultNoParentNodeFound(IEnumerable<Name> partNames)
         {
             foreach (var name in partNames)
-                _results[name] = AddPartResult.FailureForPartNotFound;
+                _results[name] = AddPartResult.FailureForParentNodeNotFound;
         }
 
         public override bool HasErrors => true;

@@ -24,7 +24,7 @@ namespace Parts
             var sut = _fixture.Create<PartNode>();
             var cmd = new AddPartCmd(new Name("name"), sut.Id);
             sut.TryAdd(cmd, out AddPartResult dummyResult);
-            var idOfPartToDelete = dummyResult.IdOfAddedPart;
+            var idOfPartToDelete = dummyResult.Contents;
             var expectedDeleteResult = DeletePartResult.Success(cmd.Name);
             var deleteCmd = new DeletePartCmd(sut.Id, idOfPartToDelete);
 
@@ -62,9 +62,9 @@ namespace Parts
             var cmdForChild = new AddPartCmd(new Name("name"), sut.Id);
             sut.TryAdd(cmdForChild, out AddPartResult actualChildResult); //add child as Part
 
-            var cmdForGrandchild = new AddPartCmd(new Name("dummy name"), actualChildResult.IdOfAddedPart);
+            var cmdForGrandchild = new AddPartCmd(new Name("dummy name"), actualChildResult.Contents);
             sut.TryAdd(cmdForGrandchild, out AddPartResult actualGrandchildResult); 
-            var deleteCmd = new DeletePartCmd(sut.Id, actualGrandchildResult.IdOfAddedPart);//deletes grandchild
+            var deleteCmd = new DeletePartCmd(sut.Id, actualGrandchildResult.Contents);//deletes grandchild
 
             //Act
             _ = sut.TryDeletePart(deleteCmd, out DeletePartResult _);
@@ -112,7 +112,7 @@ namespace Parts
             sut.Add(child);
             var cmd = new AddPartCmd(new Name("name"), child.Id);
             sut.TryAdd(cmd, out AddPartResult dummyResult);
-            var idOfPartToDelete = dummyResult.IdOfAddedPart;
+            var idOfPartToDelete = dummyResult.Contents;
             var expectedDeleteResult = DeletePartResult.Success(cmd.Name);
             var deleteCmd = new DeletePartCmd(sut.Id, idOfPartToDelete);
 

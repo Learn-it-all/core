@@ -59,7 +59,7 @@ public class CreateBlueprintModel : PageModel
 	{
 		var result = AddPartResult.FailureForUnknownReason;
 		result = await mediator.Send((AddPartCmd)AddPartModel);
-		IdOfLatestAddedPart = result.IdOfAddedPart;
+		IdOfLatestAddedPart = result.Contents;
 
 		if (result.IsSuccess)
 			return await this.PartialView("_PartDetail",
