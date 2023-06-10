@@ -120,23 +120,26 @@
   <data name="AddPartResult_DuplicateSibling" xml:space="preserve">
     <value>The provided name is already in use.</value>
   </data>
+  <data name="DeletePartResult_Success" xml:space="preserve">
+    <value>Part '{0}' successfully deleted.</value>
+  </data>
   <data name="ModelName_CannotExceedMaximunLenght" xml:space="preserve">
-    <value>Name cannot exceed {0} chars</value>
+    <value>Name cannot exceed {0} chars.</value>
   </data>
   <data name="SkillModelSet_MaximumDirectSkillModelChildExceeded" xml:space="preserve">
     <value>A Skill or any of its parts cannot have more than {0} direct children.</value>
   </data>
   <data name="SkillModel_ASkillWithSameNameAlreadyExistis" xml:space="preserve">
-    <value>A Skill Model named {0} already exists in the Skill Model Set {1}</value>
+    <value>A Skill Model named {0} already exists in the Skill Model Set {1}.</value>
   </data>
   <data name="SkillModel_CannotAddDuplicateNameForChildOnSameLevel" xml:space="preserve">
-    <value>The name '{0}' is already in use by a sibling part under {1}</value>
+    <value>The name '{0}' is already in use by a sibling part under {1}.</value>
   </data>
   <data name="SkillSetModel_AtLeastOneSkillModelRequired" xml:space="preserve">
-    <value>At least one Skill Model is required</value>
+    <value>At least one Skill Model is required.</value>
   </data>
   <data name="Skill_AddingMultipleParts_Failed" xml:space="preserve">
-    <value>At least one operation failed while adding multiple parts: {0}</value>
+    <value>At least one operation failed while adding multiple parts: {0}.</value>
   </data>
   <data name="Skill_ParentIdDoesNotExist" xml:space="preserve">
     <value>The part id provided does not exist in the current Skill.</value>

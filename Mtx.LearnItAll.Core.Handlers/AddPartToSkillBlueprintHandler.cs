@@ -19,20 +19,20 @@ namespace Mtx.LearnItAll.Core.Handlers
 
 		public async Task<AddPartResult> Handle(AddPartCmd request, CancellationToken cancellationToken)
 		{
-			var result = await cosmosDb.GetAsync<SkillBlueprint>(id: request.BlueprintId, partitionKey: request.BlueprintId, cancellationToken);
-			if (result.IsError)
+			var getResult = await cosmosDb.GetAsync<SkillBlueprint>(id: request.BlueprintId, partitionKey: request.BlueprintId, cancellationToken);
+			if (getResult.IsError)
 			{
-				return AddPartResult.FromResult(result.Result);
+				return AddPartResult.FromResult(getResult.Result);
 			}
 
-			var skill = result.Contents;
-			if (result.Contents.TryAdd(request, out var tryAddResult))
+			var skill = getResult.Contents;
+			if (skill.TryAdd(request, out var tryAddResult))
 			{
 
 				var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
 				if (updateResult.IsError)
 				{
-					return AddPartResult.FromResult(result.Result);
+					return AddPartResult.FromResult(updateResult);
 
 				}
 			}
@@ -43,6 +43,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 		public async Task<AddMultiplePartsResult> Handle(AddMultiplePartsCmd request, CancellationToken cancellationToken)
 		{
 			var dataResult = await cosmosDb.GetAsync<SkillBlueprint>(request.BlueprintId, request.BlueprintId, cancellationToken);
+
 			if (dataResult.IsSuccessAndHasValue)
 			{
 				var skill = dataResult.Contents;
@@ -51,14 +52,18 @@ namespace Mtx.LearnItAll.Core.Handlers
 				{
 
 					var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
+					if (updateResult.IsError)
+					{
+						return AddMultiplePartsResult.FromResult(updateResult);
 
+					}
 				}
 				return result;
 
 			}
 			else
 			{
-				return new AddMultiplePartsResult();
+				return AddMultiplePartsResult.FromResult(original: dataResult.Result);
 			}
 
 

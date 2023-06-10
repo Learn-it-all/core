@@ -60,7 +60,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public AddMultiplePartsResult Add(AddMultiplePartsCmd cmd)
         {
 
-            var finalResult = new AddMultiplePartsResult();
+            var finalResult = AddMultiplePartsResult.Ok200();
             var result = AddPartResult.FailureForUnknownReason;
             foreach(var name in cmd.Names)
             {

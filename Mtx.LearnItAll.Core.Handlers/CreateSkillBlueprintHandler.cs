@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace Mtx.LearnItAll.Core.Handlers
 {
-    public class CreateSkillBlueprintHandler : IRequestHandler<CreateSkillBlueprintCmd, SkillBlueprintData>
-    {
-        private readonly ICosmosDbService cosmosDb;
+	public class CreateSkillBlueprintHandler : IRequestHandler<CreateSkillBlueprintCmd, CreateSkillBlueprintResult>
+	{
+		private readonly ICosmosDbService cosmosDb;
 
-        public CreateSkillBlueprintHandler(ICosmosDbService cosmosDb)
-        {
-            this.cosmosDb = cosmosDb;
-        }
+		public CreateSkillBlueprintHandler(ICosmosDbService cosmosDb)
+		{
+			this.cosmosDb = cosmosDb;
+		}
 
-        public async Task<SkillBlueprintData> Handle(CreateSkillBlueprintCmd request, CancellationToken cancellationToken)
-        {
-            var newBlueprint = new SkillBlueprint(request.Name);
-            await cosmosDb.AddAsync(newBlueprint, newBlueprint.Id,cancellationToken);
+		public async Task<CreateSkillBlueprintResult> Handle(CreateSkillBlueprintCmd request, CancellationToken cancellationToken)
+		{
+			var newBlueprint = new SkillBlueprint(request.Name);
+			var result = await cosmosDb.AddAsync(newBlueprint, newBlueprint.Id, newBlueprint.Id, cancellationToken);
+			return CreateSkillBlueprintResult.FromResult(result, SkillBlueprintData.New(newBlueprint.Id, newBlueprint.RootPartId));
 
-            return new SkillBlueprintData { Id = newBlueprint.Id, RootPartId = newBlueprint.RootPartId };
-        }
+		}
 
-    }
+	}
 }

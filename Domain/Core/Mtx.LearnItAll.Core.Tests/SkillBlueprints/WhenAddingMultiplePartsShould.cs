@@ -35,7 +35,7 @@ public class WhenAddingMultiplePartsShould : Test
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
-        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.Contents,sut.RootPartId);
+        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.Contents.Value,sut.RootPartId);
 
         //Act
         var actualResult = sut.Add(cmd);
@@ -51,7 +51,7 @@ public class WhenAddingMultiplePartsShould : Test
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
-        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.Contents, sut.RootPartId);
+        var cmd = new AddMultiplePartsCmd(names, parentId: partResult.Contents.Value, sut.RootPartId);
         _ = sut.Add(cmd);
 
         //Act

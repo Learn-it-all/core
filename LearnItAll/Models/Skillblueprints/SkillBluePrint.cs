@@ -89,7 +89,7 @@ public class AddManyPartsModelResult
 	{
 		ParentId = parentId;
 		BlueprintId = blueprintId;
-        Details = multiplePartsResult.Results.Select(part => new PartDetail { BlueprintId = BlueprintId, Part = new Part { Id = part.Value.IdOfAddedPart, Name = part.Key, ParentId = ParentId } }).ToList();
+        Details = multiplePartsResult.Results.Select(part => new PartDetail { BlueprintId = BlueprintId, Part = new Part { Id = part.Value.Contents.Value, Name = part.Key, ParentId = ParentId } }).ToList();
 	}
 }
 

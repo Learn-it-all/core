@@ -30,7 +30,6 @@ namespace LearnItAll
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
-            services.Configure<CosmosConfig>(Configuration.GetSection("CosmosConfig"));
             services.InitializeCosmosCosmosDbService(Configuration);
             services.AddTransient<ICosmosDbService>(f =>
             {

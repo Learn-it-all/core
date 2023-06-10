@@ -32,9 +32,13 @@ public class CreateBlueprintModel : PageModel
 
 	public async Task<IActionResult> OnPost()
 	{
-		var blueprintData = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
+		var result = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
+		if (result.IsError)
+			return await Task.FromResult(StatusCode(result.StatusCode));
 
-		return await this.PartialView("_PartDetail", new RootPartDetail { Part = new Part { Id = blueprintData.RootPartId, Name = NewBlueprintModel.Name, ParentId = blueprintData.Id }, BlueprintId = blueprintData.Id });
+		var data = result.Contents;
+
+		return await this.PartialView("_PartDetail", new RootPartDetail { Part = new Part { Id = data.RootPartId, Name = NewBlueprintModel.Name, ParentId = data.Id }, BlueprintId = data.Id });
 
 	}
 	public async Task<IActionResult> OnPostAddMany(CancellationToken ct)
@@ -59,38 +63,39 @@ public class CreateBlueprintModel : PageModel
 	{
 		var result = AddPartResult.FailureForUnknownReason;
 		result = await mediator.Send((AddPartCmd)AddPartModel);
-		IdOfLatestAddedPart = result.Contents;
-
-		if (result.IsSuccess)
-			return await this.PartialView("_PartDetail",
-				new PartDetail
-				{
-					Part = new Part
-					{
-						Id = IdOfLatestAddedPart,
-						Name = AddPartModel.Name,
-						ParentId = AddPartModel.ParentId,
-					},
-					BlueprintId = AddPartModel.BlueprintId,
-				});
-		else
+		if (result.IsError)
 		{
-			Response.StatusCode = StatusCodes.Status400BadRequest;
+			Response.StatusCode = result.StatusCode;
 			return await this.PartialView("_ErrorPartial", result.Message);
 		}
+
+
+		IdOfLatestAddedPart = result.Contents.Value;
+
+		return await this.PartialView("_PartDetail",
+			new PartDetail
+			{
+				Part = new Part
+				{
+					Id = IdOfLatestAddedPart,
+					Name = AddPartModel.Name,
+					ParentId = AddPartModel.ParentId,
+				},
+				BlueprintId = AddPartModel.BlueprintId,
+			});
 
 	}
 
 	public async Task<IActionResult> OnPostDelete()
 	{
-		var result = DeletePartResult.FailureForPartNotFound;
+		var result = DeletePartResult.NoContent204();
 		result = await mediator.Send((DeletePartCmd)DeletePartModel);
 
 		if (result.IsSuccess)
 			return await Task.FromResult(new OkResult());
 		else
 		{
-			Response.StatusCode = StatusCodes.Status400BadRequest;
+			Response.StatusCode = result.StatusCode;
 			return await this.PartialView("_ErrorPartial", result.Message);
 		}
 	}

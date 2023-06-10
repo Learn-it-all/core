@@ -24,7 +24,7 @@ namespace PartNodes
             var sut = _fixture.Create<PartNode>();
             var node = _fixture.Create<PartNode>();
             sut.Add(node);
-            var expectedDeleteResult = DeletePartResult.Success(node.Name);
+            var expectedDeleteResult = DeletePartResult.NoContent204();
             var cmd = new DeletePartCmd(sut.Id,node.Id);
             //Act
             var actualResult = sut.TryDeletePart(cmd, out DeletePartResult actualDeleteResult);
@@ -56,7 +56,7 @@ namespace PartNodes
         public void FailGivenItDoesNOTExistAndThereAreNoFurtherPartNodesToLookInto()
         {
             var sut = _fixture.Create<PartNode>();
-            var expectedDeleteResult = DeletePartResult.FailureForPartNotFound;
+            var expectedDeleteResult = DeletePartResult.NotFound404();
             var cmd = _fixture.Create<DeletePartCmd>();
             //Act
             var actualResult = sut.TryDeletePart(cmd, out DeletePartResult actualDeleteResult);
@@ -71,7 +71,7 @@ namespace PartNodes
             var sut = _fixture.Create<PartNode>();
             var child = _fixture.Create<PartNode>();
             sut.Add(child);
-            var expectedDeleteResult = DeletePartResult.FailureForPartNotFound;
+            var expectedDeleteResult = DeletePartResult.NotFound404();
             var cmd = _fixture.Create<DeletePartCmd>();
 
             //Act
@@ -92,7 +92,7 @@ namespace PartNodes
             grandChild.Add(toDelete);
             child.Add(grandChild);
             sut.Add(child);
-            var expectedDeleteResult = DeletePartResult.Success(toDelete.Name);
+            var expectedDeleteResult = DeletePartResult.NoContent204();
             var cmd = new DeletePartCmd(sut.Id, toDelete.Id);
 
             //Act

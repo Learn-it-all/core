@@ -70,7 +70,16 @@ namespace Mtx.LearnItAll.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name cannot exceed {0} chars.
+        ///   Looks up a localized string similar to Part &apos;{0}&apos; successfully deleted..
+        /// </summary>
+        public static string DeletePartResult_Success {
+            get {
+                return ResourceManager.GetString("DeletePartResult_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name cannot exceed {0} chars..
         /// </summary>
         public static string ModelName_CannotExceedMaximunLenght {
             get {
@@ -79,7 +88,7 @@ namespace Mtx.LearnItAll.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At least one operation failed while adding multiple parts: {0}.
+        ///   Looks up a localized string similar to At least one operation failed while adding multiple parts: {0}..
         /// </summary>
         public static string Skill_AddingMultipleParts_Failed {
             get {
@@ -97,7 +106,7 @@ namespace Mtx.LearnItAll.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A Skill Model named {0} already exists in the Skill Model Set {1}.
+        ///   Looks up a localized string similar to A Skill Model named {0} already exists in the Skill Model Set {1}..
         /// </summary>
         public static string SkillModel_ASkillWithSameNameAlreadyExistis {
             get {
@@ -106,7 +115,7 @@ namespace Mtx.LearnItAll.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name &apos;{0}&apos; is already in use by a sibling part under {1}.
+        ///   Looks up a localized string similar to The name &apos;{0}&apos; is already in use by a sibling part under {1}..
         /// </summary>
         public static string SkillModel_CannotAddDuplicateNameForChildOnSameLevel {
             get {
@@ -124,7 +133,7 @@ namespace Mtx.LearnItAll.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At least one Skill Model is required.
+        ///   Looks up a localized string similar to At least one Skill Model is required..
         /// </summary>
         public static string SkillSetModel_AtLeastOneSkillModelRequired {
             get {

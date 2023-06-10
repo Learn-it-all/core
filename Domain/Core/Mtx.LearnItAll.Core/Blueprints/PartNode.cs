@@ -171,12 +171,12 @@ namespace Mtx.LearnItAll.Core.Blueprints
         public bool TryDeletePart(DeletePartCmd cmd, out DeletePartResult result)
         {
             var part = _parts.Where(x => x.Id == cmd.PartId).FirstOrDefault();
-            result = DeletePartResult.FailureForPartNotFound;
+            result = DeletePartResult.NotFound404();
 
             if (part != null)
             {
                 RemovePartAndUpdateSummary(part);
-                result = DeletePartResult.Success(part.Name);
+                result = DeletePartResult.NoContent204();
                 return true;
             }
             else
@@ -186,8 +186,9 @@ namespace Mtx.LearnItAll.Core.Blueprints
                     if (node.Id == cmd.PartId)
                     {
                         RemovePartNodeAndUpdateSummary(node);
-                        result = DeletePartResult.Success(node.Name);
-                        return true;
+                        result = DeletePartResult.NoContent204();
+
+						return true;
 
                     }
                     if (node.TryDeletePart(cmd, out result))
