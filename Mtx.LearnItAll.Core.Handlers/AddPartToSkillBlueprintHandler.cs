@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Mtx.CosmosDbServices;
+using Mtx.CosmosDbServices.Entities;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
-using Mtx.Results;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Mtx.LearnItAll.Core.Handlers
 {
@@ -19,7 +17,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 
 		public async Task<AddPartResult> Handle(AddPartCmd request, CancellationToken cancellationToken)
 		{
-			var getResult = await cosmosDb.GetAsync<SkillBlueprint>(id: request.BlueprintId, partitionKey: request.BlueprintId, cancellationToken);
+			var getResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<SkillBlueprint>(id: DocumentId.From(request.BlueprintId), cancellationToken);
 			if (getResult.IsError)
 			{
 				return AddPartResult.FromResult(getResult.Result);
@@ -29,7 +27,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 			if (skill.TryAdd(request, out var tryAddResult))
 			{
 
-				var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
+				var updateResult = await cosmosDb.UpdateUsingIdAsPartitionKeyAsync(skill, cancellationToken);
 				if (updateResult.IsError)
 				{
 					return AddPartResult.FromResult(updateResult);
@@ -42,7 +40,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 
 		public async Task<AddMultiplePartsResult> Handle(AddMultiplePartsCmd request, CancellationToken cancellationToken)
 		{
-			var dataResult = await cosmosDb.GetAsync<SkillBlueprint>(request.BlueprintId, request.BlueprintId, cancellationToken);
+			var dataResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<SkillBlueprint>(DocumentId.From(request.BlueprintId), cancellationToken);
 
 			if (dataResult.IsSuccessAndHasValue)
 			{
@@ -51,7 +49,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 				if (!result.HasErrors)
 				{
 
-					var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
+					var updateResult = await cosmosDb.UpdateUsingIdAsPartitionKeyAsync(skill, cancellationToken);
 					if (updateResult.IsError)
 					{
 						return AddMultiplePartsResult.FromResult(updateResult);

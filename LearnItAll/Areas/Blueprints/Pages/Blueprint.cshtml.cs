@@ -1,6 +1,5 @@
 using LearnItAll.Models.Skillblueprints;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Mtx.LearnItAll.Core.Common.Parts;
@@ -8,7 +7,6 @@ using Newtonsoft.Json;
 
 namespace LearnItAll.Areas.Blueprints.Pages
 {
-	[AllowAnonymous]
 	[BindProperties]
 	public class BlueprintModel : PageModel
 	{
@@ -51,7 +49,7 @@ namespace LearnItAll.Areas.Blueprints.Pages
 		public async Task<IActionResult> OnPostCreateSimple()
 		{
 			var result = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
-			if(result.IsError)
+			if (result.IsError)
 			{
 				return await Task.FromResult(StatusCode(result.StatusCode));
 			}
@@ -87,14 +85,6 @@ namespace LearnItAll.Areas.Blueprints.Pages
 			AddPartModel = new();
 			return await Task.FromResult(Page());
 		}
-
-		public async Task<IActionResult> OnPostAddMany()
-		{
-			var result = AddPartResult.FailureForUnknownReason;
-
-			return await Task.FromResult(Page());
-		}
-
 	}
 
 }

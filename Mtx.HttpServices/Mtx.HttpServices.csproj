@@ -9,7 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
+    <ProjectReference Include="..\..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Sessions\" />
   </ItemGroup>
 
 </Project>

@@ -41,11 +41,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.Common.Resources", "Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices", "Domain\Core\Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices\Mtx.LearnItAll.Core.Infrastructure.CosmosDbServices.csproj", "{94E65702-11B5-493E-BB7D-9DCB649A7BC4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.CosmosDbServices", "..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj", "{CF4A3776-7164-4CC6-942C-6B9441ABC7B6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{513EA678-E84B-4C48-BCFE-FEA929BAFEB5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.Results", "..\..\Mtx.Results\Mtx.Results\Mtx.Results.csproj", "{70BD2AA2-5BEC-48C8-B498-53D247A673F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mtx.CosmosDbServices", "..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj", "{0D02DB41-0917-4B01-8F83-727913AAB54C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtx.LearnItAll.Core.Infrastructure.IoC", "Domain\Core\Mtx.LearnItAll.Core.Infrastructure.IoC\Mtx.LearnItAll.Core.Infrastructure.IoC.csproj", "{F0D0830E-9DC9-437E-9EEC-95EA951CA408}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,14 +107,18 @@ Global
 		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94E65702-11B5-493E-BB7D-9DCB649A7BC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF4A3776-7164-4CC6-942C-6B9441ABC7B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF4A3776-7164-4CC6-942C-6B9441ABC7B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF4A3776-7164-4CC6-942C-6B9441ABC7B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF4A3776-7164-4CC6-942C-6B9441ABC7B6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70BD2AA2-5BEC-48C8-B498-53D247A673F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{70BD2AA2-5BEC-48C8-B498-53D247A673F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70BD2AA2-5BEC-48C8-B498-53D247A673F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70BD2AA2-5BEC-48C8-B498-53D247A673F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D02DB41-0917-4B01-8F83-727913AAB54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D02DB41-0917-4B01-8F83-727913AAB54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D02DB41-0917-4B01-8F83-727913AAB54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D02DB41-0917-4B01-8F83-727913AAB54C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0D0830E-9DC9-437E-9EEC-95EA951CA408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0D0830E-9DC9-437E-9EEC-95EA951CA408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0D0830E-9DC9-437E-9EEC-95EA951CA408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0D0830E-9DC9-437E-9EEC-95EA951CA408}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,8 +137,9 @@ Global
 		{EFAA548C-7BB3-49CC-BEDE-20C65C1D41AA} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 		{0EBF62DE-C71F-4B9D-8719-9C37E93AA3D7} = {C096BF0B-4846-40F8-9C70-2601306723F6}
 		{94E65702-11B5-493E-BB7D-9DCB649A7BC4} = {71D108AE-715E-417B-9253-8A8F4C12D610}
-		{CF4A3776-7164-4CC6-942C-6B9441ABC7B6} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
 		{70BD2AA2-5BEC-48C8-B498-53D247A673F1} = {513EA678-E84B-4C48-BCFE-FEA929BAFEB5}
+		{0D02DB41-0917-4B01-8F83-727913AAB54C} = {BAD0B3CD-7660-4CB0-8AD3-9D49D72C5337}
+		{F0D0830E-9DC9-437E-9EEC-95EA951CA408} = {71D108AE-715E-417B-9253-8A8F4C12D610}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6952993D-A228-4D09-9E35-503A5D3DC6A5}

@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using Mtx.CosmosDbServices;
+using Mtx.CosmosDbServices.Entities;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Mtx.LearnItAll.Core.Handlers;
 public class DeletePartFromSkillBlueprintHandler : IRequestHandler<DeletePartCmd, DeletePartResult>
@@ -17,7 +16,7 @@ public class DeletePartFromSkillBlueprintHandler : IRequestHandler<DeletePartCmd
 
 	public async Task<DeletePartResult> Handle(DeletePartCmd request, CancellationToken cancellationToken)
 	{
-		var dataResult = await cosmosDb.GetAsync<SkillBlueprint>(request.BlueprintId, cancellationToken);
+		var dataResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<SkillBlueprint>(DocumentId.From(request.BlueprintId), cancellationToken);
 		if (dataResult.IsError)
 		{
 			return DeletePartResult.FromResult(dataResult.Result);
@@ -25,8 +24,8 @@ public class DeletePartFromSkillBlueprintHandler : IRequestHandler<DeletePartCmd
 		var skill = dataResult.Contents;
 		if (skill.TryDeletePart(request, out DeletePartResult result))
 		{
-			var updateResult = await cosmosDb.UpdateAsync(skill, skill.Id, skill.Id, cancellationToken);
-			if(updateResult.IsError)
+			var updateResult = await cosmosDb.UpdateUsingIdAsPartitionKeyAsync(skill, cancellationToken);
+			if (updateResult.IsError)
 			{
 				return DeletePartResult.FromResult(dataResult.Result);
 

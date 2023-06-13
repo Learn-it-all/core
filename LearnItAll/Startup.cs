@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Mtx.CosmosDbServices;
-using Mtx.HttpServices.Sessions;
 using Mtx.LearnItAll.Core.Handlers;
+using Mtx.LearnItAll.Core.Infrastructure.IoC;
 
 namespace LearnItAll
 {
@@ -29,12 +29,8 @@ namespace LearnItAll
                 // By default, all incoming requests will be authorized according to the default policy
                 options.FallbackPolicy = options.DefaultPolicy;
             });
-
-            services.InitializeCosmosCosmosDbService(Configuration);
-            services.AddTransient<ICosmosDbService>(f =>
-            {
-                return new CachedInSessionCosmosDbServiceDecorator(f.GetRequiredService<CosmosDbService>(), f.GetRequiredService<IHttpContextAccessor>());
-            });
+            services.InitializeCoreDomain(Configuration);
+			services.InitializeCosmosDbService(Configuration);
 
             services.AddRazorPages()
                 .AddMvcOptions(options => { })
