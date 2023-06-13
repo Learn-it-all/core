@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Mtx.CosmosDbServices;
+using Mtx.CosmosDbServices.Entities;
+using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Common.Parts;
 
 namespace Mtx.LearnItAll.Core.Handlers;
@@ -15,17 +17,8 @@ public class DeleteSkillBlueprintHandler : IRequestHandler<DeleteBlueprintCmd, D
 
 	public async Task<DeleteBlueprintResult> Handle(DeleteBlueprintCmd request, CancellationToken cancellationToken)
 	{
-		try
-		{
-			//await cosmosDb.DeleteAsync(request.BlueprintId.ToString());
-			throw new NotImplementedException();
-			return await Task.FromResult(DeleteBlueprintResult.CreateSuccess);
-		}
-		catch
-		{
-			return await Task.FromResult(DeleteBlueprintResult.CreateInternalError);
-
-		}
+			var result = await cosmosDb.DeleteUsingIdAsPartitionKeyAsync<SkillBlueprint>(DocumentId.From(request.BlueprintId),cancellationToken);
+			return await Task.FromResult(DeleteBlueprintResult.FromResult(result));
 	}
 
 }

@@ -1,10 +1,13 @@
 ﻿namespace Mtx.LearnItAll.Core.Common.Parts;
 
-public abstract record DeleteBlueprintResult
+public record DeleteBlueprintResult : Result
 {
-    public abstract string Message { get; }
-    public abstract int Code { get; }
-    public virtual bool Success { get; } = false;
-    public static DeleteBlueprintResult CreateSuccess => new DeleteBlueprintResultSuccess();
-    public static DeleteBlueprintResult CreateInternalError => new DeleteBlueprintResultInternalError();
+	public DeleteBlueprintResult(int StatusCode, string Message = "", Exception Exception = null) : base(StatusCode, Message, Exception)
+	{
+	}
+	public static new DeleteBlueprintResult NoContent204() => new DeleteBlueprintResult(Status204NoContent);
+	public static new DeleteBlueprintResult NotFound404() => new DeleteBlueprintResult(Status404NotFound);
+	public static DeleteBlueprintResult InternalError() => new DeleteBlueprintResult(Status500InternalServerError);
+	public static DeleteBlueprintResult FromResult(Result original) => new DeleteBlueprintResult(original);
+
 }

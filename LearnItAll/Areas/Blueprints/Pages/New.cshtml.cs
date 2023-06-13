@@ -1,7 +1,6 @@
 using LearnItAll.Models.Skillblueprints;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Mtx.LearnItAll.Core.Common.Parts;
 using Mtx.LearnItAll.Core.Resources;
@@ -30,9 +29,9 @@ public class CreateBlueprintModel : PageModel
 	public Guid RootPartId { get; set; }
 
 
-	public async Task<IActionResult> OnPost()
+	public async Task<IActionResult> OnPost(CancellationToken ct)
 	{
-		var result = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel);
+		var result = await mediator.Send((CreateSkillBlueprintCmd)NewBlueprintModel, ct);
 		if (result.IsError)
 			return await Task.FromResult(StatusCode(result.StatusCode));
 
@@ -44,7 +43,7 @@ public class CreateBlueprintModel : PageModel
 	public async Task<IActionResult> OnPostAddMany(CancellationToken ct)
 	{
 
-		var result = await mediator.Send(AddManyPartsModel.ToCmd());
+		var result = await mediator.Send(AddManyPartsModel.ToCmd(),ct);
 
 		if (!result.HasErrors)
 		{
@@ -53,16 +52,16 @@ public class CreateBlueprintModel : PageModel
 		}
 		else
 		{
-			Response.StatusCode = StatusCodes.Status400BadRequest;
+			Response.StatusCode = result.StatusCode;
 			return await this.PartialView("_ErrorPartial", CoreMessages.Skill_AddingMultipleParts_Failed);
 		}
 
 	}
 
-	public async Task<IActionResult> OnPostAdd()
+	public async Task<IActionResult> OnPostAdd(CancellationToken ct)
 	{
 		var result = AddPartResult.FailureForUnknownReason;
-		result = await mediator.Send((AddPartCmd)AddPartModel);
+		result = await mediator.Send((AddPartCmd)AddPartModel, ct);
 		if (result.IsError)
 		{
 			Response.StatusCode = result.StatusCode;
@@ -86,10 +85,10 @@ public class CreateBlueprintModel : PageModel
 
 	}
 
-	public async Task<IActionResult> OnPostDelete()
+	public async Task<IActionResult> OnPostDelete(CancellationToken ct)
 	{
 		var result = DeletePartResult.NoContent204();
-		result = await mediator.Send((DeletePartCmd)DeletePartModel);
+		result = await mediator.Send((DeletePartCmd)DeletePartModel, ct);
 
 		if (result.IsSuccess)
 			return await Task.FromResult(new OkResult());
@@ -100,35 +99,17 @@ public class CreateBlueprintModel : PageModel
 		}
 	}
 
-	public async Task<IActionResult> OnPostDeleteBlueprint()
+	public async Task<IActionResult> OnPostDeleteBlueprint(CancellationToken ct)
 	{
-		var result = DeleteBlueprintResult.CreateInternalError;
-		result = await mediator.Send((DeleteBlueprintCmd)DeleteBlueprintModel);
+		var result = await mediator.Send((DeleteBlueprintCmd)DeleteBlueprintModel, ct);
 
-		if (result.Success)
+		if (result.IsSuccess)
 			return await Task.FromResult(new OkResult());
 		else
 		{
-			Response.StatusCode = StatusCodes.Status400BadRequest;
+			Response.StatusCode = result.StatusCode;
 			return await this.PartialView("_ErrorPartial", result.Message);
 		}
-	}
-}
-
-public static class PageModelExtensions
-{
-	public static Task<PartialViewResult> PartialView(this PageModel page, string name, object model)
-	{
-		var viewDataDictionary = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
-		viewDataDictionary.Model = model;
-		var view = new PartialViewResult()
-		{
-			ViewName = name,
-			ViewData = viewDataDictionary,
-			TempData = page.TempData
-		};
-
-		return Task.FromResult(view);
 	}
 }
 
