@@ -50,7 +50,7 @@ public class NullPartNode : PartNode
 public class AddPartModel
 {
     [Required]
-    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
+    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLength)]
     public string Name { get; set; } = string.Empty;
     public Guid ParentId { get; set; }
     public Guid BlueprintId { get; set; }
@@ -61,7 +61,7 @@ public class AddPartModel
 public class PartName
 {
     [Required]
-    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
+    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLength)]
     public string Name { get; set; } = string.Empty;
 }
 
@@ -110,7 +110,7 @@ public class DeleteBlueprintModel
 public class NewBlueprintModel
 {
     [Required]
-    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLenght)]
+    [MaxLength(Mtx.LearnItAll.Core.Common.Name.MaxLength)]
     public string Name { get; set; } = string.Empty;
 
     public static implicit operator CreateSkillBlueprintCmd(NewBlueprintModel model) => new CreateSkillBlueprintCmd(new Name(model.Name));
