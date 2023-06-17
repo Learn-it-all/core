@@ -1,4 +1,5 @@
 ﻿using Mtx.LearnItAll.Core.Resources;
+using System.Runtime.CompilerServices;
 
 namespace Mtx.LearnItAll.Core.Common
 {
@@ -18,7 +19,11 @@ namespace Mtx.LearnItAll.Core.Common
 				throw new ArgumentOutOfRangeException(nameof(name), string.Format(CoreMessages.ModelName_CannotExceedMaximunLenght, MaxLength));
 			Value = name;
 		}
-
+		public static Name From(string name) => new Name(name);
 		public static implicit operator string(Name name) => name.Value;
+	}
+	public static class NameExtensions
+	{
+		public static Name ToName(this string me) => new Name(me);
 	}
 }
