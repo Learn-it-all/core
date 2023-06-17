@@ -1,0 +1,198 @@
+﻿@page
+
+@using LearnItAll.Models.Skillblueprints
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Web
+
+@inject IViewLocalizer Localizer
+@model LearnItAll.Areas.Blueprints.Pages.CreateBlueprintModel
+@{
+    var inputNameForManyParts = $"{nameof(AddManyPartsModel)}.{nameof(AddManyPartsModel.Names)}";
+    var arrayInputNameForManyParts = $"{inputNameForManyParts}[]";
+    var addPartModelName = $"{nameof(AddPartModel)}.{nameof(AddPartModel.Name)}";
+}
+
+<ul id="root" class="list-group list-group-flush">
+
+		<li  hx-boost="true"
+                hx-target="this"
+                hx-swap="outerHTML swap:1s"
+				hx-indicator="#root-spinner"
+                class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-6">
+    			    	<form asp-page-handler="Create" method="post" >
+                            <div class="input-group ">
+                            <div class="form-floating flex-grow-1">
+    			    			<input id="root-input" autofocus asp-for=@Model.NewBlueprintModel.Name class="form-control">
+                                 <label for="root-input">@Localizer["Type the skill name and hit enter to create it"]</label>
+                            </div>
+    			    		<button type="submit" class="btn btn-primary">@Localizer["Create"]</button>
+                            </div>
+    			    	</form>
+		            </div>
+                    <div class="col-sm-6">
+				            <div id="root-spinner" class="spinner-border htmx-indicator" role="status" aria-hidden="true"></div>
+		            </div>
+		        </div>
+
+		</li>
+</ul>
+
+
+@section scripts {
+<script>
+    htmx.logAll();
+    addAllParts = function(button){
+        const modalContent = htmx.closest(button,'div.modal-content');
+        const modalbody = modalContent.querySelector('div.modal-body');
+        const buttons = modalbody.querySelectorAll('button[name="submit-part"]');
+        buttons.forEach(button => button.click());
+    }
+
+     addAllPartsSingleRequest = function(button){
+        const modalContent = htmx.closest(button,'div.modal-content');
+        const names = modalContent.querySelectorAll('input[name="AddPartModel.Name"]');
+        const inputGroup = modalContent.querySelector("div[name='add-many-names']");
+        var index = -1
+        names.forEach(name => addNameInput(inputGroup,name.value,index++))
+        const form = htmx.closest(button,"form[name='form-add-all-parts']");
+        const submit = form.querySelector("button[name='submit-multiple-parts']");
+        submit.click()
+    }
+
+    addNameInput = function (container, name,index) {
+        if(container && name)
+        {
+            input = document.createElement("input");
+            input.type = "hidden";
+            input.class = "form-control"
+            input.name = "AddManyPartsModel.Names[" + index +"].Name";
+            input.value = name;
+            container.appendChild(input);
+        }
+    }
+
+    htmx.on("htmx:afterRequest", function(evt) {
+        const status = evt.detail.xhr.status;
+        var formThatTriggeredTheSubmit = evt.detail.elt;
+        if(formThatTriggeredTheSubmit.name == "form-add-one-part"){
+            const input = formThatTriggeredTheSubmit.querySelector('input[name="AddPartModel.Name"]');
+            if(status < 400){
+                input.value = '';
+                //below we identify if the form is part of a modal. If that is the case, we want to delete the row where
+                //the form is and also automatically close the modal if the only form there is the one that serves as a template
+                //for the drag&drop functionality
+                const parentRowOfTheForm = htmx.closest(input,'div[name="modal-form-row"]');
+                if(parentRowOfTheForm){
+                    const modal = htmx.closest(parentRowOfTheForm,'div.modal-content');
+                    htmx.remove(parentRowOfTheForm);
+                    const remainingForms = modal.querySelectorAll('div[name="modal-form-row"]').length - 1;//-1 because we don't want to count the template row (the #row1)
+                    if(remainingForms < 1)
+                    {
+                        const closeButton = modal.querySelector("#close-modal");
+                        closeButton.click();
+
+                    }
+                }
+            } else {
+                let errorMessage = formThatTriggeredTheSubmit.querySelector("small");
+                if(status < 500){
+                    errorMessage.innerHTML = evt.detail.xhr.response;
+                } 
+                errorMessage.toggleAttribute("hidden");
+            }
+        }
+        if (formThatTriggeredTheSubmit.name == "form-add-all-parts")
+        {
+            if (status < 400) {
+                const modalFooter = htmx.closest(formThatTriggeredTheSubmit,'div[name="modal-footer"]');
+                if(modalFooter){
+                        const closeButton = modalFooter.querySelector("#close-modal");
+                        closeButton.click();
+
+                }
+
+            } else {
+                let errorMessage = formThatTriggeredTheSubmit.querySelector("small");
+                if (status < 500) {
+                    errorMessage.innerHTML = evt.detail.xhr.response;
+                }
+                errorMessage.toggleAttribute("hidden");
+            }
+        }
+    });
+
+    resetErrorMessageForPartNameOnFocus = function(formElement){
+        var inputParent = htmx.closest(formElement,'form');
+        var message = inputParent.querySelector("small");
+        message.setAttribute("hidden","");
+        message.innerText = "@Localizer["ooops! Something went wrong. Please try again."]";
+    }
+
+  
+// draggable content on inputs to create several new parts all at once
+const inputTextToReceiveDraggableContent = "AddPartModel.Name";
+const backgroundColorOfTextInput ="bg-secondary";
+ document.addEventListener("dragenter", function( event ) {
+      // highlight potential drop target when the draggable element enters it
+     if ( event.target.name == inputTextToReceiveDraggableContent ) {
+        htmx.addClass(event.target, backgroundColorOfTextInput);
+     }
+
+  }, false);
+
+document.addEventListener("dragleave", function( event ) {
+    // reset background of potential drop target when the draggable element leaves it
+    if ( event.target.name == inputTextToReceiveDraggableContent ) {
+    htmx.removeClass(event.target, backgroundColorOfTextInput);          
+    event.target.style.height = "";
+    }
+
+}, false);
+
+enableSubmitOfNewRow = function(row) {
+    var submit = row.querySelector("button");
+    submit.toggleAttribute("disabled");
+}
+deleteFormRowFromModalOnModalHide = function(modal,rowThatWillDeleteItSelf){
+    modal.addEventListener('hidden.bs.modal',event => rowThatWillDeleteItSelf.remove());
+}
+document.addEventListener("drop", function( event ) {
+    // prevent default action (open as link for some elements)
+    event.preventDefault();
+    // move dragged elem to the selected drop target
+    if ( event.target.name == inputTextToReceiveDraggableContent ) {
+        htmx.removeClass(event.target, backgroundColorOfTextInput);          
+        let data = event.dataTransfer.getData('text/plain');
+        const items = data.split('\r\n');
+        const size = items.length;
+        if(size > 1){
+              const modal = document.getElementById("modal-"+event.target.id);
+              let body = modal.querySelector('[name=modal-body]');
+              const height =  size * 38 + 100;
+              body.style.height = height + "px";
+              let row = body.querySelector('#row1');
+              items.filter(v => v).forEach((element,index)  => {
+                  let newRow = row.cloneNode(true);
+                  htmx.removeClass(newRow, "d-none");
+                  enableSubmitOfNewRow(newRow);
+                  deleteFormRowFromModalOnModalHide(modal,newRow);
+                  newRow.id = + event.target.id +"_" + index;
+                  let newPartName = newRow.querySelector("[name='"+inputTextToReceiveDraggableContent+"'");
+                  newPartName.value = element;
+                  row.parentNode.appendChild(newRow);
+                  htmx.process(newRow);
+              });
+              const button = document.getElementById("open-modal-"+event.target.id);
+              button.click();//shows the modal
+        } else {
+            event.target.value = data;
+        }
+        event.target.style.background = "";
+        event.target.style.height = "";
+    }
+});
+    </script>
+
+}
