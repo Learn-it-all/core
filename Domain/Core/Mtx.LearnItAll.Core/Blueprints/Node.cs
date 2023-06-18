@@ -1,4 +1,5 @@
-﻿using Mtx.LearnItAll.Core.Common;
+﻿using Mtx.Common.Domain;
+using Mtx.LearnItAll.Core.Common;
 using System.Collections.Generic;
 
 namespace Mtx.LearnItAll.Core.Blueprints
