@@ -1,5 +1,4 @@
 ﻿using Mtx.LearnItAll.Core.Resources;
-using System.Runtime.CompilerServices;
 
 namespace Mtx.LearnItAll.Core.Common
 {
