@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Mtx.CosmosDbServices\Mtx.CosmosDbServices\Mtx.CosmosDbServices.csproj" />
     <ProjectReference Include="..\..\Mtx.Common.Domain\Mtx.Common.Domain.csproj" />
     <ProjectReference Include="..\..\Mtx.Common.Resources\Mtx.Common.Resources.csproj" />
     <ProjectReference Include="..\Mtx.LearnItAll.Core.Common\Mtx.LearnItAll.Core.Common.csproj" />

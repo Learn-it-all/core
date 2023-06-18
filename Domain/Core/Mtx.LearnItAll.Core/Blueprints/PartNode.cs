@@ -14,7 +14,7 @@ namespace Mtx.LearnItAll.Core.Blueprints
 
 
     /// <summary>
-    /// Represents a Skill PartNode and all the elements (other <see cref="Part"/>s and <see cref="PartNode"/>s) that might be necessary to completely describe it.
+    /// Represents a SkillBluePrint PartNode and all the elements (other <see cref="Part"/>s and <see cref="PartNode"/>s) that might be necessary to completely describe it.
     /// </summary>
     public class PartNode
     {

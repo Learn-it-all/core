@@ -20,13 +20,13 @@ namespace Skills
         [Fact]
         public void Exist()
         {
-            _ = _fixture.Create<SkillBlueprint>();
+            _ = _fixture.Create<PersonalSkill>();
         }
 
         [Fact]
         public void BeAnEntity()
         {
-            var sut = _fixture.Create<SkillBlueprint>();
+            var sut = _fixture.Create<PersonalSkill>();
 
             Assert.IsAssignableFrom<Entity>(sut);
         }
@@ -34,7 +34,7 @@ namespace Skills
         [Fact]
         public void SetupCreationData()
         {
-            var sut = _fixture.Create<SkillBlueprint>();
+            var sut = _fixture.Create<PersonalSkill>();
 
             DateTime actual = sut.CreatedDate;
 
@@ -44,7 +44,7 @@ namespace Skills
         [Fact]
         public void StartWithDraftLifecycleState()
         {
-            var sut = _fixture.Create<SkillBlueprint>();
+            var sut = _fixture.Create<PersonalSkill>();
 
             LifecycleState actual = sut.LifecycleState;
 
@@ -55,7 +55,7 @@ namespace Skills
         public void SetName()
         {
             var dummyName = _fixture.Create<Name>();
-            var sut = _fixture.Get<Name, SkillBlueprint>((_) => new(dummyName));
+            var sut = _fixture.Get<Name, PersonalSkill>((_) => PersonalSkill.Create(dummyName));
 
             string actual = sut.Name;
             Assert.Equal(dummyName, actual);

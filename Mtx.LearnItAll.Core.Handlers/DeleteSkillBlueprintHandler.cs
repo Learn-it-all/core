@@ -17,7 +17,7 @@ public class DeleteSkillBlueprintHandler : IRequestHandler<DeleteBlueprintCmd, D
 
 	public async Task<DeleteBlueprintResult> Handle(DeleteBlueprintCmd request, CancellationToken cancellationToken)
 	{
-			var result = await cosmosDb.DeleteUsingIdAsPartitionKeyAsync<SkillBlueprint>(DocumentId.From(request.BlueprintId),cancellationToken);
+			var result = await cosmosDb.DeleteUsingIdAsPartitionKeyAsync<PersonalSkill>(DocumentId.From(request.BlueprintId),cancellationToken);
 			return await Task.FromResult(DeleteBlueprintResult.FromResult(result));
 	}
 

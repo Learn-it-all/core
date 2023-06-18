@@ -14,7 +14,7 @@ public class WhenAddingMultiplePartsShould : Test
     [Fact]
     public void SucceedGivenParentIsExistingNode()
     {
-        var sut = _fixture.Create<SkillBlueprint>();
+        var sut = _fixture.Create<PersonalSkill>();
         var names = _fixture.CreateMany<Name>();
         PartNode part = _fixture.Create<PartNode>();
         var cmd = new AddMultiplePartsCmd(names, part.Id, sut.RootPartId);
@@ -31,7 +31,7 @@ public class WhenAddingMultiplePartsShould : Test
     [Fact]
     public void SucceedGivenParentIsExistingPart()
     {
-        var sut = _fixture.Create<SkillBlueprint>();
+        var sut = _fixture.Create<PersonalSkill>();
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
@@ -47,7 +47,7 @@ public class WhenAddingMultiplePartsShould : Test
     [Fact]
     public void FailGivenPartNameIsDuplicated()
     {
-        var sut = _fixture.Create<SkillBlueprint>();
+        var sut = _fixture.Create<PersonalSkill>();
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);
@@ -64,7 +64,7 @@ public class WhenAddingMultiplePartsShould : Test
     [Fact]
     public void FailGivenParentDoesNotExist()
     {
-        var sut = _fixture.Create<SkillBlueprint>();
+        var sut = _fixture.Create<PersonalSkill>();
         var names = _fixture.CreateMany<Name>();
         var addPartCmd = new AddPartCmd(_fixture.Create<Name>(), sut.RootPartId);
         sut.TryAdd(addPartCmd, out var partResult);

@@ -13,7 +13,7 @@ namespace Tests
         protected Fixture _fixture = new();
         public Test()
         {
-            _fixture.Register(() => new SkillBlueprint(_fixture.Create<Name>()));
+            _fixture.Register(() => PersonalSkill.Create(_fixture.Create<Name>()));
             _fixture.Register(() => new PartNode(_fixture.Create<Name>()));
             _fixture.Register(() => new Part(_fixture.Create<Name>(), Guid.Empty));
             _fixture.Register(() => new Summary());

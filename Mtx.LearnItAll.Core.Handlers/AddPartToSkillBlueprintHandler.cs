@@ -17,7 +17,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 
 		public async Task<AddPartResult> Handle(AddPartCmd request, CancellationToken cancellationToken)
 		{
-			var getResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<SkillBlueprint>(id: DocumentId.From(request.BlueprintId), cancellationToken);
+			var getResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<PersonalSkill>(id: DocumentId.From(request.BlueprintId), cancellationToken);
 			if (getResult.IsError)
 			{
 				return AddPartResult.FromResult(getResult.Result);
@@ -40,7 +40,7 @@ namespace Mtx.LearnItAll.Core.Handlers
 
 		public async Task<AddMultiplePartsResult> Handle(AddMultiplePartsCmd request, CancellationToken cancellationToken)
 		{
-			var dataResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<SkillBlueprint>(DocumentId.From(request.BlueprintId), cancellationToken);
+			var dataResult = await cosmosDb.GetUsingIdAsPartitionKeyAsync<PersonalSkill>(DocumentId.From(request.BlueprintId), cancellationToken);
 
 			if (dataResult.IsSuccessAndHasValue)
 			{

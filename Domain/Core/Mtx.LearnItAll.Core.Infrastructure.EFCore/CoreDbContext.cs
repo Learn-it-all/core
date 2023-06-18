@@ -25,12 +25,12 @@ namespace Mtx.LearnItAll.Core.Infrastructure.EFCore
 
         }
 
-        public DbSet<SkillBlueprint> TopLevelSkills { get; set; }
+        public DbSet<PersonalSkill> TopLevelSkills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<SkillBlueprint>()
+            modelBuilder.Entity<PersonalSkill>()
                 .HasOne<PartNode>("_root");
             modelBuilder.Entity<PartNode>(x =>
             {
@@ -38,7 +38,7 @@ namespace Mtx.LearnItAll.Core.Infrastructure.EFCore
                 x.HasMany<Part>("_parts").WithOne();
                 x.HasMany<PartNode>("_nodes").WithOne();
             });
-            modelBuilder.Entity<SkillBlueprint>()
+            modelBuilder.Entity<PersonalSkill>()
                .Ignore(x => x.Nodes)
                .Ignore(x => x.Parts)
                .Ignore(x => x.DomainEvents);

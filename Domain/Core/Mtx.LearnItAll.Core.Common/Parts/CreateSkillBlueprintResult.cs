@@ -1,6 +1,5 @@
 ﻿using Mtx.Common.Resources;
-using Mtx.Results;
-using System;
+using Mtx.LearnItAll.Core.Resources;
 
 namespace Mtx.LearnItAll.Core.Common.Parts
 {
@@ -16,5 +15,7 @@ namespace Mtx.LearnItAll.Core.Common.Parts
 		{
 			return new CreateSkillBlueprintResult(source.StatusCode, data, Message: source.Message, Exception: source.Exception);
 		}
+
+		public static CreateSkillBlueprintResult Conflict409() => new CreateSkillBlueprintResult(Status409Conflict, Message: CoreMessages.CreateBlueprintSkill_NameAlreadyTaken);
 	}
 }

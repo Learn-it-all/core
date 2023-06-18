@@ -4,7 +4,7 @@ using System;
 namespace Mtx.LearnItAll.Core.Blueprints
 {
     /// <summary>
-    /// A Part represents a leaf in an object graph. In other words, it describes part of a Skill and has never child nodes.
+    /// A Part represents a leaf in an object graph. In other words, it describes part of a SkillBluePrint and has never child nodes.
     /// </summary>
     public record Part
     {

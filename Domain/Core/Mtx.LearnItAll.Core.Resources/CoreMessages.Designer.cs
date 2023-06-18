@@ -70,6 +70,15 @@ namespace Mtx.LearnItAll.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name provided is already in use..
+        /// </summary>
+        public static string CreateBlueprintSkill_NameAlreadyTaken {
+            get {
+                return ResourceManager.GetString("CreateBlueprintSkill_NameAlreadyTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Part &apos;{0}&apos; successfully deleted..
         /// </summary>
         public static string DeletePartResult_Success {

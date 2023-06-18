@@ -98,7 +98,7 @@ namespace PartNodes
         
             var actual = sut.TryAdd(expectedParent.Id,dummyModel);
 
-            Assert.True(actual, "Should have added Skill");
+            Assert.True(actual, "Should have added SkillBluePrint");
             Assert.Contains(dummyModel, expectedParent.Nodes);
 
         }
@@ -111,7 +111,7 @@ namespace PartNodes
 
             var actual = sut.TryAdd(sut.Id, child);
 
-            Assert.True(actual, "Should have added Skill");
+            Assert.True(actual, "Should have added SkillBluePrint");
             Assert.Contains(child, sut.Nodes);
         }
 

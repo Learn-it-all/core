@@ -15,7 +15,7 @@ namespace Blueprints
         [Fact]
         public void AddAsChildOfRootSkillGivenThereIsNoNamingConflict()
         {
-            var sut = _fixture.Create<SkillBlueprint>();
+            var sut = _fixture.Create<PersonalSkill>();
             var dummy = _fixture.Create<PartNode>();
             sut.Add(dummy);
             Assert.Contains(dummy, sut.Nodes);
@@ -36,7 +36,7 @@ namespace Blueprints
             var now = DateTimeOffset.Now;
             var id = UniqueId.New();
             var name = new Name("C#");
-			var skill = Skill.Create(id, name, now);
+			var skill = SkillBluePrint.Create(id, name, now);
             Assert.Single(skill.Applied);
             Assert.Equal("C#", skill.Name);
             Assert.Equal(SkillCreated.With(id, name, now), skill.Applied.First());

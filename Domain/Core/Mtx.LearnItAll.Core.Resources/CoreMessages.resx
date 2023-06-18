@@ -120,6 +120,9 @@
   <data name="AddPartResult_DuplicateSibling" xml:space="preserve">
     <value>The provided name is already in use.</value>
   </data>
+  <data name="CreateBlueprintSkill_NameAlreadyTaken" xml:space="preserve">
+    <value>The name provided is already in use.</value>
+  </data>
   <data name="DeletePartResult_Success" xml:space="preserve">
     <value>Part '{0}' successfully deleted.</value>
   </data>
