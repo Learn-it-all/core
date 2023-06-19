@@ -39,7 +39,7 @@ namespace Blueprints
 			var skill = SkillBluePrint.Create(id, name, now);
             Assert.Single(skill.Applied);
             Assert.Equal("C#", skill.Name);
-            Assert.Equal(SkillCreated.With(id, name, now), skill.Applied.First());
+            Assert.Equal(SkillBlueprintCreated.With(id, name, now), skill.Applied.First());
 
         }
     }

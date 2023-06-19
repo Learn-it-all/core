@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Mtx.Common.Domain;
 using Mtx.CosmosDbServices;
+using Mtx.CosmosDbServices.Entities;
 using Mtx.LearnItAll.Core.Blueprints;
 using Mtx.LearnItAll.Core.Blueprints.SharedKernel;
 using Mtx.LearnItAll.Core.Common.Parts;
@@ -23,10 +25,11 @@ namespace Mtx.LearnItAll.Core.Handlers
 			var counter = queryResult.Contents;
 			if (counter.Some)
 				return CreateSkillBlueprintResult.Conflict409();
+			var id = UniqueId.New();
+			var newBlueprint = SkillBluePrint.Create(id,request.Name);
 
-			var newBlueprint = PersonalSkill.Create(request.Name);
-			var addResult = await cosmosDb.AddUsingIdAsPartitionKeyAsync(newBlueprint, cancellationToken);
-			return CreateSkillBlueprintResult.FromResult(addResult, SkillBlueprintData.New(newBlueprint.Id, newBlueprint.RootPartId));
+			var addResult = await cosmosDb.TransactionalBatchAddAsync<SkillBluePrintEvent,DomainEvent>(newBlueprint.Applied, PartitionKeyValue.From(id.Value), cancellationToken);
+			return CreateSkillBlueprintResult.FromResult(addResult, SkillBlueprintData.New(Guid.Parse(id), Guid.Parse(newBlueprint.AggregateId)));
 
 		}
 

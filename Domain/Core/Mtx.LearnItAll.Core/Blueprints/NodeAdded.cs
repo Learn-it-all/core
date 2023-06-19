@@ -5,7 +5,7 @@ using System;
 
 namespace Mtx.LearnItAll.Core.Blueprints
 {
-	public record NodeAdded : DomainEvent
+	public record NodeAdded : SkillBluePrintEvent
 	{
 		public NodeAdded(UniqueId aggregateId, UniqueId parentId, UniqueId id, Name name) : this(aggregateId, parentId, id, name, DateTimeOffset.Now) { }
 

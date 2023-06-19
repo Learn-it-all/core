@@ -18,11 +18,11 @@ namespace Mtx.LearnItAll.Core.Blueprints
 		public static SkillBluePrint Create(UniqueId id, Name name) => new(id, name);
 		public static SkillBluePrint Create(UniqueId id, Name name, DateTimeOffset validOn) => new(id, name, validOn);
 
-		public SkillBluePrint(UniqueId id, Name name) => Apply(SkillCreated.With(id, name));
-		public SkillBluePrint(UniqueId id, Name name, DateTimeOffset validOn) => Apply(SkillCreated.With(id, name, validOn));
+		public SkillBluePrint(UniqueId id, Name name) => Apply(SkillBlueprintCreated.With(id, name));
+		public SkillBluePrint(UniqueId id, Name name, DateTimeOffset validOn) => Apply(SkillBlueprintCreated.With(id, name, validOn));
 		public SkillBluePrint(IEnumerable<DomainEvent> eventStream, int streamVersion) : base(eventStream, streamVersion) { }
 
-		public void When(SkillCreated e)
+		public void When(SkillBlueprintCreated e)
 		{
 			Name = e.Name;
 			AggregateId = e.Id;
