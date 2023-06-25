@@ -9,7 +9,7 @@ namespace Mtx.LearnItAll.Core.Blueprints.SharedKernel
 		
 		public IsSkillBluePrintNameInUse(LowerCaseText name) : base(query)
 		{
-			Add(Param.Create(name, ParamNameForName));
+			Add(Param.Create(ParamNameForName, name));
 		}
 
 	}
